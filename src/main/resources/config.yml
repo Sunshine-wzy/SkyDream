@@ -1,0 +1,8 @@
+#配置文件自动保存时间间隔(单位：分钟)
+saveTime: 10
+
+#创造模式破坏SkyDream方块是否掉落物品(true/false)
+creativeDropItem: true
+
+#是否启用建筑手杖(true/false)
+allowUseConstructionStick: true

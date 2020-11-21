@@ -1,0 +1,11 @@
+name: SkyDream
+version: 4.0
+author: Sunshine_wzy
+
+main: io.github.sunshinewzy.skydream.SkyDream
+
+commands:
+    sd:
+        description: Start SkyDream journey...
+
+depend: [SunSTCore]
