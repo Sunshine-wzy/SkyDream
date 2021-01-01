@@ -32,8 +32,8 @@ class SkyDream : JavaPlugin() {
         
         reflect()
         
-        logger.info("²å¼þbug·´À¡/½»Á÷QÈº£º423179929")
-        logger.info("×÷Õß: Sunshine_wzy")
+        logger.info("ï¿½ï¿½ï¿½bugï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½QÈºï¿½ï¿½423179929")
+        logger.info("ï¿½ï¿½ï¿½ï¿½: Sunshine_wzy")
         
         saveDefaultConfig()
         for (resourceName in resourceNames) {
@@ -42,10 +42,10 @@ class SkyDream : JavaPlugin() {
             }
         }
         
-        //ÔØÈëÅäÖÃÎÄ¼þ
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
         loadSDConfig()
 
-        //×¢²á¼àÌýÆ÷
+        //×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         registerListeners()
         
     }
@@ -56,8 +56,7 @@ class SkyDream : JavaPlugin() {
 
 
     private fun reflect() {
-        version =
-            Bukkit.getServer().javaClass.getPackage().name.split("/.".toRegex()).toTypedArray()[3]
+        version = Bukkit.getServer().javaClass.getPackage().name.split("/.".toRegex()).toTypedArray()[3]
         nms = "net.minecraft.server.$version."
         obc = "org.bukkit.craftbukkit.$version."
     }
