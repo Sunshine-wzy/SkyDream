@@ -32,8 +32,8 @@ class SkyDream : JavaPlugin() {
         
         reflect()
         
-        logger.info("���bug����/����QȺ��423179929")
-        logger.info("����: Sunshine_wzy")
+        logger.info("插件bug反馈/交流Q群：423179929")
+        logger.info("作者: Sunshine_wzy")
         
         saveDefaultConfig()
         for (resourceName in resourceNames) {
@@ -42,10 +42,10 @@ class SkyDream : JavaPlugin() {
             }
         }
         
-        //���������ļ�
+        //载入配置文件
         loadSDConfig()
 
-        //ע�������
+        //注册监听器
         registerListeners()
         
     }
