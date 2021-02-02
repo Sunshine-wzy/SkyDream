@@ -1,18 +1,19 @@
 package io.github.sunshinewzy.skydream
 
-import io.github.sunshinewzy.sunstcore.utils.SConfig.loadYamlConfig
+import io.github.sunshinewzy.skydream.tasks.SDTask
 import org.bukkit.Bukkit
 import org.bukkit.plugin.PluginManager
 import org.bukkit.plugin.java.JavaPlugin
-import java.io.File
 import java.util.logging.Logger
 
 class SkyDream : JavaPlugin() {
     
     companion object {
-        var pluginSkyDream: JavaPlugin? = null
-        var loggerSkyDream: Logger? = null
-        var pluginManager: PluginManager? = null
+        private var plugin: JavaPlugin? = null
+        val logger: Logger by lazy { 
+            getPlugin().logger
+        }
+        val pluginManager: PluginManager = Bukkit.getServer().pluginManager
         
         var version: String? = null
         var nms: String? = null
@@ -23,12 +24,13 @@ class SkyDream : JavaPlugin() {
             "TaskProgress/Stage1.yml", "TaskProgress/Stage2.yml", "TaskProgress/Stage3.yml", "TaskProgress/Stage4.yml",
             "Others/PlayerHasOpenedSDGuide.yml", "Others/SDBlockPosition.yml"
         )
+        
+        
+        fun getPlugin(): JavaPlugin = plugin!!
     }
     
     override fun onEnable() {
-        pluginSkyDream = this
-        loggerSkyDream = logger
-        pluginManager = Bukkit.getServer().pluginManager
+        plugin = this
         
         reflect()
         
@@ -48,6 +50,10 @@ class SkyDream : JavaPlugin() {
         //注册监听器
         registerListeners()
         
+        //初始化对象
+        init()
+        
+        
     }
 
     override fun onDisable() {
@@ -56,7 +62,7 @@ class SkyDream : JavaPlugin() {
 
 
     private fun reflect() {
-        version = Bukkit.getServer().javaClass.getPackage().name.split("/.".toRegex()).toTypedArray()[3]
+        version = Bukkit.getServer().javaClass.getPackage().name.split("\\.".toRegex()).toTypedArray()[3]
         nms = "net.minecraft.server.$version."
         obc = "org.bukkit.craftbukkit.$version."
     }
@@ -69,17 +75,7 @@ class SkyDream : JavaPlugin() {
 //        File(dataFolder, "MultiBlockMachine/Size3Machine.yml").loadYamlConfig()
     }
     
-}
-
-
-fun getPlugin(): JavaPlugin {
-    return SkyDream.pluginSkyDream!!
-}
-
-fun getLogger(): Logger {
-    return SkyDream.loggerSkyDream!!
-}
-
-fun getPluginManager(): PluginManager {
-    return SkyDream.pluginManager!!
+    private fun init() {
+        SDTask.init()
+    }
 }

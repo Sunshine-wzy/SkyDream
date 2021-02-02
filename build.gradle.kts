@@ -1,7 +1,5 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-    val kotlinVersion = "1.4.10"
+    val kotlinVersion = "1.4.21"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
 
@@ -27,12 +25,14 @@ repositories {
 dependencies {
     testImplementation(kotlin("test-junit"))
 
-    compileOnly("org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT")
-
     compileOnly(fileTree(mapOf("dir" to "cores", "include" to listOf("*.jar"))))
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+tasks {
+    jar {
+        archiveBaseName.set("SkyDream")
+        archiveVersion.set(project.version.toString())
+        destinationDirectory.set(file("F:/Java/Debug/Spigot-1.12/plugins"))
+    }
 }
