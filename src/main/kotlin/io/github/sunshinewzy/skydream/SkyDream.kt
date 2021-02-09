@@ -53,6 +53,11 @@ class SkyDream : JavaPlugin() {
         //初始化对象
         init()
         
+        subscribeEvent<PlayerJoinEvent> {
+            player.giveItem(SItem(Material.GOLD_SPADE, "§e矿石分离机生成器").addAction {
+                OreSeparator().buildMachine(clickedBlock.location)
+            })
+        }
         
     }
 
