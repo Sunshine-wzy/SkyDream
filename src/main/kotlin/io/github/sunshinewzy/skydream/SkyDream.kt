@@ -1,14 +1,19 @@
 package io.github.sunshinewzy.skydream
 
 import io.github.sunshinewzy.skydream.bstats.Metrics
+import io.github.sunshinewzy.skydream.objects.item.SDItem
+import io.github.sunshinewzy.skydream.objects.machine.SDMachine
 import io.github.sunshinewzy.skydream.objects.machine.manual.OreSeparator
 import io.github.sunshinewzy.skydream.tasks.SDTask
+import io.github.sunshinewzy.sunstcore.modules.machine.MachineWrench
 import io.github.sunshinewzy.sunstcore.objects.SItem
 import io.github.sunshinewzy.sunstcore.utils.giveItem
 import io.github.sunshinewzy.sunstcore.utils.subscribeEvent
 import org.bukkit.Bukkit
 import org.bukkit.Material
+import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerJoinEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.plugin.PluginManager
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.logging.Logger
@@ -21,6 +26,7 @@ class SkyDream : JavaPlugin() {
             getPlugin().logger
         }
         val pluginManager: PluginManager = Bukkit.getServer().pluginManager
+        val wrench = MachineWrench(SItem(Material.BONE, "§b扳手", "§7一个普通的扳手", "§a敲击中心方块以构建多方块机器"))
         
         var version: String? = null
         var nms: String? = null
@@ -63,9 +69,11 @@ class SkyDream : JavaPlugin() {
         init()
         
         subscribeEvent<PlayerJoinEvent> {
-            player.giveItem(SItem(Material.GOLD_SPADE, "§e矿石分离机生成器").addAction {
-                OreSeparator().buildMachine(clickedBlock.location)
-            })
+//            player.giveItem(SItem(Material.GOLD_SPADE, "§e矿石分离机生成器").addAction {
+//                if(clickedBlock != null && action == Action.RIGHT_CLICK_BLOCK && hand == EquipmentSlot.HAND)
+//                    OreSeparator().buildMachine(clickedBlock.location)
+//            })
+//            player.giveItem(SDItem.WRENCH)
         }
         
     }
@@ -91,5 +99,7 @@ class SkyDream : JavaPlugin() {
     
     private fun init() {
         SDTask.init()
+        SDItem.init()
+        SDMachine.init()
     }
 }
