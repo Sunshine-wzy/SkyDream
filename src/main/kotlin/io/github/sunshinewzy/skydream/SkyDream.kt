@@ -1,7 +1,14 @@
 package io.github.sunshinewzy.skydream
 
+import io.github.sunshinewzy.skydream.bstats.Metrics
+import io.github.sunshinewzy.skydream.objects.machine.manual.OreSeparator
 import io.github.sunshinewzy.skydream.tasks.SDTask
+import io.github.sunshinewzy.sunstcore.objects.SItem
+import io.github.sunshinewzy.sunstcore.utils.giveItem
+import io.github.sunshinewzy.sunstcore.utils.subscribeEvent
 import org.bukkit.Bukkit
+import org.bukkit.Material
+import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.PluginManager
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.logging.Logger
@@ -33,6 +40,8 @@ class SkyDream : JavaPlugin() {
         plugin = this
         
         reflect()
+        
+        val metrics = Metrics(this, 10213)
         
         logger.info("插件bug反馈/交流Q群：423179929")
         logger.info("作者: Sunshine_wzy")
