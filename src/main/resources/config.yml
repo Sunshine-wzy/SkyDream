@@ -1,8 +1,5 @@
-#ÅäÖÃÎÄ¼ş×Ô¶¯±£´æÊ±¼ä¼ä¸ô(µ¥Î»£º·ÖÖÓ)
+#é…ç½®æ–‡ä»¶è‡ªåŠ¨ä¿å­˜æ—¶é—´é—´éš”(å•ä½ï¼šåˆ†é’Ÿ)
 saveTime: 10
 
-#´´ÔìÄ£Ê½ÆÆ»µSkyDream·½¿éÊÇ·ñµôÂäÎïÆ·(true/false)
+#åˆ›é€ æ¨¡å¼ç ´åSkyDreamæ–¹å—æ˜¯å¦æ‰è½ç‰©å“(true/false)
 creativeDropItem: true
-
-#ÊÇ·ñÆôÓÃ½¨ÖşÊÖÕÈ(true/false)
-allowUseConstructionStick: true

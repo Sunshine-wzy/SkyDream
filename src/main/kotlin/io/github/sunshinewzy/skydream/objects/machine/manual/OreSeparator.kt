@@ -2,24 +2,26 @@ package io.github.sunshinewzy.skydream.objects.machine.manual
 
 import io.github.sunshinewzy.skydream.SkyDream
 import io.github.sunshinewzy.skydream.objects.item.SDItem
-import io.github.sunshinewzy.sunstcore.SunSTCore
+import io.github.sunshinewzy.skydream.objects.machine.SDMachine
 import io.github.sunshinewzy.sunstcore.modules.machine.MachineManual
-import io.github.sunshinewzy.sunstcore.modules.machine.MachineStructure
 import io.github.sunshinewzy.sunstcore.modules.machine.SMachineRunEvent
+import io.github.sunshinewzy.sunstcore.modules.machine.SMachineSize
+import io.github.sunshinewzy.sunstcore.modules.machine.SMachineStructure
 import io.github.sunshinewzy.sunstcore.objects.SBlock
 import io.github.sunshinewzy.sunstcore.objects.SBlock.Companion.getSBlock
-import io.github.sunshinewzy.sunstcore.objects.SMetadataValue
 import io.github.sunshinewzy.sunstcore.utils.addClone
+import io.github.sunshinewzy.sunstcore.utils.getSMetadata
 import io.github.sunshinewzy.sunstcore.utils.giveItem
 import io.github.sunshinewzy.sunstcore.utils.sendMsg
 import org.bukkit.Material
 import org.bukkit.Sound
 import kotlin.random.Random
 
-class OreSeparator : MachineManual(
+object OreSeparator : MachineManual(
     "矿石分离机",
-    SkyDream.wrench,
-    MachineStructure.CentralSymmetry(
+    SDMachine.wrench,
+    SMachineStructure.CentralSymmetry(
+        SMachineSize.SIZE3,
         """
         a
         
@@ -39,16 +41,9 @@ class OreSeparator : MachineManual(
         val sBlock = theLoc.getSBlock()
         val player = event.player
         
-        var meta = SMetadataValue(SunSTCore.getPlugin(), 0)
-        if(centerBlock.hasMetadata(name)){
-            centerBlock.getMetadata(name).forEach {
-                if(it is SMetadataValue)
-                    meta = it
-            }
-        }
+        val meta = centerBlock.getSMetadata(SkyDream.getPlugin(), name)
         var cnt = meta.asInt()
         
-
         when {
             sBlock.isSimilar(Material.DIRT) -> {
                 if(cnt >= 4){
@@ -56,20 +51,27 @@ class OreSeparator : MachineManual(
                     
                     block.type = Material.AIR
                     player.giveItem(SDItem.PEBBLE, Random.nextInt(3) + 2)
+                    
+                    player.playSound(theLoc, Sound.BLOCK_GRAVEL_BREAK, 1f, 2f)
+                    player.sendMsg(name, "§a分离成功！")
                 }
                 else{
                     cnt++
 
                     player.playSound(theLoc, Sound.BLOCK_GRAVEL_HIT, 1f, 0f)
-                    player.sendMsg("§e正在分离...")
+                    player.sendMsg(name, "§e正在分离...")
                 }
             }
-        
             
-        
+            else -> {
+                player.playSound(theLoc, Sound.ENTITY_ITEM_BREAK, 1f, 1.8f)
+                player.sendMsg(name, "§4待分离的方块不正确！")
+                return
+            }
         }
         
         meta.data = cnt
+        centerBlock.setMetadata(name, meta)
     }
     
     

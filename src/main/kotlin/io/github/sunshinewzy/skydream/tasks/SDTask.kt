@@ -56,7 +56,7 @@ object SDTask : Initable {
     
     
     private fun setFinalTasks() {
-        stage1.finalTask = SDTStage1.task1_1
+        stage1.finalTask = SDTStage1.task5_1
     }
     
 }

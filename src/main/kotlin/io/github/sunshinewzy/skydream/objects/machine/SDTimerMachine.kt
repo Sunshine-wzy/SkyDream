@@ -1,4 +1,4 @@
-package io.github.sunshinewzy.skydream.objects.machine.timer
+package io.github.sunshinewzy.skydream.objects.machine
 
 import io.github.sunshinewzy.sunstcore.interfaces.Initable
 
