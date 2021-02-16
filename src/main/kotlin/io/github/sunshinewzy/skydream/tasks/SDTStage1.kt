@@ -107,6 +107,26 @@ object SDTStage1 : Initable {
         "§f任务需要:","§b骨粉 x8","§f任务奖励:","§e马铃薯 x10"
     )
     
-//    val task5_3 =
+    val task5_3 = ItemTask(
+        stage1,
+        "啊草方块",
+        7 orderWith 2,
+        task5_2,
+        SItem.createTaskSymbol(Material.GRASS, 0, "§e草，一种植物","§c没有草方块怎么能活下去呢","§b将1块泥土放在副手","§d主手拿着16片桑叶右击16次就能搓出草方块啦！"),
+        arrayOf(SItem(Material.DIRT, 10)),
+        arrayOf(SItem(Material.GRASS)),
+        "§f任务需要:","§b草方块 x1","§f任务奖励:","§e泥土 x10"
+    )
+    
+    val task5_4 = ItemTask(
+        stage1,
+        "小麦种子",
+        6 orderWith 2,
+        task5_3,
+        SItem.createTaskSymbol(Material.SEEDS, 0, "§e有了草方块和源源不断的骨粉","§c你就可以刷草了（雾）","§b将你的草地扩大一点","§d然后用骨粉刷草并打草搞点小麦种子吧"),
+        arrayOf(SItem(Material.DIRT, 10)),
+        arrayOf(SItem(Material.SEEDS)),
+        "§f任务需要:","§b小麦种子 x1","§f任务奖励:","§e泥土 x10"
+    )
     
 }

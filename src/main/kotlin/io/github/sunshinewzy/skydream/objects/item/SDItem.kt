@@ -6,15 +6,20 @@ import io.github.sunshinewzy.sunstcore.interfaces.Initable
 import io.github.sunshinewzy.sunstcore.interfaces.Itemable
 import io.github.sunshinewzy.sunstcore.objects.SItem
 import io.github.sunshinewzy.sunstcore.objects.SItem.Companion.addRecipe
+import io.github.sunshinewzy.sunstcore.objects.SItem.Companion.addUseCount
+import io.github.sunshinewzy.sunstcore.objects.SItem.Companion.isItemSimilar
 import io.github.sunshinewzy.sunstcore.objects.SShapedRecipe
+import io.github.sunshinewzy.sunstcore.utils.giveItem
 import org.bukkit.Material
 import org.bukkit.Material.*
 import org.bukkit.NamespacedKey
+import org.bukkit.Sound
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.Recipe
 import org.bukkit.inventory.ShapelessRecipe
+import kotlin.random.Random
 
 
 enum class SDItem(val item: ItemStack) : Itemable {
@@ -62,10 +67,48 @@ enum class SDItem(val item: ItemStack) : Itemable {
         }
     ),
 	SILKWORM(SItem(INK_SACK, 7, 1, "§8蚕", "§a将我拿在副手，用主手喂桑叶给我吃哦~")),
-	MULBERRY_LEAVES(SItem(LONG_GRASS, 2, 1, "§a桑叶", "§f拿在主手时可喂食副手的蚕")),
+	MULBERRY_LEAVES(SItem(LONG_GRASS, 2, 1, "§a桑叶", "§f拿在主手时可喂食副手的蚕").addAction { 
+	    val offHandItem = player.inventory.itemInOffHand
+        if(offHandItem != null && offHandItem.type != AIR){
+            when(offHandItem.type) {
+                INK_SACK -> {
+                    if(offHandItem.isItemSimilar(SILKWORM, ignoreLastTwoLine = true)){
+                        if(offHandItem.addUseCount(4)){
+                            player.giveItem(SItem(STRING, Random.nextInt(3) + 1))
+                            player.playSound(player.location, Sound.ENTITY_PLAYER_BURP, 1f, 1f)
+                        }
+                        else{
+                            player.giveItem(SItem(STRING))
+                            player.playSound(player.location, Sound.ENTITY_GENERIC_EAT, 1f, 1f)
+                            item.amount--
+                        }
+                    }
+                }
+                
+                DIRT -> {
+                    if(offHandItem.addUseCount(16)){
+                        offHandItem.amount--
+                        player.giveItem(SItem(GRASS))
+                        player.playSound(player.location, Sound.BLOCK_GRASS_PLACE, 1f, 1.5f)
+                    }
+                    else{
+                        item.amount--
+                        player.giveItem(SItem(LONG_GRASS, 1, 1))
+                        player.playSound(player.location, Sound.BLOCK_GRASS_HIT, 1f, 0.5f)
+                    }
+                }
+            }
+        }
+    }),
+    
 	TIN_POWDER(SItem(INK_SACK, 8, 1, "§7锡粉")),
 	COPPER_POWDER(SItem(INK_SACK, 11, 1, "§e铜粉")),
 	BRONZE_POWDER(SItem(INK_SACK, 14, 1, "§6青铜粉")),
+    BRONZE_INGOT(SItem(CLAY_BRICK, "§6青铜锭")),
+    BRONZE_BLOCK(SItem(CONCRETE, 1, 1, "§6青铜块")),
+    
+    ADHESIVE(SItem(SHULKER_SHELL, "§7粘合剂")),
+    FLOUR(SItem(SNOW_BALL, "§f面团")),
     
     
     ;

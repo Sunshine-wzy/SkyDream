@@ -1,6 +1,7 @@
 package io.github.sunshinewzy.skydream
 
 import io.github.sunshinewzy.skydream.bstats.Metrics
+import io.github.sunshinewzy.skydream.listeners.SDSubscriber
 import io.github.sunshinewzy.skydream.objects.item.SDItem
 import io.github.sunshinewzy.skydream.objects.machine.SDMachine
 import io.github.sunshinewzy.skydream.tasks.SDTask
@@ -93,5 +94,7 @@ class SkyDream : JavaPlugin() {
         SDTask.init()
         SDItem.init()
         SDMachine.init()
+        SDSubscriber.init()
+        
     }
 }

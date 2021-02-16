@@ -11,7 +11,6 @@ import io.github.sunshinewzy.sunstcore.objects.SBlock
 import io.github.sunshinewzy.sunstcore.objects.SBlock.Companion.getSBlock
 import io.github.sunshinewzy.sunstcore.utils.addClone
 import io.github.sunshinewzy.sunstcore.utils.getSMetadata
-import io.github.sunshinewzy.sunstcore.utils.giveItem
 import io.github.sunshinewzy.sunstcore.utils.sendMsg
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -40,6 +39,7 @@ object OreSeparator : MachineManual(
         val centerBlock = event.loc.block
         val sBlock = theLoc.getSBlock()
         val player = event.player
+        val world = theLoc.world
         
         val meta = centerBlock.getSMetadata(SkyDream.getPlugin(), name)
         var cnt = meta.asInt()
@@ -50,7 +50,9 @@ object OreSeparator : MachineManual(
                     cnt = 0
                     
                     block.type = Material.AIR
-                    player.giveItem(SDItem.PEBBLE, Random.nextInt(3) + 2)
+                    val pebble = SDItem.PEBBLE.item.clone()
+                    pebble.amount = Random.nextInt(3) + 2
+                    world.dropItem(theLoc, pebble)
                     
                     player.playSound(theLoc, Sound.BLOCK_GRAVEL_BREAK, 1f, 2f)
                     player.sendMsg(name, "§a分离成功！")

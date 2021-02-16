@@ -11,6 +11,7 @@ object SDTask : Initable {
     
     override fun init() {
         SDTStage1.init()
+        SDTStage2.init()
         
         setFinalTasks()
     }
