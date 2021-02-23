@@ -1,6 +1,8 @@
 package io.github.sunshinewzy.skydream.tasks
 
+import io.github.sunshinewzy.skydream.objects.item.SDItem
 import io.github.sunshinewzy.skydream.objects.machine.manual.ClayMaker
+import io.github.sunshinewzy.skydream.objects.machine.manual.Crucible
 import io.github.sunshinewzy.skydream.objects.machine.manual.Millstone
 import io.github.sunshinewzy.skydream.objects.machine.manual.Squeezer
 import io.github.sunshinewzy.skydream.tasks.SDTask.stage2
@@ -85,6 +87,40 @@ object SDTStage2 : Initable {
         ClayMaker,
         arrayOf(SItem(Material.CLAY_BALL, 4)),
         "§d恭喜你制造出了粘土！","§f任务需要:","§b粘土 x4","§f任务奖励:","§e圆石 x10"
+    )
+    
+    val task4_1 = ItemCraftTask(
+        stage2,
+        "坩埚钳",
+        6 orderWith 3,
+        task3_1,
+        SItem.createTaskSymbol(Material.BONE, 0, "§6坩埚的标配！"),
+        arrayOf(SItem(Material.CARROT, 10)),
+        SDItem.CRUCIBLE_TONGS.item,
+        "§f任务需要:","§b坩埚钳 x1","§f任务奖励:","§e胡萝卜 x10"
+    )
+    
+    val task4_2 = MachineTask(
+        stage2,
+        "坩埚",
+        6 orderWith 4,
+        task4_1,
+        SItem.createTaskSymbol(Material.STAINED_CLAY, 0, "§d是时候搞点岩浆玩玩了（雾）","§d你可以通过坩埚把圆石变成岩浆","§6按照提示搭建多方块机器","§6并用扳手右键敲击中心方块","§6(最中间的圆石墙)","§6来激活多方块机器","§b在四个熔炉里烧点东西","§b有几个熔炉在工作坩埚就是几倍速","§c主手持坩埚钳副手拿圆石","§c然后不断右击坩埚中间的圆石墙来制造岩浆！"),
+        arrayOf(SItem(Material.BEETROOT_SOUP)),
+        Crucible,
+        emptyArray(),
+        "§d恭喜你距离刷石机就差一步了！","§f任务奖励:","§e甜菜汤 x1"
+    )
+    
+    val task5_1 = ItemTask(
+        stage2,
+        "啊刷石机",
+        7 orderWith 3,
+        task4_2,
+        SItem.createTaskSymbol(Material.COBBLESTONE, 0, "§e你已经有能力制造水和岩浆了","§c我知道你还没有桶","§c但我相信以你的能力","§c没有桶也能做出刷石机的！","§d做出一个刷石机","§a并刷出一组圆石吧！"),
+        arrayOf(SItem(Material.IRON_PICKAXE)),
+        arrayOf(SItem(Material.COBBLESTONE, 64)),
+        "§f任务需要:","§b圆石 x64","§f任务奖励:","§e铁镐 x1","§e<解锁第三阶段>"
     )
     
 }

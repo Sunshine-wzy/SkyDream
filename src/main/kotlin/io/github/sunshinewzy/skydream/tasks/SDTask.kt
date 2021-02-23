@@ -12,6 +12,7 @@ object SDTask : Initable {
     override fun init() {
         SDTStage1.init()
         SDTStage2.init()
+        SDTStage3.init()
         
         setFinalTasks()
     }
@@ -58,6 +59,8 @@ object SDTask : Initable {
     
     private fun setFinalTasks() {
         stage1.finalTask = SDTStage1.task5_1
+        stage2.finalTask = SDTStage2.task5_1
+        
     }
     
 }

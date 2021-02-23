@@ -103,17 +103,14 @@ object Millstone : MachineManual(
                 cnt = 0
                 block.type = Material.AIR
                 loc.world.dropItemNaturally(loc, dropItem)
-                player.sendMsg(name, "§a研磨成功！")
                 player.playSound(loc, breakSound, 1f, 2f)
             }
             cnt >= 1 -> {
                 cnt++
-                player.sendMsg(name, "§e研磨中...")
                 player.playSound(loc, hitSound, 1f, 0f)
             }
             else -> {
                 cnt = 1
-                player.sendMsg(name, "§b开始研磨:")
                 player.playSound(loc, hitSound, 1f, 0f)
             }
         }

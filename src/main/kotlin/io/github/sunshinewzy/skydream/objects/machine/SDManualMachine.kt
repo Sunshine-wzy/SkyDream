@@ -10,6 +10,7 @@ object SDManualMachine : Initable {
         Squeezer.init()
         Millstone.init()
         ClayMaker.init()
+        Crucible.init()
         
     }
 }

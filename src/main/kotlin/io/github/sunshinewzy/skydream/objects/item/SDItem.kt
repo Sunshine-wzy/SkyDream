@@ -6,15 +6,18 @@ import io.github.sunshinewzy.sunstcore.interfaces.Initable
 import io.github.sunshinewzy.sunstcore.interfaces.Itemable
 import io.github.sunshinewzy.sunstcore.objects.SItem
 import io.github.sunshinewzy.sunstcore.objects.SItem.Companion.addRecipe
+import io.github.sunshinewzy.sunstcore.objects.SItem.Companion.addShapedRecipe
 import io.github.sunshinewzy.sunstcore.objects.SItem.Companion.addUseCount
 import io.github.sunshinewzy.sunstcore.objects.SItem.Companion.isItemSimilar
 import io.github.sunshinewzy.sunstcore.objects.SShapedRecipe
 import io.github.sunshinewzy.sunstcore.utils.giveItem
+import io.github.sunshinewzy.sunstcore.utils.subscribeEvent
 import org.bukkit.Material
 import org.bukkit.Material.*
 import org.bukkit.NamespacedKey
 import org.bukkit.Sound
 import org.bukkit.enchantments.Enchantment
+import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.Recipe
@@ -30,10 +33,19 @@ enum class SDItem(val item: ItemStack) : Itemable {
         "x x","yzy"," m "
     ),
     HOOK_STICK(
-        SItem(STICK, "§f钩子", "§a用钩子打树叶有几率掉蚕和桑叶", "§b还能增加橡树树苗的掉落几率"),
-        "HOOK_STICK",
-        mapOf('x' to STICK),
-        "xx", " x", " x"
+        SItem(STICK, "§f钩子", "§a用钩子打树叶有几率掉蚕和桑叶", "§b还能增加橡树树苗的掉落几率")
+            .addShapedRecipe(
+                getPlugin(),
+                "HOOK_STICK_1",
+                mapOf('x' to STICK),
+                "xx", " x", " x"
+            )
+            .addShapedRecipe(
+                getPlugin(),
+                "HOOK_STICK_2",
+                mapOf('x' to STICK),
+                "xx", "x ", "x "
+            )
     ),
     HOOK_WOOD(
         SItem(WOOD_SWORD, "§f木钩", "§a比钩子更快", "§b但易损坏").apply {
@@ -97,6 +109,8 @@ enum class SDItem(val item: ItemStack) : Itemable {
                         player.playSound(player.location, Sound.BLOCK_GRASS_HIT, 1f, 0.5f)
                     }
                 }
+                
+                else -> {}
             }
         }
     }),
@@ -109,6 +123,24 @@ enum class SDItem(val item: ItemStack) : Itemable {
     
     ADHESIVE(SItem(SHULKER_SHELL, "§7粘合剂")),
     FLOUR(SItem(SNOW_BALL, "§f面团")),
+    CRUCIBLE_TONGS(SItem(BONE, "§d坩埚钳", "§7坩埚标配的坩埚钳","§a拿在主手时能将","§a副手的圆石塞进坩埚")
+        .also { 
+            subscribeEvent<PlayerInteractEvent> { 
+                if(hand == org.bukkit.inventory.EquipmentSlot.OFF_HAND){
+                    if(player.inventory.itemInMainHand.isItemSimilar(it))
+                        isCancelled = true
+                }
+            }
+        }
+        .addShapedRecipe(
+            getPlugin(),
+            "CRUCIBLE_TONGS",
+            mapOf('x' to COBBLE_WALL, 'y' to BONE, 'z' to HARD_CLAY),
+            " x ",
+            " y ",
+            "z z"
+        )
+    )
     
     
     ;

@@ -1,15 +1,14 @@
 package io.github.sunshinewzy.skydream.objects.machine.manual
 
 import io.github.sunshinewzy.skydream.objects.machine.SDMachine
-import io.github.sunshinewzy.sunstcore.modules.machine.MachineManual
-import io.github.sunshinewzy.sunstcore.modules.machine.SMachineRunEvent
-import io.github.sunshinewzy.sunstcore.modules.machine.SMachineSize
-import io.github.sunshinewzy.sunstcore.modules.machine.SMachineStructure
+import io.github.sunshinewzy.sunstcore.modules.machine.*
 import io.github.sunshinewzy.sunstcore.objects.SBlock
 import io.github.sunshinewzy.sunstcore.objects.SItem
 import io.github.sunshinewzy.sunstcore.utils.addClone
+import io.github.sunshinewzy.sunstcore.utils.sendMsg
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.Sound
 
 object ClayMaker : MachineManual(
     "粘土制造机",
@@ -38,6 +37,36 @@ object ClayMaker : MachineManual(
 ) {
 
     override fun manualRun(event: SMachineRunEvent.Manual) {
+        val loc = event.loc.addClone(1)
+        val centerLoc = event.loc
+        val block = loc.block
+        val player = event.player
+        
+        when(block.type) {
+            Material.SAND -> {
+                when(addMetaCnt(centerLoc, 8)) {
+                    SMachineStatus.START -> {
+                        player.sendMsg(name, "&e水流灌注中...")
+                        player.playSound(loc, Sound.BLOCK_STONE_HIT, 1f, 0f)
+                    }
+                    
+                    SMachineStatus.RUNNING -> {
+                        player.playSound(loc, Sound.BLOCK_SAND_HIT, 1f, 0f)
+                    }
+                    
+                    SMachineStatus.FINISH -> {
+                        block.type = Material.CLAY
+                        player.sendMsg(name, "&a粘土制造成功！")
+                        player.playSound(loc, Sound.BLOCK_GRAVEL_PLACE, 1f, 2f)
+                    }
+                }
+            }
+            
+            else -> {
+                player.sendMsg(name, "§4制造原料不正确！")
+                player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 1.8f)
+            }
+        }
         
     }
 
