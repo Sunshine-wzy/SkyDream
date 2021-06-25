@@ -8,18 +8,25 @@ plugins {
 group = "io.github.sunshinewzy"
 version = "4.0"
 
+kotlin {
+    target { 
+        
+    }
+}
+
 repositories {
+    maven {
+        url = uri("https://maven.aliyun.com/repository/public/")
+    }
     mavenLocal()
     mavenCentral()
-
+    jcenter()
+    
     maven("https://dl.bintray.com/kotlin/kotlin-eap")
-    maven("http://maven.aliyun.com/nexus/content/groups/public")
     maven {
         name = "spigotmc-repo"
         url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     }
-
-    jcenter()
 }
 
 dependencies {
@@ -33,6 +40,19 @@ tasks {
     jar {
         archiveBaseName.set("SkyDream")
         archiveVersion.set(project.version.toString())
-        destinationDirectory.set(file("F:/Java/Debug/Spigot-1.12/plugins"))
+        destinationDirectory.set(file("F:/Kotlin/Debug/Spigot-1.16.5/plugins"))
+//        destinationDirectory.set(file("F:/Java/Debug/Spigot-1.12/plugins"))
+    }
+    
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "1.8"
+        }
+    }
+
+    compileTestKotlin {
+        kotlinOptions {
+            jvmTarget = "1.8"
+        }
     }
 }

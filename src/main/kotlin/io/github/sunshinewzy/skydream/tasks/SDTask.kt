@@ -18,42 +18,46 @@ object SDTask : Initable {
     }
     
     val openItem = SItem(Material.ENCHANTED_BOOK, "§eSkyDream §a向导", "§b>§f由此开始SkyDream之旅§b<")
-    val sdTaskProject = TaskProject("SkyDream", openItem, true, "§eSkyDream §a向导")
+    val sdTaskProject = TaskProject("SkyDream", "天之梦", openItem, true, "§eSkyDream §a向导")
     
     val stage1 = TaskStage(
         sdTaskProject,
+        "Stage1",
         "<第一阶段> §6木器时代",
         3 orderWith 3,
         null,
-        SItem(Material.LOG, "§f<第一阶段>", "§6木器时代","§a在这一阶段你将学会最基本的生存法则","§a并向石器时代迈进"),
-        SItem(Material.STAINED_GLASS_PANE, 12, 1)
+        SItem(Material.OAK_LOG, "§f<第一阶段>", "§6木器时代","§a在这一阶段你将学会最基本的生存法则","§a并向石器时代迈进"),
+        SItem(Material.BROWN_STAINED_GLASS_PANE)
     )
     
     val stage2 = TaskStage(
         sdTaskProject,
+        "Stage2",
         "<第二阶段> §7石器时代",
         4 orderWith 3,
         stage1,
         SItem(Material.COBBLESTONE, "§f<第二阶段>", "§7石器时代","§a在这一阶段你将拥有刷石机","§a并获得一些基础材料"),
-        SItem(Material.STAINED_GLASS_PANE, 7, 1)
+        SItem(Material.GRAY_STAINED_GLASS_PANE)
     )
     
     val stage3 = TaskStage(
         sdTaskProject,
+        "Stage3",
         "<第三阶段> §d铁器时代",
         5 orderWith 3,
         stage2,
         SItem(Material.IRON_INGOT, "§f<第三阶段>","§d铁器时代","§a在这一阶段你将获得简单的矿物","§a并为蒸汽时代做准备"),
-        SItem(Material.STAINED_GLASS_PANE, 6, 1)
+        SItem(Material.PINK_STAINED_GLASS_PANE)
     )
     
     val stage4 = TaskStage(
         sdTaskProject,
+        "Stage4",
         "<第四阶段> §e蒸汽时代",
         6 orderWith 3,
         stage3,
-        SItem(Material.CLAY_BRICK, "§f<第四阶段>", "§e蒸汽时代","§a在这一阶段你将拥有蒸汽动力","§a并进行一些简单的自动化！"),
-        SItem(Material.STAINED_GLASS_PANE, 4, 1)
+        SItem(Material.BRICK, "§f<第四阶段>", "§e蒸汽时代","§a在这一阶段你将拥有蒸汽动力","§a并进行一些简单的自动化！"),
+        SItem(Material.YELLOW_STAINED_GLASS_PANE)
     )
     
     

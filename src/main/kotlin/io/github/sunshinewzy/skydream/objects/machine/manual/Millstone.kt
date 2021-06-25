@@ -3,23 +3,25 @@ package io.github.sunshinewzy.skydream.objects.machine.manual
 import io.github.sunshinewzy.skydream.SkyDream
 import io.github.sunshinewzy.skydream.objects.item.SDItem
 import io.github.sunshinewzy.skydream.objects.machine.SDMachine
-import io.github.sunshinewzy.sunstcore.modules.machine.MachineManual
+import io.github.sunshinewzy.sunstcore.modules.machine.SMachineManual
 import io.github.sunshinewzy.sunstcore.modules.machine.SMachineRunEvent
 import io.github.sunshinewzy.sunstcore.modules.machine.SMachineSize
 import io.github.sunshinewzy.sunstcore.modules.machine.SMachineStructure
 import io.github.sunshinewzy.sunstcore.objects.SBlock
+import io.github.sunshinewzy.sunstcore.objects.SCoordinate
 import io.github.sunshinewzy.sunstcore.objects.SItem
 import io.github.sunshinewzy.sunstcore.utils.addClone
 import io.github.sunshinewzy.sunstcore.utils.getSMetadata
-import io.github.sunshinewzy.sunstcore.utils.removeClone
 import io.github.sunshinewzy.sunstcore.utils.sendMsg
+import io.github.sunshinewzy.sunstcore.utils.subtractClone
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
-object Millstone : MachineManual(
+object Millstone : SMachineManual(
+    "Millstone",
     "磨盘",
     SDMachine.wrench,
     SMachineStructure.CentralSymmetry(
@@ -33,22 +35,22 @@ object Millstone : MachineManual(
             b
         """.trimIndent(),
         mapOf(
-            'a' to SBlock(Material.DOUBLE_STEP).setDisplayItem(SItem(Material.STEP, 2, "§f双层石台阶", "§a记得要把我们叠在一起哦")),
-            'b' to SBlock(Material.COBBLE_WALL),
-            'c' to SBlock(Material.AIR).setDisplayItem(SItem(Material.COBBLE_WALL))
+            'a' to SBlock(Material.SMOOTH_STONE_SLAB).setItem(SItem(Material.SMOOTH_STONE_SLAB, 2, "§f双层石台阶", "§a记得要把我们叠在一起哦")),
+            'b' to SBlock(Material.COBBLESTONE_WALL),
+            'c' to SBlock.createAir(SItem(Material.COBBLESTONE_WALL))
         ),
-        Triple(0, 2, 0)
+        SCoordinate(0, 2, 0)
     )
 ) {
 
-    override fun manualRun(event: SMachineRunEvent.Manual) {
-        val loc = event.loc.removeClone(1)
+    override fun manualRun(event: SMachineRunEvent.Manual, level: Short) {
+        val loc = event.loc.subtractClone(1)
         val block = loc.block
         val centerBlock = event.loc.block
         val player = event.player
         val inv = player.inventory
 
-        val meta = centerBlock.getSMetadata(SkyDream.getPlugin(), name)
+        val meta = centerBlock.getSMetadata(SkyDream.plugin, name)
         var cnt = meta.asInt()
         
         cnt = when(block.type) {
@@ -72,10 +74,10 @@ object Millstone : MachineManual(
         centerBlock.setMetadata(name, meta)
     }
 
-    override fun specialJudge(loc: Location, isFirst: Boolean): Boolean {
+    override fun specialJudge(loc: Location, isFirst: Boolean, level: Short): Boolean {
         if(isFirst){
             val theLoc = loc.addClone(1)
-            if(theLoc.block.type == Material.COBBLE_WALL){
+            if(theLoc.block.type == Material.COBBLESTONE_WALL){
                 theLoc.block.type = Material.AIR
                 return true
             }
@@ -102,7 +104,7 @@ object Millstone : MachineManual(
             cnt >= maxCnt -> {
                 cnt = 0
                 block.type = Material.AIR
-                loc.world.dropItemNaturally(loc, dropItem)
+                loc.world?.dropItemNaturally(loc, dropItem)
                 player.playSound(loc, breakSound, 1f, 2f)
             }
             cnt >= 1 -> {

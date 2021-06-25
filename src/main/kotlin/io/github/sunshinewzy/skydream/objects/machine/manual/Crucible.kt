@@ -2,11 +2,12 @@ package io.github.sunshinewzy.skydream.objects.machine.manual
 
 import io.github.sunshinewzy.skydream.objects.item.SDItem
 import io.github.sunshinewzy.skydream.objects.machine.SDMachine
-import io.github.sunshinewzy.sunstcore.modules.machine.MachineManual
+import io.github.sunshinewzy.sunstcore.modules.machine.SMachineManual
 import io.github.sunshinewzy.sunstcore.modules.machine.SMachineRunEvent
 import io.github.sunshinewzy.sunstcore.modules.machine.SMachineSize
 import io.github.sunshinewzy.sunstcore.modules.machine.SMachineStructure
 import io.github.sunshinewzy.sunstcore.objects.SBlock
+import io.github.sunshinewzy.sunstcore.objects.SCoordinate
 import io.github.sunshinewzy.sunstcore.objects.SItem
 import io.github.sunshinewzy.sunstcore.objects.SItem.Companion.isItemSimilar
 import io.github.sunshinewzy.sunstcore.utils.addClone
@@ -17,7 +18,8 @@ import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Sound
 
-object Crucible : MachineManual(
+object Crucible : SMachineManual(
+    "Crucible",
     "坩埚",
     SDMachine.wrench,
     SMachineStructure.CentralSymmetry(
@@ -34,16 +36,16 @@ object Crucible : MachineManual(
         """.trimIndent(),
         mapOf(
             'a' to SBlock(Material.BRICK),
-            'b' to SBlock(Material.STEP, 8).setDisplayItem(SItem(Material.STEP, listOf("§a我是上半砖~"))),
-            'c' to SBlock(Material.COBBLE_WALL),
-            'd' to SBlock(Material.STAINED_CLAY),
-            'e' to SBlock(Material.AIR).setDisplayItem(SItem(Material.FURNACE, listOf("§a让我燃烧起来~")))
+            'b' to SBlock(Material.SMOOTH_STONE_SLAB).setItem(SItem(Material.SMOOTH_STONE_SLAB, listOf("§a我是上半砖~"))),
+            'c' to SBlock(Material.COBBLESTONE_WALL),
+            'd' to SBlock(Material.WHITE_TERRACOTTA),
+            'e' to SBlock.createAir(SItem(Material.FURNACE, listOf("§a让我燃烧起来~")))
         ),
-        Triple(0, 1, 0)
+        SCoordinate(0, 1, 0)
     )
 ) {
 
-    override fun manualRun(event: SMachineRunEvent.Manual) {
+    override fun manualRun(event: SMachineRunEvent.Manual, level: Short) {
         val loc = event.loc
         val topLoc = loc.addClone(1)
         val player = event.player
@@ -51,18 +53,18 @@ object Crucible : MachineManual(
         
         if(topLoc.block.type == Material.AIR){
             if(inv.itemInMainHand.isItemSimilar(SDItem.CRUCIBLE_TONGS)){
-                val level = loc.countPlaneAround(Material.BURNING_FURNACE)
-                player.sendMsg(name, "当前§b坩埚§f运行速率: §a${level}x")
+                val rate = loc.countPlaneAround(Material.BLAST_FURNACE)
+                player.sendMsg(name, "当前§b坩埚§f运行速率: §a${rate}x")
                 
                 val offHandItem = inv.itemInOffHand
                 if(offHandItem.type != Material.COBBLESTONE) return
                 
-                if(level == 0){
+                if(rate == 0){
                     player.sendMsg(name, "§4坩埚没有热源 §e请让熔炉燃烧起来！")
                     player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 1.4f)
                 }
-                else if(level in 1..4){
-                    if(addMetaCnt(event, 16, level).flag){
+                else if(rate in 1..4){
+                    if(addMetaCnt(event, 16, rate).flag){
                         offHandItem.amount--
                         player.playSound(loc, Sound.BLOCK_LAVA_POP, 1f, 1.4f)
                     }
@@ -83,10 +85,10 @@ object Crucible : MachineManual(
         }
     }
 
-    override fun specialJudge(loc: Location, isFirst: Boolean): Boolean {
+    override fun specialJudge(loc: Location, isFirst: Boolean, level: Short): Boolean {
         val centerLoc = loc.addClone(1)
         
-        if(centerLoc.judgePlaneAround(listOf(Material.FURNACE, Material.BURNING_FURNACE))){
+        if(centerLoc.judgePlaneAround(listOf(Material.FURNACE, Material.BLAST_FURNACE))){
             return true
         }
         

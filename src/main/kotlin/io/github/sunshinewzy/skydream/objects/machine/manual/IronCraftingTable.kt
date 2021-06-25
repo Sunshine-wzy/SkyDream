@@ -1,11 +1,12 @@
 package io.github.sunshinewzy.skydream.objects.machine.manual
 
 import io.github.sunshinewzy.skydream.objects.machine.SDMachine
-import io.github.sunshinewzy.sunstcore.modules.machine.MachineManual
+import io.github.sunshinewzy.sunstcore.modules.machine.SMachineManual
 import io.github.sunshinewzy.sunstcore.modules.machine.SMachineRunEvent
 import io.github.sunshinewzy.sunstcore.modules.machine.SMachineSize
 import io.github.sunshinewzy.sunstcore.modules.machine.SMachineStructure
 import io.github.sunshinewzy.sunstcore.objects.SBlock
+import io.github.sunshinewzy.sunstcore.objects.SCoordinate
 import io.github.sunshinewzy.sunstcore.objects.SItem
 import io.github.sunshinewzy.sunstcore.objects.inventoryholder.SPartProtectInventoryHolder
 import io.github.sunshinewzy.sunstcore.objects.orderWith
@@ -13,7 +14,8 @@ import io.github.sunshinewzy.sunstcore.utils.createEdge
 import org.bukkit.Bukkit
 import org.bukkit.Material
 
-object IronCraftingTable : MachineManual(
+object IronCraftingTable : SMachineManual(
+    "IronCraftingTable",
     "铁制工作台",
     SDMachine.wrench,
     SMachineStructure.CentralSymmetry(
@@ -30,11 +32,11 @@ object IronCraftingTable : MachineManual(
         """.trimIndent(),
         mapOf(
             'a' to SBlock(Material.IRON_BLOCK),
-            'b' to SBlock(Material.IRON_FENCE),
+            'b' to SBlock(Material.IRON_BARS),
             'c' to SBlock(Material.GOLD_BLOCK),
-            'd' to SBlock(Material.WORKBENCH)
+            'd' to SBlock(Material.CRAFTING_TABLE)
         ),
-        Triple(0, 2, 0)
+        SCoordinate(0, 2, 0)
     )
 ) {
     private val holder = SPartProtectInventoryHolder(
@@ -50,9 +52,9 @@ object IronCraftingTable : MachineManual(
     )
 
     
-    override fun manualRun(event: SMachineRunEvent.Manual) {
+    override fun manualRun(event: SMachineRunEvent.Manual, level: Short) {
         val inv = Bukkit.createInventory(holder, 5 * 9, "铁制工作台")
-        inv.createEdge(5, SItem(Material.STAINED_GLASS_PANE))
+        inv.createEdge(5, SItem(Material.WHITE_STAINED_GLASS_PANE))
         
         
     }

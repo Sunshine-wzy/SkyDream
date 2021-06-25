@@ -3,6 +3,7 @@ package io.github.sunshinewzy.skydream.objects.machine.manual
 import io.github.sunshinewzy.skydream.objects.machine.SDMachine
 import io.github.sunshinewzy.sunstcore.modules.machine.*
 import io.github.sunshinewzy.sunstcore.objects.SBlock
+import io.github.sunshinewzy.sunstcore.objects.SCoordinate
 import io.github.sunshinewzy.sunstcore.objects.SItem
 import io.github.sunshinewzy.sunstcore.utils.addClone
 import io.github.sunshinewzy.sunstcore.utils.sendMsg
@@ -10,7 +11,8 @@ import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Sound
 
-object ClayMaker : MachineManual(
+object ClayMaker : SMachineManual(
+    "ClayMaker",
     "粘土制造机",
     SDMachine.wrench,
     SMachineStructure.CentralSymmetry(
@@ -26,17 +28,17 @@ object ClayMaker : MachineManual(
             c
         """.trimIndent(),
         mapOf(
-            'a' to SBlock(Material.COBBLE_WALL),
-            'b' to SBlock(Material.STEP),
-            'c' to SBlock(Material.THIN_GLASS),
-            'd' to SBlock(Material.AIR).setDisplayItem(SItem(Material.WATER_BUCKET, "§f水", "§a在这里放一桶水","§d我知道你没水桶","§b把压榨机建在粘土制造机的上面","§b然后直接压榨出水...")),
-            'e' to SBlock(Material.AIR).setDisplayItem(SItem(Material.COBBLE_WALL))
+            'a' to SBlock(Material.COBBLESTONE_WALL),
+            'b' to SBlock(Material.SMOOTH_STONE_SLAB),
+            'c' to SBlock(Material.GLASS_PANE),
+            'd' to SBlock.createAir(SItem(Material.WATER_BUCKET, "§f水", "§a在这里放一桶水","§d我知道你没水桶","§b把压榨机建在粘土制造机的上面","§b然后直接压榨出水...")),
+            'e' to SBlock.createAir(SItem(Material.COBBLESTONE_WALL))
         ),
-        Triple(0, 0, 0)
+        SCoordinate(0, 0, 0)
     )
 ) {
 
-    override fun manualRun(event: SMachineRunEvent.Manual) {
+    override fun manualRun(event: SMachineRunEvent.Manual, level: Short) {
         val loc = event.loc.addClone(1)
         val centerLoc = event.loc
         val block = loc.block
@@ -70,14 +72,14 @@ object ClayMaker : MachineManual(
         
     }
 
-    override fun specialJudge(loc: Location, isFirst: Boolean): Boolean {
+    override fun specialJudge(loc: Location, isFirst: Boolean, level: Short): Boolean {
         val topBlock = loc.addClone(2).block
-        if(topBlock.type != Material.WATER && topBlock.type != Material.STATIONARY_WATER)
+        if(topBlock.type != Material.WATER)
             return false
         
         if(isFirst){
             val upLoc = loc.addClone(1)
-            if(upLoc.block.type == Material.COBBLE_WALL){
+            if(upLoc.block.type == Material.COBBLESTONE_WALL){
                 upLoc.block.type = Material.AIR
                 return true
             }

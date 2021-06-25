@@ -5,9 +5,12 @@ import io.github.sunshinewzy.skydream.listeners.SDSubscriber
 import io.github.sunshinewzy.skydream.objects.item.SDItem
 import io.github.sunshinewzy.skydream.objects.machine.SDMachine
 import io.github.sunshinewzy.skydream.tasks.SDTask
+import io.github.sunshinewzy.sunstcore.utils.SunSTTestApi
 import io.github.sunshinewzy.sunstcore.utils.subscribeEvent
 import org.bukkit.Bukkit
-import org.bukkit.event.player.PlayerJoinEvent
+import org.bukkit.event.block.Action
+import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.plugin.PluginManager
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.logging.Logger
@@ -15,9 +18,9 @@ import java.util.logging.Logger
 class SkyDream : JavaPlugin() {
     
     companion object {
-        private var plugin: JavaPlugin? = null
+        lateinit var plugin: JavaPlugin
         val logger: Logger by lazy { 
-            getPlugin().logger
+            plugin.logger
         }
         val pluginManager: PluginManager = Bukkit.getServer().pluginManager
         
@@ -31,8 +34,6 @@ class SkyDream : JavaPlugin() {
             "Others/PlayerHasOpenedSDGuide.yml", "Others/SDBlockPosition.yml"
         )
         
-        
-        fun getPlugin(): JavaPlugin = plugin!!
     }
     
     override fun onEnable() {
@@ -60,15 +61,9 @@ class SkyDream : JavaPlugin() {
         
         //初始化对象
         init()
-        
-        subscribeEvent<PlayerJoinEvent> {
-//            player.giveItem(SItem(Material.GOLD_SPADE, "§e矿石分离机生成器").addAction {
-//                if(clickedBlock != null && action == Action.RIGHT_CLICK_BLOCK && hand == EquipmentSlot.HAND)
-//                    OreSeparator().buildMachine(clickedBlock.location)
-//            })
-//            player.giveItem(SDItem.WRENCH)
-        }
-        
+
+        if(System.getProperty("SunSTDebug") == "true")
+            test()
     }
 
     override fun onDisable() {
@@ -96,5 +91,14 @@ class SkyDream : JavaPlugin() {
         SDMachine.init()
         SDSubscriber.init()
         
+    }
+    
+    @SunSTTestApi
+    private fun test() {
+        subscribeEvent<PlayerInteractEvent> {
+            if(hand == EquipmentSlot.HAND && action == Action.RIGHT_CLICK_BLOCK) {
+                
+            }
+        }
     }
 }

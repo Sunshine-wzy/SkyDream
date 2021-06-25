@@ -33,6 +33,7 @@ object SDTStage2 : Initable {
     
     val task1_1 = MachineTask(
         stage2,
+        "SourceOfLife",
         "生命之源",
         3 orderWith 3,
         null,
@@ -45,21 +46,23 @@ object SDTStage2 : Initable {
     
     val task1_2 = ItemCraftTask(
         stage2,
+        "AgricultureStart",
         "农业起步",
         3 orderWith 2,
         task1_1,
-        SItem.createTaskSymbol(Material.WOOD_HOE, 0, "§e我知道你肯定饿了很久","§c光啃苹果肯定不行","§b是时候发展农业来获得稳定的食物来源了","§d那么，先做一把木锄头吧~"),
+        SItem.createTaskSymbol(Material.WOODEN_HOE, "§e我知道你肯定饿了很久","§c光啃苹果肯定不行","§b是时候发展农业来获得稳定的食物来源了","§d那么，先做一把木锄头吧~"),
         arrayOf(SItem(Material.COBBLESTONE, 10)),
-        SItem(Material.WOOD_HOE),
+        SItem(Material.WOODEN_HOE),
         "§f任务需要:","§b木锄 x1","§f任务奖励:","§e圆石 x10"
     )
     
     val task2_1 = MachineTask(
         stage2,
+        "BuildMillstone",
         "建造磨盘",
         4 orderWith 3,
         task1_1,
-        SItem.createTaskSymbol(Material.STEP, 0, "§d磨盘能把圆石磨成沙砾","§6按照提示搭建多方块机器","§6并用扳手右键敲击中心方块","§6(最中间的圆石墙)","§6来激活多方块机器","§2将圆石放在磨盘的石台阶上","§c然后不断右击磨盘顶部的圆石墙来将圆石磨成沙砾！"),
+        SItem.createTaskSymbol(Material.SMOOTH_STONE_SLAB, "§d磨盘能把圆石磨成沙砾","§6按照提示搭建多方块机器","§6并用扳手右键敲击中心方块","§6(最中间的圆石墙)","§6来激活多方块机器","§2将圆石放在磨盘的石台阶上","§c然后不断右击磨盘顶部的圆石墙来将圆石磨成沙砾！"),
         arrayOf(SItem(Material.COBBLESTONE, 10)),
         Millstone,
         arrayOf(SItem(Material.GRAVEL)),
@@ -68,10 +71,11 @@ object SDTStage2 : Initable {
     
     val task2_2 = ItemTask(
         stage2,
+        "BurningGlass",
         "烧制玻璃",
         4 orderWith 4,
         task2_1,
-        SItem.createTaskSymbol(Material.GLASS, 0, "§e磨盘不止能磨圆石","§c还能把沙砾磨成沙子","§b将沙砾放在磨盘的石台阶上","§d然后不断右击磨盘顶部的圆石墙","§d来将沙砾磨成沙子","§a最后再烧成玻璃吧！"),
+        SItem.createTaskSymbol(Material.GLASS, "§e磨盘不止能磨圆石","§c还能把沙砾磨成沙子","§b将沙砾放在磨盘的石台阶上","§d然后不断右击磨盘顶部的圆石墙","§d来将沙砾磨成沙子","§a最后再烧成玻璃吧！"),
         arrayOf(SItem(Material.COBBLESTONE, 10)),
         arrayOf(SItem(Material.GLASS)),
         "§f任务需要:","§b玻璃 x1","§f任务奖励:","§e圆石 x10"
@@ -79,10 +83,11 @@ object SDTStage2 : Initable {
     
     val task3_1 = MachineTask(
         stage2,
+        "ClayMaker",
         "粘土制造机",
         5 orderWith 3,
         task2_1,
-        SItem.createTaskSymbol(Material.CLAY, 0, "§d粘土是制作陶瓷的重要原料","§d你需要学会如何将沙子制造为粘土","§6按照提示搭建多方块机器","§6并用扳手右键敲击中心方块","§6(最中间的圆石墙)","§6来激活多方块机器","§b将沙子放在粘土制造机的圆石墙上","§c然后不断右击底部的圆石墙来制造粘土！"),
+        SItem.createTaskSymbol(Material.CLAY, "§d粘土是制作陶瓷的重要原料","§d你需要学会如何将沙子制造为粘土","§6按照提示搭建多方块机器","§6并用扳手右键敲击中心方块","§6(最中间的圆石墙)","§6来激活多方块机器","§b将沙子放在粘土制造机的圆石墙上","§c然后不断右击底部的圆石墙来制造粘土！"),
         arrayOf(SItem(Material.COBBLESTONE, 10)),
         ClayMaker,
         arrayOf(SItem(Material.CLAY_BALL, 4)),
@@ -91,10 +96,11 @@ object SDTStage2 : Initable {
     
     val task4_1 = ItemCraftTask(
         stage2,
+        "CrucibleTongs",
         "坩埚钳",
         6 orderWith 3,
         task3_1,
-        SItem.createTaskSymbol(Material.BONE, 0, "§6坩埚的标配！"),
+        SItem.createTaskSymbol(Material.BONE, "§6坩埚的标配！"),
         arrayOf(SItem(Material.CARROT, 10)),
         SDItem.CRUCIBLE_TONGS.item,
         "§f任务需要:","§b坩埚钳 x1","§f任务奖励:","§e胡萝卜 x10"
@@ -102,10 +108,11 @@ object SDTStage2 : Initable {
     
     val task4_2 = MachineTask(
         stage2,
+        "Crucible",
         "坩埚",
         6 orderWith 4,
         task4_1,
-        SItem.createTaskSymbol(Material.STAINED_CLAY, 0, "§d是时候搞点岩浆玩玩了（雾）","§d你可以通过坩埚把圆石变成岩浆","§6按照提示搭建多方块机器","§6并用扳手右键敲击中心方块","§6(最中间的圆石墙)","§6来激活多方块机器","§b在四个熔炉里烧点东西","§b有几个熔炉在工作坩埚就是几倍速","§c主手持坩埚钳副手拿圆石","§c然后不断右击坩埚中间的圆石墙来制造岩浆！"),
+        SItem.createTaskSymbol(Material.WHITE_TERRACOTTA, "§d是时候搞点岩浆玩玩了（雾）","§d你可以通过坩埚把圆石变成岩浆","§6按照提示搭建多方块机器","§6并用扳手右键敲击中心方块","§6(最中间的圆石墙)","§6来激活多方块机器","§b在四个熔炉里烧点东西","§b有几个熔炉在工作坩埚就是几倍速","§c主手持坩埚钳副手拿圆石","§c然后不断右击坩埚中间的圆石墙来制造岩浆！"),
         arrayOf(SItem(Material.BEETROOT_SOUP)),
         Crucible,
         emptyArray(),
@@ -114,10 +121,11 @@ object SDTStage2 : Initable {
     
     val task5_1 = ItemTask(
         stage2,
+        "AhStone",
         "啊刷石机",
         7 orderWith 3,
         task4_2,
-        SItem.createTaskSymbol(Material.COBBLESTONE, 0, "§e你已经有能力制造水和岩浆了","§c我知道你还没有桶","§c但我相信以你的能力","§c没有桶也能做出刷石机的！","§d做出一个刷石机","§a并刷出一组圆石吧！"),
+        SItem.createTaskSymbol(Material.COBBLESTONE, "§e你已经有能力制造水和岩浆了","§c我知道你还没有桶","§c但我相信以你的能力","§c没有桶也能做出刷石机的！","§d做出一个刷石机","§a并刷出一组圆石吧！"),
         arrayOf(SItem(Material.IRON_PICKAXE)),
         arrayOf(SItem(Material.COBBLESTONE, 64)),
         "§f任务需要:","§b圆石 x64","§f任务奖励:","§e铁镐 x1","§e<解锁第三阶段>"

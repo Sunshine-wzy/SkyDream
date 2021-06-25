@@ -3,12 +3,14 @@ package io.github.sunshinewzy.skydream.objects.machine.manual
 import io.github.sunshinewzy.skydream.SkyDream
 import io.github.sunshinewzy.skydream.objects.item.SDItem
 import io.github.sunshinewzy.skydream.objects.machine.SDMachine
-import io.github.sunshinewzy.sunstcore.modules.machine.MachineManual
+import io.github.sunshinewzy.sunstcore.enums.SMaterial
+import io.github.sunshinewzy.sunstcore.modules.machine.SMachineManual
 import io.github.sunshinewzy.sunstcore.modules.machine.SMachineRunEvent
 import io.github.sunshinewzy.sunstcore.modules.machine.SMachineSize
 import io.github.sunshinewzy.sunstcore.modules.machine.SMachineStructure
 import io.github.sunshinewzy.sunstcore.objects.SBlock
 import io.github.sunshinewzy.sunstcore.objects.SBlock.Companion.getSBlock
+import io.github.sunshinewzy.sunstcore.objects.SCoordinate
 import io.github.sunshinewzy.sunstcore.objects.SItem
 import io.github.sunshinewzy.sunstcore.objects.SItem.Companion.isItemSimilar
 import io.github.sunshinewzy.sunstcore.utils.*
@@ -16,7 +18,8 @@ import org.bukkit.Effect
 import org.bukkit.Material
 import org.bukkit.Sound
 
-object WoodenBarrel : MachineManual(
+object WoodenBarrel : SMachineManual(
+    "WoodenBarrel",
     "木桶",
     SDMachine.wrench,
     SMachineStructure.CentralSymmetry(
@@ -32,21 +35,21 @@ object WoodenBarrel : MachineManual(
             cb
         """.trimIndent(),
         mapOf(
-            'a' to SBlock(Material.WOOD_STEP, 8).setDisplayItem(SItem(Material.WOOD_STEP, listOf("§a我是上半砖~"))),
-            'b' to SBlock(Material.FENCE),
-            'c' to SBlock(Material.WOOD)
+            'a' to SBlock(SMaterial.SLAB_WOOD).setItem(SItem(Material.OAK_SLAB, listOf("§a我是上半砖~"))),
+            'b' to SBlock(SMaterial.FENCE_WOOD),
+            'c' to SBlock(SMaterial.PLANKS)
         ),
-        Triple(0, 1, 0)
+        SCoordinate(0, 1, 0)
     )
 ) {
-    override fun manualRun(event: SMachineRunEvent.Manual) {
+    override fun manualRun(event: SMachineRunEvent.Manual, level: Short) {
         val loc = event.loc.addClone(0, 1, 0)
         val upLoc = loc.addClone(0, 1, 0)
         val block = loc.block
         val sBlock = loc.getSBlock()
         val player = event.player
         
-        val meta = event.loc.block.getSMetadata(SkyDream.getPlugin(), name)
+        val meta = event.loc.block.getSMetadata(SkyDream.plugin, name)
         var pair = meta.asPair("" to 0)
         
         if(block.type == Material.AIR){
@@ -67,14 +70,14 @@ object WoodenBarrel : MachineManual(
                         }
                     }
                     
-                    "INK_SACK_15" -> {
+                    "BONE_MEAL" -> {
                         if(cnt > 1){
                             cnt--
                             player.playSound(loc, Sound.BLOCK_GRASS_BREAK, 1f, 2f)
                         }
                         else{
                             cnt = 0
-                            player.giveItem(SItem(Material.INK_SACK, 15, 1))
+                            player.giveItem(SItem(Material.BONE_MEAL))
                             player.world.playSound(loc, Sound.ENTITY_PLAYER_LEVELUP, 1f, 2f)
                             player.world.playEffect(upLoc, Effect.VILLAGER_PLANT_GROW, 3)
                         }
@@ -91,9 +94,9 @@ object WoodenBarrel : MachineManual(
             val inv = player.inventory
             val offHandItem = inv.itemInOffHand
             
-            if(offHandItem != null && offHandItem.type != Material.AIR){
+            if(offHandItem.type != Material.AIR){
                 // 8树苗 -> 1泥土
-                if(offHandItem.type == Material.SAPLING){
+                if(offHandItem.type in SMaterial.SAPLING){
                     if(offHandItem.amount >= 8){
                         offHandItem.amount -= 8
                         pair = "SAPLING" to 8
@@ -109,7 +112,7 @@ object WoodenBarrel : MachineManual(
                 else if(offHandItem.isItemSimilar(SDItem.MULBERRY_LEAVES)){
                     if(offHandItem.amount >= 8){
                         offHandItem.amount -= 8
-                        pair = "INK_SACK_15" to 8
+                        pair = "BONE_MEAL" to 8
                         player.playSound(loc, Sound.BLOCK_GRASS_PLACE, 1f, 2f)
                     }
                     else{

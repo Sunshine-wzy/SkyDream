@@ -5,7 +5,7 @@ import io.github.sunshinewzy.sunstcore.interfaces.Initable
 
 object SDManualMachine : Initable {
     override fun init() {
-        OreSeparator.init()
+        Sieve.init()
         WoodenBarrel.init()
         Squeezer.init()
         Millstone.init()
