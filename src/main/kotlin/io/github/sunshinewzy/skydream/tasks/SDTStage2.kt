@@ -37,9 +37,9 @@ object SDTStage2 : Initable {
         "生命之源",
         3 orderWith 3,
         null,
-        SItem(waterPotion.clone(), "", "§a>点我查看任务<", "§e制作压榨机，从树苗中压榨出水！","§6按照提示搭建多方块机器","§6并用扳手右键敲击中心方块","§6(最中间的圆石墙)","§6来激活多方块机器", "§b确保背包内有8棵及以上的树苗","§c然后不断右击压榨机顶部的圆石墙来榨出水源！"),
+        SItem(waterPotion.clone(), "", "§a>点我查看任务<", "§e制作压榨机，从树苗中压榨出水！","§6按照提示搭建多方块机器","§6并用扳手右键敲击顶部的圆石墙","§6来激活多方块机器", "§b确保背包内有8棵及以上的树苗","§c然后不断右击压榨机顶部的圆石墙来榨出水源！"),
         arrayOf(SItem(Material.COBBLESTONE, 10)),
-        Squeezer,
+        Squeezer, 0,
         arrayOf(waterPotion.clone()),
         "§d恭喜你获得了生命之源！","§f任务需要:","§b水瓶 x1","§f任务奖励:","§e圆石 x10"
     )
@@ -62,9 +62,9 @@ object SDTStage2 : Initable {
         "建造磨盘",
         4 orderWith 3,
         task1_1,
-        SItem.createTaskSymbol(Material.SMOOTH_STONE_SLAB, "§d磨盘能把圆石磨成沙砾","§6按照提示搭建多方块机器","§6并用扳手右键敲击中心方块","§6(最中间的圆石墙)","§6来激活多方块机器","§2将圆石放在磨盘的石台阶上","§c然后不断右击磨盘顶部的圆石墙来将圆石磨成沙砾！"),
+        SItem.createTaskSymbol(Material.SMOOTH_STONE_SLAB, "§d磨盘能把圆石磨成沙砾","§6按照提示搭建多方块机器","§6并用扳手右键敲击顶部的圆石墙","§6来激活多方块机器","§2将圆石放在磨盘的石台阶上","§c然后不断右击磨盘顶部的圆石墙来将圆石磨成沙砾！"),
         arrayOf(SItem(Material.COBBLESTONE, 10)),
-        Millstone,
+        Millstone, 0,
         arrayOf(SItem(Material.GRAVEL)),
         "§d恭喜你能生产沙砾了！","§f任务需要:","§b沙砾 x1","§f任务奖励:","§e圆石 x10"
     )
@@ -89,9 +89,9 @@ object SDTStage2 : Initable {
         task2_1,
         SItem.createTaskSymbol(Material.CLAY, "§d粘土是制作陶瓷的重要原料","§d你需要学会如何将沙子制造为粘土","§6按照提示搭建多方块机器","§6并用扳手右键敲击中心方块","§6(最中间的圆石墙)","§6来激活多方块机器","§b将沙子放在粘土制造机的圆石墙上","§c然后不断右击底部的圆石墙来制造粘土！"),
         arrayOf(SItem(Material.COBBLESTONE, 10)),
-        ClayMaker,
+        ClayMaker, 0,
         arrayOf(SItem(Material.CLAY_BALL, 4)),
-        "§d恭喜你制造出了粘土！","§f任务需要:","§b粘土 x4","§f任务奖励:","§e圆石 x10"
+        "§d恭喜你制造出了粘土！","§f任务需要:","§b黏土球 x4","§f任务奖励:","§e圆石 x10"
     )
     
     val task4_1 = ItemCraftTask(
@@ -114,7 +114,7 @@ object SDTStage2 : Initable {
         task4_1,
         SItem.createTaskSymbol(Material.WHITE_TERRACOTTA, "§d是时候搞点岩浆玩玩了（雾）","§d你可以通过坩埚把圆石变成岩浆","§6按照提示搭建多方块机器","§6并用扳手右键敲击中心方块","§6(最中间的圆石墙)","§6来激活多方块机器","§b在四个熔炉里烧点东西","§b有几个熔炉在工作坩埚就是几倍速","§c主手持坩埚钳副手拿圆石","§c然后不断右击坩埚中间的圆石墙来制造岩浆！"),
         arrayOf(SItem(Material.BEETROOT_SOUP)),
-        Crucible,
+        Crucible, 0,
         emptyArray(),
         "§d恭喜你距离刷石机就差一步了！","§f任务奖励:","§e甜菜汤 x1"
     )

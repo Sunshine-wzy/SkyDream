@@ -37,6 +37,11 @@ object ClayMaker : SMachineManual(
         SCoordinate(0, 0, 0)
     )
 ) {
+    
+    init {
+        isCancelInteract = false
+    }
+    
 
     override fun manualRun(event: SMachineRunEvent.Manual, level: Short) {
         val loc = event.loc.addClone(1)

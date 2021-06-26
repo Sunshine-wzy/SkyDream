@@ -35,7 +35,7 @@ object Crucible : SMachineManual(
             dc
         """.trimIndent(),
         mapOf(
-            'a' to SBlock(Material.BRICK),
+            'a' to SBlock(Material.BRICKS),
             'b' to SBlock(Material.SMOOTH_STONE_SLAB).setItem(SItem(Material.SMOOTH_STONE_SLAB, listOf("§a我是上半砖~"))),
             'c' to SBlock(Material.COBBLESTONE_WALL),
             'd' to SBlock(Material.WHITE_TERRACOTTA),

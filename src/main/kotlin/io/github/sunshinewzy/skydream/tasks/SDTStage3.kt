@@ -3,7 +3,7 @@ package io.github.sunshinewzy.skydream.tasks
 import io.github.sunshinewzy.skydream.objects.machine.manual.Sieve
 import io.github.sunshinewzy.skydream.tasks.SDTask.stage3
 import io.github.sunshinewzy.sunstcore.interfaces.Initable
-import io.github.sunshinewzy.sunstcore.modules.task.tasks.MachineUpgradeTask
+import io.github.sunshinewzy.sunstcore.modules.task.tasks.MachineTask
 import io.github.sunshinewzy.sunstcore.objects.SItem
 import io.github.sunshinewzy.sunstcore.objects.SItem.Companion.createTaskSymbol
 import io.github.sunshinewzy.sunstcore.objects.orderWith
@@ -15,26 +15,26 @@ object SDTStage3 : Initable {
         
     }
     
-    val task1_1 = MachineUpgradeTask(
+    val task1_1 = MachineTask(
         stage3,
         "SieveStoneBricks",
         "石砖筛子",
         3 orderWith 3,
         null,
-        createTaskSymbol(Material.STONE_BRICKS, "§d要想从沙砾中分离出铁粒来","§d必须升级你的矿石分离机","§6将4个石砖放置在原有的羊毛上","§6就能完成升级！","§b将沙砾放在机器底部栅栏的下面","§c然后不断右击机器底部的栅栏来分离出铁粒！"),
+        createTaskSymbol(Material.STONE_BRICKS, "§d要想从沙砾中筛出铁粒来","§d必须升级你的筛子","§6用4个石砖替换原来的羊毛","§6再用扳手敲击活板门，就能完成升级！","§b将沙砾放在活板门的上面","§c然后不断右击活板门来筛出铁粒！"),
         arrayOf(SItem(Material.GRAVEL, 10)),
         Sieve, 1,
         arrayOf(SItem(Material.IRON_INGOT)),
         "§d恭喜你走出了铁器时代的第一步！", "§f任务需要:", "§b铁锭 x1", "§f任务奖励:", "§e沙砾 x10"
     )
     
-    val task2_1 = MachineUpgradeTask(
+    val task2_1 = MachineTask(
         stage3,
         "SieveIron",
         "铁制筛子",
         4 orderWith 3,
         task1_1,
-        createTaskSymbol(Material.IRON_BLOCK, "§d从沙砾中分离铁粒效率太低？","§d试试铁块升级吧！","§6将4个铁块和1个橡木栅栏放置在石砖升级上","§6就能完成升级！","§b升级后分离沙砾就能爆7-9个铁粒不等","§c甚至还可以从沙子中分离出金粒来"),
+        createTaskSymbol(Material.IRON_BLOCK, "§d从沙砾中筛出铁粒效率太低？","§d试试铁块升级吧！","§6用4个铁块替换原来的石砖","§6再用扳手敲击活板门，就能完成升级！","§b升级后筛沙砾就能爆7-9个铁粒不等","§c甚至还可以从沙子中筛出金粒来"),
         arrayOf(SItem(Material.GRAVEL, 10)),
         Sieve, 2,
         arrayOf(SItem(Material.IRON_BLOCK, 4)),

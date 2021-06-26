@@ -102,12 +102,12 @@ enum class SDItem(val item: ItemStack) : Itemable {
                 DIRT -> {
                     if(offHandItem.addUseCount(16)){
                         offHandItem.amount--
-                        player.giveItem(SItem(GRASS))
+                        player.giveItem(SItem(GRASS_BLOCK))
                         player.playSound(player.location, Sound.BLOCK_GRASS_PLACE, 1f, 1.5f)
                     }
                     else{
                         item?.removeOne()
-                        player.giveItem(SItem(FERN, 1, 1))
+                        player.giveItem(SItem(GRASS, 1))
                         player.playSound(player.location, Sound.BLOCK_GRASS_HIT, 1f, 0.5f)
                     }
                 }

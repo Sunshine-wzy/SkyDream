@@ -85,7 +85,7 @@ object SDTStage1 : Initable {
         task3_1,
         SItem.createTaskSymbol(Material.OAK_FENCE, "§d多方块机器是SkyDream的重要组成部分","§6按照提示搭建多方块机器","§6并用扳手右键敲击中心方块","§6(最中间的活板门)","§6来构建多方块机器", "§b将泥土放在活板门的上面","§b然后右键活板门来筛土！","§c这样你就会得到石子","§c4个石子能合成1个圆石！"),
         arrayOf(SItem(Material.STONE_AXE)),
-        Sieve,
+        Sieve, 0,
         arrayOf(SItem(Material.COBBLESTONE)),
         "§d恭喜你迈出了石器时代的第一步！","§f任务需要:","§b圆石 x1","§f任务奖励:","§e石斧 x1"
     )
@@ -98,7 +98,7 @@ object SDTStage1 : Initable {
         task4_1,
         SItem.createTaskSymbol(Material.DIRT, "§d木桶是生产泥土的重要方式之一","§6按照提示搭建多方块机器","§a(注意橡木台阶是上半砖！)","§6并用扳手右键敲击中心方块","§6(最中间的栅栏)","§6来激活多方块机器","§b将8棵及以上的树苗放在副手","§c然后不断右击木桶中间的栅栏来制造泥土！"),
         arrayOf(SItem(Material.COBBLESTONE, 8), SItem(Material.GLASS_BOTTLE)),
-        WoodenBarrel,
+        WoodenBarrel, 0,
         arrayOf(SItem(Material.DIRT, 8)),
         "§d恭喜你能自己造土了！","§f任务需要:","§b泥土 x8","§f任务奖励:","§e圆石 x8","§e玻璃瓶 x1","§e<解锁第二阶段>"
     )
