@@ -1,6 +1,7 @@
 package io.github.sunshinewzy.skydream
 
 import io.github.sunshinewzy.skydream.bstats.Metrics
+import io.github.sunshinewzy.skydream.commands.SDCommand
 import io.github.sunshinewzy.skydream.listeners.SDSubscriber
 import io.github.sunshinewzy.skydream.objects.item.SDItem
 import io.github.sunshinewzy.skydream.objects.machine.SDMachine
@@ -23,6 +24,9 @@ class SkyDream : JavaPlugin() {
             plugin.logger
         }
         val pluginManager: PluginManager = Bukkit.getServer().pluginManager
+        
+        const val name = "SkyDream"
+        const val colorName = "§eSkyDream"
         
         var version: String? = null
         var nms: String? = null
@@ -91,6 +95,7 @@ class SkyDream : JavaPlugin() {
         SDMachine.init()
         SDSubscriber.init()
         
+        SDCommand.register()
     }
     
     @SunSTTestApi

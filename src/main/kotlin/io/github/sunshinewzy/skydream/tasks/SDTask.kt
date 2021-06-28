@@ -18,10 +18,10 @@ object SDTask : Initable {
     }
     
     val openItem = SItem(Material.ENCHANTED_BOOK, "§eSkyDream §a向导", "§b>§f由此开始SkyDream之旅§b<")
-    val sdTaskProject = TaskProject("SkyDream", "天之梦", openItem, true, "§eSkyDream §a向导")
+    val taskProject = TaskProject("SkyDream", "天之梦", openItem, true, "§eSkyDream §a向导")
     
     val stage1 = TaskStage(
-        sdTaskProject,
+        taskProject,
         "Stage1",
         "<第一阶段> §6木器时代",
         3 orderWith 3,
@@ -31,7 +31,7 @@ object SDTask : Initable {
     )
     
     val stage2 = TaskStage(
-        sdTaskProject,
+        taskProject,
         "Stage2",
         "<第二阶段> §7石器时代",
         4 orderWith 3,
@@ -41,7 +41,7 @@ object SDTask : Initable {
     )
     
     val stage3 = TaskStage(
-        sdTaskProject,
+        taskProject,
         "Stage3",
         "<第三阶段> §d铁器时代",
         5 orderWith 3,
@@ -51,7 +51,7 @@ object SDTask : Initable {
     )
     
     val stage4 = TaskStage(
-        sdTaskProject,
+        taskProject,
         "Stage4",
         "<第四阶段> §e蒸汽时代",
         6 orderWith 3,

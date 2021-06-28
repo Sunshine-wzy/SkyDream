@@ -7,7 +7,8 @@ main: io.github.sunshinewzy.skydream.SkyDream
 api-version: 1.13
 
 commands:
-    sd:
-        description: Start SkyDream journey...
+    SkyDream:
+        aliases: [sd]
+        description: Start your SkyDream journey...
 
 depend: [SunSTCore]
