@@ -179,7 +179,7 @@ object Sieve : SMachineManual(
             
             else -> {
                 player.playSound(theLoc, Sound.ENTITY_ITEM_BREAK, 1f, 1.8f)
-                player.sendMsg(name, "§4待分离的方块不正确！")
+                player.sendMsg(name, "§4这个方块不能筛！")
                 return
             }
         }

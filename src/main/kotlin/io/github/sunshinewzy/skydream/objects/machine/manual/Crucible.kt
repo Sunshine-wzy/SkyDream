@@ -12,11 +12,10 @@ import io.github.sunshinewzy.sunstcore.objects.SItem
 import io.github.sunshinewzy.sunstcore.objects.SItem.Companion.isItemSimilar
 import io.github.sunshinewzy.sunstcore.utils.addClone
 import io.github.sunshinewzy.sunstcore.utils.countPlaneAround
-import io.github.sunshinewzy.sunstcore.utils.judgePlaneAround
 import io.github.sunshinewzy.sunstcore.utils.sendMsg
-import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Sound
+import org.bukkit.block.Furnace
 
 object Crucible : SMachineManual(
     "Crucible",
@@ -39,7 +38,7 @@ object Crucible : SMachineManual(
             'b' to SBlock(Material.SMOOTH_STONE_SLAB).setItem(SItem(Material.SMOOTH_STONE_SLAB, listOf("§a我是上半砖~"))),
             'c' to SBlock(Material.COBBLESTONE_WALL),
             'd' to SBlock(Material.WHITE_TERRACOTTA),
-            'e' to SBlock.createAir(SItem(Material.FURNACE, listOf("§a让我燃烧起来~")))
+            'e' to SBlock(Material.FURNACE).setItem(SItem(Material.FURNACE, listOf("§a让我燃烧起来~")))
         ),
         SCoordinate(0, 1, 0)
     )
@@ -53,7 +52,16 @@ object Crucible : SMachineManual(
         
         if(topLoc.block.type == Material.AIR){
             if(inv.itemInMainHand.isItemSimilar(SDItem.CRUCIBLE_TONGS)){
-                val rate = loc.countPlaneAround(Material.BLAST_FURNACE)
+                loc.block.blockData
+                val rate = loc.countPlaneAround(Material.FURNACE) {
+                    state.apply {
+                        if(this is Furnace) {
+                            return@countPlaneAround burnTime > 0
+                        }
+                    }
+                    
+                    false
+                }
                 player.sendMsg(name, "当前§b坩埚§f运行速率: §a${rate}x")
                 
                 val offHandItem = inv.itemInOffHand
@@ -84,14 +92,5 @@ object Crucible : SMachineManual(
             player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 0.5f)
         }
     }
-
-    override fun specialJudge(loc: Location, isFirst: Boolean, level: Short): Boolean {
-        val centerLoc = loc.addClone(1)
-        
-        if(centerLoc.judgePlaneAround(listOf(Material.FURNACE, Material.BLAST_FURNACE))){
-            return true
-        }
-        
-        return false
-    }
+    
 }
