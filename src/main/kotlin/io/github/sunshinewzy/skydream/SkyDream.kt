@@ -32,12 +32,6 @@ class SkyDream : JavaPlugin() {
         var nms: String? = null
         var obc: String? = null
         
-        val resourceNames = arrayOf(
-            "MultiBlockMachine/Size3Machine.yml", "MultiBlockMachine/Size5SteamMachine.yml",
-            "TaskProgress/Stage1.yml", "TaskProgress/Stage2.yml", "TaskProgress/Stage3.yml", "TaskProgress/Stage4.yml",
-            "Others/PlayerHasOpenedSDGuide.yml", "Others/SDBlockPosition.yml"
-        )
-        
     }
     
     override fun onEnable() {
@@ -51,11 +45,6 @@ class SkyDream : JavaPlugin() {
         logger.info("作者: Sunshine_wzy")
         
         saveDefaultConfig()
-        for (resourceName in resourceNames) {
-            if (getResource(resourceName) == null) {
-                saveResource(resourceName, false)
-            }
-        }
         
         //载入配置文件
         loadSDConfig()

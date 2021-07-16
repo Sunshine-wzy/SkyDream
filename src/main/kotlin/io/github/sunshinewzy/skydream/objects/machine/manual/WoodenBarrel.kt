@@ -83,6 +83,18 @@ object WoodenBarrel : SMachineManual(
                         }
                     }
                     
+                    "FEATHER" -> {
+                        if(cnt > 1) {
+                            cnt--
+                            player.playSound(loc, Sound.BLOCK_GRASS_BREAK, 1f, 2f)
+                        } else {
+                            cnt = 0
+                            player.giveItem(SItem(Material.FEATHER))
+                            player.world.playSound(loc, Sound.ENTITY_PLAYER_LEVELUP, 1f, 2f)
+                            player.world.playEffect(upLoc, Effect.VILLAGER_PLANT_GROW, 3)
+                        }
+                    }
+                    
                     else -> cnt = 0
                 }
 
@@ -118,6 +130,18 @@ object WoodenBarrel : SMachineManual(
                     else{
                         player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 1.8f)
                         player.sendMsg(name, "§4您副手上的桑叶不足8片！")
+                    }
+                }
+                
+                // 4线 -> 1羽毛
+                else if(offHandItem.type == Material.STRING) {
+                    if(offHandItem.amount >= 4) {
+                        offHandItem.amount -= 4
+                        pair = "FEATHER" to 4
+                        player.playSound(loc, Sound.BLOCK_GRASS_PLACE, 1f, 2f)
+                    } else {
+                        player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 1.8f)
+                        player.sendMsg(name, "§4您副手上的线不足4根！")
                     }
                 }
                 

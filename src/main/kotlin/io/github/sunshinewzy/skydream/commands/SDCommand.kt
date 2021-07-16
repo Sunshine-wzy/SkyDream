@@ -3,7 +3,6 @@ package io.github.sunshinewzy.skydream.commands
 import io.github.sunshinewzy.skydream.SkyDream.Companion.colorName
 import io.github.sunshinewzy.skydream.tasks.SDTask
 import io.github.sunshinewzy.sunstcore.commands.SCommand
-import io.github.sunshinewzy.sunstcore.commands.SCommand.Companion.sendSeparator
 import io.github.sunshinewzy.sunstcore.interfaces.Registrable
 import io.github.sunshinewzy.sunstcore.utils.giveItem
 import io.github.sunshinewzy.sunstcore.utils.sendMsg
@@ -11,8 +10,8 @@ import org.bukkit.Sound
 
 object SDCommand : Registrable {
     override fun register() {
-        SCommand("SkyDream")
-            .addCommand("guide") {
+        SCommand("SkyDream", "sd")
+            .addCommand("guide", "获取SkyDream向导书") {
                 empty { 
                     val player = getPlayer() ?: return@empty
                     player.giveItem(SDTask.taskProject.openItem)
@@ -23,14 +22,14 @@ object SDCommand : Registrable {
                 }
             }
             
-            .addCommand("open") {
+            .addCommand("open", "打开SkyDream向导书") {
                 empty {
                     val player = getPlayer() ?: return@empty
                     SDTask.taskProject.openTaskInv(player)
                 }
             }
                 
-            .addCommand("unlockall", true) {
+            .addCommand("unlockall", "任务全解", isOp = true) {
                 empty { 
                     val player = getPlayer() ?: return@empty
                     SDTask.taskProject.completeAllTask(player)
@@ -38,26 +37,5 @@ object SDCommand : Registrable {
                 }
             }
         
-            .setHelper { sender, page ->
-                sender.apply {
-                    sendSeparator()
-                    sendMsg("&6&lSkyDream &b命令指南 &d第 $page 页")
-
-                    when(page) {
-                        1 -> {
-                            sendMsg("&e/sd guide &a获取SkyDream向导书")
-                            sendMsg("&e/sd open &a打开SkyDream向导书")
-
-                            if(isOp) {
-                                sendMsg("&e/sd unlockall &a任务全解&c（需要op权限）")
-                            }
-                        }
-
-                        else -> sendMsg("&cSkyDream 命令指南没有此页！")
-                    }
-
-                    sendSeparator()
-                }
-            }
     }
 }

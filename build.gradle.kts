@@ -3,6 +3,7 @@ plugins {
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
 
+    id("maven")
     id("com.github.johnrengelman.shadow") version "5.2.0"
 }
 group = "io.github.sunshinewzy"
@@ -15,13 +16,15 @@ kotlin {
 }
 
 repositories {
+    
     maven {
         url = uri("https://maven.aliyun.com/repository/public/")
     }
     mavenLocal()
     mavenCentral()
     jcenter()
-    
+
+    maven { url = uri("https://jitpack.io") }
     maven("https://dl.bintray.com/kotlin/kotlin-eap")
     maven {
         name = "spigotmc-repo"
@@ -30,6 +33,8 @@ repositories {
 }
 
 dependencies {
+//    implementation("com.github.Sunshine-wzy:SunSTCore:1.0.9.5")
+    
     testImplementation(kotlin("test-junit"))
 
     compileOnly(fileTree(mapOf("dir" to "cores", "include" to listOf("*.jar"))))

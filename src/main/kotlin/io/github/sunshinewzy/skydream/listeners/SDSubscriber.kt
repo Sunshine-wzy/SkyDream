@@ -24,7 +24,7 @@ object SDSubscriber : Initable {
                         val dropItem = hook.extraDropItems.takeOneFirst()
                         if(dropItem.type == Material.OAK_SAPLING) {
                             block.world.dropItem(block.location, SItem(block.type.getSapling()))
-                        } else {
+                        } else if(dropItem.type != Material.AIR) {
                             block.world.dropItem(block.location, dropItem)
                         }
                         

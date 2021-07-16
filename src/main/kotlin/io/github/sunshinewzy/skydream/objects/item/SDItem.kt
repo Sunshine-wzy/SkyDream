@@ -142,6 +142,13 @@ enum class SDItem(val item: ItemStack) : Itemable {
             " y ",
             "z z"
         )
+    ),
+    
+    HAMMER_IRON(
+        SItem(IRON_AXE, "§f铁锤", "§7基础的锻造锤","§a用我敲击铁制工作台","§a中的锤子格来进行合成！"),
+        "HAMMER_IRON",
+        mapOf('x' to IRON_INGOT, 'y' to STICK, 'z' to STRING),
+        "xx ","xzy","xx "
     )
     
     

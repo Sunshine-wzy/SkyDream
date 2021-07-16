@@ -50,16 +50,6 @@ object SDTask : Initable {
         SItem(Material.PINK_STAINED_GLASS_PANE)
     )
     
-    val stage4 = TaskStage(
-        taskProject,
-        "Stage4",
-        "<第四阶段> §e蒸汽时代",
-        6 orderWith 3,
-        stage3,
-        SItem(Material.BRICK, "§f<第四阶段>", "§e蒸汽时代","§a在这一阶段你将拥有蒸汽动力","§a并进行一些简单的自动化！"),
-        SItem(Material.YELLOW_STAINED_GLASS_PANE)
-    )
-    
     
     private fun setFinalTasks() {
         stage1.finalTask = SDTStage1.task5_1
