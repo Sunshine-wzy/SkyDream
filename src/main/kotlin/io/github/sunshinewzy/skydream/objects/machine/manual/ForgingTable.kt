@@ -42,8 +42,7 @@ object ForgingTable : SMachineManual(
                     }
                 }
                 add(7 orderWith 3)
-            },
-            name
+            }, id
     )
     
     private val menu = SMenu("ForgingTable", "锻造台", 6).apply {
