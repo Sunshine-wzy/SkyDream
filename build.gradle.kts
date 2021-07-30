@@ -7,7 +7,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "5.2.0"
 }
 group = "io.github.sunshinewzy"
-version = "4.0"
+version = "4.1"
 
 kotlin {
     target { 
@@ -40,6 +40,7 @@ dependencies {
     compileOnly(fileTree(mapOf("dir" to "cores", "include" to listOf("*.jar"))))
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 }
+
 
 tasks {
     jar {

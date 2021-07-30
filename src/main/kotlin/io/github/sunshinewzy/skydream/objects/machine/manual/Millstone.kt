@@ -10,13 +10,11 @@ import io.github.sunshinewzy.sunstcore.modules.machine.SMachineStructure
 import io.github.sunshinewzy.sunstcore.objects.SBlock
 import io.github.sunshinewzy.sunstcore.objects.SCoordinate
 import io.github.sunshinewzy.sunstcore.objects.SItem
-import io.github.sunshinewzy.sunstcore.utils.addClone
-import io.github.sunshinewzy.sunstcore.utils.getSMetadata
-import io.github.sunshinewzy.sunstcore.utils.sendMsg
-import io.github.sunshinewzy.sunstcore.utils.subtractClone
+import io.github.sunshinewzy.sunstcore.utils.*
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Sound
+import org.bukkit.block.Hopper
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
@@ -104,13 +102,28 @@ object Millstone : SMachineManual(
             cnt >= maxCnt -> {
                 cnt = 0
                 block.type = Material.AIR
-                loc.world?.dropItemNaturally(loc, dropItem)
                 player.playSound(loc, breakSound, 1f, 2f)
+                
+                val bottomBlock = loc.subtractClone(2).block
+                if(bottomBlock.type == Material.HOPPER) {
+                    val state = bottomBlock.state
+                    if(state is Hopper) {
+                        val inv = state.inventory
+                        if(!inv.isFull()) {
+                            inv.addItem(dropItem)
+                            return cnt
+                        }
+                    }
+                }
+                
+                loc.world?.dropItemNaturally(loc, dropItem)
             }
+            
             cnt >= 1 -> {
                 cnt++
                 player.playSound(loc, hitSound, 1f, 0f)
             }
+            
             else -> {
                 cnt = 1
                 player.playSound(loc, hitSound, 1f, 0f)

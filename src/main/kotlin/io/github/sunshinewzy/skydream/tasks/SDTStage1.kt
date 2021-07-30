@@ -87,7 +87,7 @@ object SDTStage1 : Initable {
         arrayOf(SItem(Material.STONE_AXE)),
         Sieve, 0,
         arrayOf(SItem(Material.COBBLESTONE)),
-        "§d恭喜你迈出了石器时代的第一步！","§f任务需要:","§b圆石 x1","§f任务奖励:","§e石斧 x1"
+        "§d恭喜你迈出了石器时代的第一步！","§7悄悄告诉你:","§7在筛子的活板门下面放一个§c小箱子","§7在箱子中放入要筛的方块","§7筛子就能自动从中抽取方块！","§f任务需要:","§b圆石 x1","§f任务奖励:","§e石斧 x1"
     )
     
     val task5_1 = MachineTask(

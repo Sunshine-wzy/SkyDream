@@ -11,6 +11,7 @@ import io.github.sunshinewzy.sunstcore.objects.SItem.Companion.addShapedRecipe
 import io.github.sunshinewzy.sunstcore.objects.SItem.Companion.addShapedRecipeByChoice
 import io.github.sunshinewzy.sunstcore.objects.SItem.Companion.addUseCount
 import io.github.sunshinewzy.sunstcore.objects.SItem.Companion.isItemSimilar
+import io.github.sunshinewzy.sunstcore.objects.SItem.Companion.protect
 import io.github.sunshinewzy.sunstcore.objects.SItem.Companion.removeOne
 import io.github.sunshinewzy.sunstcore.objects.SRecipeChoice
 import io.github.sunshinewzy.sunstcore.objects.SShapedRecipe
@@ -26,7 +27,7 @@ import org.bukkit.inventory.*
 import kotlin.random.Random
 
 
-enum class SDItem(val item: ItemStack) : Itemable {
+enum class SDItem(item: ItemStack) : Itemable {
     WRENCH(
         SDMachine.wrench.addShapedRecipeByChoice(
             plugin,
@@ -115,7 +116,7 @@ enum class SDItem(val item: ItemStack) : Itemable {
                 else -> {}
             }
         }
-    }),
+    }.protect()),
     
 	TIN_POWDER(SItem(GRAY_DYE, "§7锡粉")),
 	COPPER_POWDER(SItem(YELLOW_DYE, "§e铜粉")),
@@ -153,6 +154,9 @@ enum class SDItem(val item: ItemStack) : Itemable {
     
     
     ;
+
+    val item: ItemStack = item
+        get() = field.clone()
     
     
     constructor(item: ItemStack, recipe: Recipe) : this(item) {

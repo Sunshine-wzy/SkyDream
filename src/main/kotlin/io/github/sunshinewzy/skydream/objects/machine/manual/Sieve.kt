@@ -16,9 +16,10 @@ import io.github.sunshinewzy.sunstcore.objects.inventoryholder.SPartProtectInven
 import io.github.sunshinewzy.sunstcore.utils.addClone
 import io.github.sunshinewzy.sunstcore.utils.isInPercent
 import io.github.sunshinewzy.sunstcore.utils.sendMsg
+import io.github.sunshinewzy.sunstcore.utils.subtractClone
 import org.bukkit.Material
 import org.bukkit.Sound
-import org.bukkit.entity.Player
+import org.bukkit.block.Chest
 import kotlin.random.Random
 
 object Sieve : SMachineManual(
@@ -47,10 +48,15 @@ object Sieve : SMachineManual(
         isCancelInteract = false
         
         structure.apply { 
+            // Level 1 石砖筛子
             addUpgrade(shape, copyIngredients('b' to SBlock(Material.STONE_BRICKS)))
+            // Level 2 铁制筛子
             addUpgrade(shape, copyIngredients('b' to SBlock(Material.IRON_BLOCK)))
+            // Level 3 金制筛子
             addUpgrade(shape, copyIngredients('b' to SBlock(Material.GOLD_BLOCK)))
+            // Level 4 红石筛子
             addUpgrade(shape, copyIngredients('b' to SBlock(Material.REDSTONE_BLOCK)))
+            // Level 5 钻石筛子
             addUpgrade(shape, copyIngredients('b' to SBlock(Material.DIAMOND_BLOCK)))
         }
         
@@ -65,35 +71,14 @@ object Sieve : SMachineManual(
                 }
             }, id
         )
+        
+        addRecipe(
+            "DIRT",
+            SMachineRecipe.BlockBreak(SCoordinate(0, 1, 0), SBlock(Material.DIRT)),
+            SMachineRecipe.ItemAddGround(SCoordinate(0, 1, 0), SDItem.PEBBLE.item)
+        )
     }
 
-    override fun editRecipe(player: Player) {
-        val listRecipe = recipes.toList()
-        editRecipeMenu.setMultiPageAction(1, 2, 2, 2, 2, 7, listRecipe) { page, order ->
-            editRecipeMenu.setPageItem(page, order, SItem(Material.GLASS_PANE, "§e$first"))
-            
-            val input = second.input
-            if(input is SMachineRecipe.BlockBreak) {
-                editRecipeMenu.setPageItem(page, order + 9, input.sBlock.getItem())
-            }
-            
-            val output = second.output
-            if(output is SMachineRecipe.ItemAddGround) {
-                editRecipeMenu.setPageItem(page, order + 18, output.items.first())
-                
-//                editRecipeMenu.setPageButton(page, order + 18, output.items.first(), "EDIT_OUTPUT_ITEMS") {
-//                    editItemsMenu.setMultiPageAction(1, 2, 2, 2, 5, 7, output.items) { pageEditItem, orderEditItem ->
-//                        editItemsMenu.setPageItem(pageEditItem, orderEditItem, this)
-//                    }
-//                }
-            }
-            
-            editItemsMenu.setPageButton(page, order + 27, SItem(Material.CLAY_BALL, "${second.percent}%", "§b>> §a点我设置概率 §b<<"), "SET_PERCENT") {
-                player.sendMsg("请在对话框中输入一个 0-100 间的整数以设置概率(百分数).")
-            }
-            
-        }
-    }
 
     override fun manualRun(event: SMachineRunEvent.Manual, level: Short) {
         val theLoc = event.loc.addClone(0, 1, 0)
@@ -115,6 +100,35 @@ object Sieve : SMachineManual(
                 }
             }
 
+            (level >= 5 && sBlock.isSimilar(Material.GRAVEL)) -> {
+                if(addMetaCnt(centerBlock, 4).flag){
+                    player.playSound(theLoc, Sound.BLOCK_GRAVEL_HIT, 1f, 0f)
+                }
+                else{
+                    block.type = Material.AIR
+
+                    if(Random.isInPercent(25))
+                        world.dropItemNaturally(theLoc, SDItem.TIN_POWDER.item)
+                    else world.dropItemNaturally(theLoc, SItem(Material.IRON_NUGGET).randomAmount(7, 9))
+
+                    player.playSound(theLoc, Sound.BLOCK_GRAVEL_BREAK, 1f, 2f)
+                }
+            }
+
+            (level >= 5 && sBlock.isSimilar(Material.SAND)) -> {
+                if(addMetaCnt(centerBlock, 4).flag){
+                    player.playSound(theLoc, Sound.BLOCK_SAND_HIT, 1f, 0f)
+                }
+                else{
+                    block.type = Material.AIR
+
+                    if(Random.isInPercent(25))
+                        world.dropItemNaturally(theLoc, SDItem.COPPER_POWDER.item)
+                    else world.dropItemNaturally(theLoc, SItem(Material.GOLD_NUGGET).randomAmount(7, 9))
+
+                    player.playSound(theLoc, Sound.BLOCK_SAND_BREAK, 1f, 2f)
+                }
+            }
 
             (level >= 4 && sBlock.isSimilar(Material.GRAVEL)) -> {
                 if(addMetaCnt(centerBlock, 8).flag){
@@ -145,8 +159,24 @@ object Sieve : SMachineManual(
                     player.playSound(theLoc, Sound.BLOCK_SAND_BREAK, 1f, 2f)
                 }
             }
-            
 
+            (level >= 4 && sBlock.isSimilar(Material.COARSE_DIRT)) -> {
+                if(addMetaCnt(centerBlock, 8).flag){
+                    player.playSound(theLoc, Sound.BLOCK_GRAVEL_HIT, 1f, 0f)
+                }
+                else{
+                    block.type = Material.AIR
+
+                    if(Random.isInPercent(50))
+                        world.dropItemNaturally(theLoc, SItem(Material.COAL).randomAmount(2))
+                    if(Random.isInPercent(5))
+                        world.dropItemNaturally(theLoc, SItem(Material.DIAMOND))
+
+                    player.playSound(theLoc, Sound.BLOCK_GRAVEL_BREAK, 1f, 2f)
+                }
+            }
+
+            
             (level >= 3 && sBlock.isSimilar(Material.SAND)) -> {
                 if(addMetaCnt(centerBlock, 8).flag){
                     player.playSound(theLoc, Sound.BLOCK_SAND_HIT, 1f, 0f)
@@ -216,9 +246,29 @@ object Sieve : SMachineManual(
                     player.playSound(theLoc, Sound.BLOCK_GRAVEL_BREAK, 1f, 2f)
                 }
             }
-            
+
             
             else -> {
+                if(block.type == Material.AIR || block.type == Material.WATER) {
+                    val bottomLoc = event.loc.subtractClone(1)
+                    val bottomBlock = bottomLoc.block
+
+                    if(bottomBlock.type == Material.CHEST) {
+                        val state = bottomBlock.state
+                        if(state is Chest) {
+                            val inv = state.blockInventory
+                            for(storageItem in inv.storageContents) {
+                                if(storageItem.type.isBlock) {
+                                    storageItem.amount--
+                                    block.type = storageItem.type
+                                    return
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                
                 player.playSound(theLoc, Sound.ENTITY_ITEM_BREAK, 1f, 1.8f)
                 player.sendMsg(name, "§4这个方块不能筛！")
                 return

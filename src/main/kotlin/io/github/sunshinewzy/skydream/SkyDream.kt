@@ -28,9 +28,9 @@ class SkyDream : JavaPlugin() {
         const val name = "SkyDream"
         const val colorName = "§eSkyDream"
         
-        var version: String? = null
-        var nms: String? = null
-        var obc: String? = null
+        lateinit var version: String
+        lateinit var nms: String
+        lateinit var obc: String
         
     }
     
@@ -46,9 +46,6 @@ class SkyDream : JavaPlugin() {
         
         saveDefaultConfig()
         
-        //载入配置文件
-        loadSDConfig()
-
         //注册监听器
         registerListeners()
         
@@ -72,10 +69,6 @@ class SkyDream : JavaPlugin() {
     
     private fun registerListeners() {
         
-    }
-    
-    private fun loadSDConfig() {
-//        File(dataFolder, "MultiBlockMachine/Size3Machine.yml").loadYamlConfig()
     }
     
     private fun init() {

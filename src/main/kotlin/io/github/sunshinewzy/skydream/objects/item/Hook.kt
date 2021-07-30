@@ -12,8 +12,8 @@ class Hook(
     val destroyBlocks: List<Material> = SMaterial.LEAVES.types,
     val extraDropItems: SRandomItems = SRandomItems(
         SRandomItem(5, SDItem.SILKWORM),
-        SRandomItem(10, SDItem.MULBERRY_LEAVES),
-        SRandomItem(20, SItem(Material.OAK_SAPLING))
+        SRandomItem(25, SDItem.MULBERRY_LEAVES),
+        SRandomItem(50, SItem(Material.OAK_SAPLING))
     )
 ) : SItem(item) {
     
