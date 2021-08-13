@@ -150,12 +150,33 @@ object WoodenBarrel : SMachineManual(
                     player.sendMsg(name, "§4您副手上的物品无法被塞进木桶！")
                 }
             }
-            else{
+            
+            else {
+                val chestBlock = loc.subtractClone(2).block
+                chestBlock.getChest()?.let { 
+                    for(chestItem in it.blockInventory.storageContents) {
+                        if(chestItem != null && chestItem.type != Material.AIR) {
+                            if(chestItem.isItemSimilar(offHandItem, checkAmount = false, checkDurability = true)) {
+                                val amount = offHandItem.amount + chestItem.amount
+                                if(amount > offHandItem.maxStackSize) {
+                                    chestItem.amount -= offHandItem.maxStackSize - offHandItem.amount
+                                    offHandItem.amount = offHandItem.maxStackSize
+                                } else {
+                                    offHandItem.amount = amount
+                                }
+                                
+                                return
+                            }
+                        }
+                    }
+                }
+                
                 player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 0.5f)
                 player.sendMsg(name , "§4您的副手上没有东西！")
             }
         }
-        else{
+        
+        else {
             player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 0.5f)
             player.sendMsg(name, "§4机器顶部中间被方块阻塞了！")
         }

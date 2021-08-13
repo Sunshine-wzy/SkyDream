@@ -257,8 +257,10 @@ object Sieve : SMachineManual(
                         val state = bottomBlock.state
                         if(state is Chest) {
                             val inv = state.blockInventory
+                            
                             for(storageItem in inv.storageContents) {
-                                if(storageItem.type.isBlock) {
+                                val itemType = storageItem.type
+                                if(itemType != Material.AIR && itemType.isBlock) {
                                     storageItem.amount--
                                     block.type = storageItem.type
                                     return
