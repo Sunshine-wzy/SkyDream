@@ -4,6 +4,7 @@ import io.github.sunshinewzy.skydream.objects.item.SDItem
 import io.github.sunshinewzy.skydream.objects.machine.manual.Sieve
 import io.github.sunshinewzy.skydream.tasks.SDTask.stage3
 import io.github.sunshinewzy.sunstcore.interfaces.Initable
+import io.github.sunshinewzy.sunstcore.modules.task.tasks.ItemTask
 import io.github.sunshinewzy.sunstcore.modules.task.tasks.MachineTask
 import io.github.sunshinewzy.sunstcore.objects.SItem
 import io.github.sunshinewzy.sunstcore.objects.SItem.Companion.createTaskSymbol
@@ -22,12 +23,43 @@ object SDTStage3 : Initable {
         "石砖筛子",
         3 orderWith 3,
         null,
-        createTaskSymbol(Material.STONE_BRICKS, "§d要想从沙砾中筛出铁粒来","§d必须升级你的筛子","§6用4个石砖替换原来的羊毛","§6再用扳手敲击活板门，就能完成升级！","§b将沙砾放在活板门的上面","§c然后不断右击活板门来筛出铁粒！"),
+        createTaskSymbol(Material.STONE_BRICKS, "§d要想从沙砾中筛出铁粒来","§d必须升级你的筛子","§6用4个石砖§e替换§6原来的羊毛","§6再用扳手敲击活板门，就能完成升级","§e中间一定不能碰活板门！","§7(否则只能重新构建羊毛筛子)","§b将沙砾放在活板门的上面","§c然后不断右击活板门来筛出铁粒！"),
         arrayOf(SItem(Material.GRAVEL, 10)),
         Sieve, 1,
         arrayOf(SItem(Material.IRON_INGOT)),
         "§d恭喜你走出了铁器时代的第一步！", "§f任务需要:", "§b铁锭 x1", "§f任务奖励:", "§e沙砾 x10"
     )
+    
+    val task1_2 = ItemTask(
+        stage3,
+        "SeedCollector", "种子收藏家",
+        3 orderWith 2, task1_1,
+        createTaskSymbol(Material.MELON_SEEDS, "§d用石砖筛子筛泥土来集齐四种种子！", "§b并将它们扩大化培养种植"),
+        arrayOf(SItem(Material.DIRT, 32), SItem(Material.BONE_MEAL, 64), SItem(Material.DIAMOND_HOE)),
+        arrayOf(SItem(Material.WHEAT_SEEDS, 16), SItem(Material.BEETROOT_SEEDS, 16), SItem(Material.MELON_SEEDS, 16), SItem(Material.PUMPKIN_SEEDS, 16)),
+        "§d农 业 复 兴","§f任务需要:","§b下列4种种子 x16","§f任务奖励:","§e泥土 x32","§e骨粉 x64","§e钻石锄 x1"
+    )
+    
+    val task1_3 = ItemTask(
+        stage3,
+        "SaplingCollector-I", "树苗收藏家 I",
+        3 orderWith 4, task1_1,
+        createTaskSymbol(Material.OAK_SAPLING, "§d用石砖筛子筛泥土来集齐三种树苗！", "§b并将它们扩大化培养种植"),
+        arrayOf(SItem(Material.DIRT, 32), SItem(Material.BONE_MEAL, 64), SItem(Material.DIAMOND_AXE)),
+        arrayOf(SItem(Material.OAK_SAPLING, 16), SItem(Material.BIRCH_SAPLING, 16), SItem(Material.SPRUCE_SAPLING, 16)),
+        "§d林 业 起 步","§f任务需要:","§b下列3种树苗 x16","§f任务奖励:","§e泥土 x32","§e骨粉 x64","§e钻石斧 x1"
+    )
+
+    val task1_4 = ItemTask(
+        stage3,
+        "SaplingCollector-II", "树苗收藏家 II",
+        2 orderWith 4, task1_3,
+        createTaskSymbol(Material.JUNGLE_SAPLING, "§d用石砖筛子筛泥土来集齐另外三种树苗！", "§b并将它们扩大化培养种植"),
+        arrayOf(SItem(Material.CAKE), SItem(Material.GOLDEN_APPLE, 16), SItem(Material.APPLE, 32), SItem(Material.COOKIE, 64)),
+        arrayOf(SItem(Material.JUNGLE_SAPLING, 16), SItem(Material.ACACIA_SAPLING, 16), SItem(Material.PUMPKIN_SEEDS, 16)),
+        "§d林 业 复 兴","§f任务需要:","§b下列3种树苗 x16","§f任务奖励:","§e蛋糕 x1","§e金苹果 x16","§e苹果 x32","§e曲奇 x64"
+    )
+    
     
     val task2_1 = MachineTask(
         stage3,
@@ -35,7 +67,7 @@ object SDTStage3 : Initable {
         "铁制筛子",
         4 orderWith 3,
         task1_1,
-        createTaskSymbol(Material.IRON_BLOCK, "§d从沙砾中筛出铁粒效率太低？","§d试试铁块升级吧！","§6用4个铁块替换原来的石砖","§6再用扳手敲击活板门，就能完成升级！","§b升级后筛沙砾就能爆7-9个铁粒不等","§c甚至还可以从沙子中筛出金粒来"),
+        createTaskSymbol(Material.IRON_BLOCK, "§d从沙砾中筛出铁粒效率太低？","§d试试铁块升级吧！","§6用4个铁块§e替换§6原来的石砖","§6再用扳手敲击活板门，就能完成升级","§e中间一定不能碰活板门！","§7(否则只能重新构建羊毛筛子)","§b升级后筛沙砾就能爆7-9个铁粒不等","§c甚至还可以从沙子中筛出金粒来"),
         arrayOf(SItem(Material.GRAVEL, 10), SItem(Material.SAND, 10)),
         Sieve, 2,
         arrayOf(SItem(Material.GOLD_INGOT)),
@@ -46,7 +78,7 @@ object SDTStage3 : Initable {
         stage3,
         "SieveGold", "金制筛子",
         5 orderWith 3, task2_1,
-        createTaskSymbol(Material.GOLD_BLOCK, "§d从沙砾中筛金粒效率太低？","§d试试金块升级吧！","§6用4个金块替换原来的铁块","§6再用扳手敲击活板门，就能完成升级！", "§b升级后筛沙子就能爆4-6个金粒不等","§c甚至还可以从砂土中筛出煤炭","§c从粘土中筛出红石来！"),
+        createTaskSymbol(Material.GOLD_BLOCK, "§d从沙砾中筛金粒效率太低？","§d试试金块升级吧！","§6用4个金块§e替换§6原来的铁块","§6再用扳手敲击活板门，就能完成升级","§e中间一定不能碰活板门！","§7(否则只能重新构建羊毛筛子)","§b升级后筛沙子就能爆4-6个金粒不等","§c甚至还可以从砂土中筛出煤炭","§c从粘土中筛出红石来！"),
         arrayOf(SItem(Material.SAND, 10)),
         Sieve, 3,
         arrayOf(SItem(Material.COAL), SItem(Material.REDSTONE)),
@@ -57,7 +89,7 @@ object SDTStage3 : Initable {
         stage3,
         "SieveRedstone", "红石筛子",
         6 orderWith 3, task3_1,
-        createTaskSymbol(Material.REDSTONE_BLOCK, "§d是时候为进入蒸汽时代做准备了","§6用4个红石块替换原来的金块","§6再用扳手敲击活板门，就能完成升级！","§b升级后筛沙砾有20%的几率掉锡粉","§b筛沙子有20%的几率掉铜粉","§b筛砂土有50%的几率掉煤","§b5%的几率掉钻石","§c铜和锡是制作青铜的基础材料！"),
+        createTaskSymbol(Material.REDSTONE_BLOCK, "§d是时候为进入蒸汽时代做准备了","§6用4个红石块§e替换§6原来的金块","§6再用扳手敲击活板门，就能完成升级","§e中间一定不能碰活板门！","§7(否则只能重新构建羊毛筛子)","§b升级后筛沙砾有20%的几率掉锡粉","§b筛沙子有20%的几率掉铜粉","§b筛砂土有50%的几率掉煤","§b5%的几率掉钻石","§c铜和锡是制作青铜的基础材料！"),
         arrayOf(SItem(Material.CLAY, 10)),
         Sieve, 4,
         arrayOf(SDItem.COPPER_POWDER.item, SDItem.TIN_POWDER.item),
@@ -68,7 +100,7 @@ object SDTStage3 : Initable {
         stage3,
         "SieveDiamond", "钻石筛子",
         7 orderWith 3, task4_1,
-        createTaskSymbol(Material.DIAMOND_BLOCK, "§d壕，效率至上！", "§6用4个钻石块替换原来的红石块","§6再用扳手敲击活板门，就能完成升级！","§b升级后筛矿速度大大提升","§b爆率略微增加"),
+        createTaskSymbol(Material.DIAMOND_BLOCK, "§d壕，效率至上！", "§6用4个钻石块§e替换§6原来的红石块","§6再用扳手敲击活板门，就能完成升级","§e中间一定不能碰活板门！","§7(否则只能重新构建羊毛筛子)","§b升级后筛矿速度大大提升","§b爆率略微增加"),
         arrayOf(SItem(Material.GRAVEL, 32), SItem(Material.SAND, 32), SItem(Material.COARSE_DIRT, 32), SItem(Material.CLAY, 32), SItem(Material.DIRT, 32)),
         Sieve, 5,
         arrayOf(SItem(Material.IRON_NUGGET, 64), SItem(Material.GOLD_NUGGET, 64)),
