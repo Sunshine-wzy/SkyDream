@@ -1,10 +1,10 @@
 package io.github.sunshinewzy.skydream.tasks
 
 import io.github.sunshinewzy.skydream.objects.item.SDItem
-import io.github.sunshinewzy.skydream.objects.machine.manual.ClayMaker
 import io.github.sunshinewzy.skydream.objects.machine.manual.Crucible
 import io.github.sunshinewzy.skydream.objects.machine.manual.Millstone
 import io.github.sunshinewzy.skydream.objects.machine.manual.Squeezer
+import io.github.sunshinewzy.skydream.objects.machine.manual.WaterPouringMachine
 import io.github.sunshinewzy.skydream.tasks.SDTask.stage2
 import io.github.sunshinewzy.sunstcore.interfaces.Initable
 import io.github.sunshinewzy.sunstcore.modules.task.tasks.ItemCraftTask
@@ -83,15 +83,45 @@ object SDTStage2 : Initable {
     
     val task3_1 = MachineTask(
         stage2,
-        "ClayMaker",
-        "粘土制造机",
+        "WaterPouringMachine",
+        "水流灌注机",
         5 orderWith 3,
         task2_1,
-        SItem.createTaskSymbol(Material.CLAY, "§d粘土是制作陶瓷的重要原料","§d你需要学会如何将沙子制造为粘土","§6按照提示搭建多方块机器","§6并用扳手右键敲击中心方块","§6(最中间的圆石墙)","§6来激活多方块机器","§b将沙子放在粘土制造机的圆石墙上","§c然后不断右击底部的圆石墙来制造粘土！"),
+        SItem.createTaskSymbol(Material.CLAY, "§d黏土是制作陶瓷的重要原料","§d你需要学会如何将沙子制造黏土","§6按照提示搭建多方块机器","§6并用扳手右键敲击中心方块","§6(最中间的圆石墙)","§6来激活多方块机器","§b将沙子放在水流灌注机的圆石墙上","§c然后不断右击底部的圆石墙来制造粘土！"),
         arrayOf(SItem(Material.COBBLESTONE, 10)),
-        ClayMaker, 0,
+        WaterPouringMachine, 0,
         arrayOf(SItem(Material.CLAY_BALL, 4)),
-        "§d恭喜你制造出了粘土！","§f任务需要:","§b黏土球 x4","§f任务奖励:","§e圆石 x10"
+        "§d恭喜你制造出了黏土！","§f任务需要:","§b黏土球 x4","§f任务奖励:","§e圆石 x10"
+    )
+    
+    val task3_2 = ItemTask(
+        stage2,
+        "MakeMycelium", "制造菌丝",
+        5 orderWith 2, task3_1,
+        SItem.createTaskSymbol(Material.MYCELIUM, "§b将粘土放在水流灌注机的圆石墙上","§d然后不断右击底部的圆石墙来制造菌丝！"),
+        arrayOf(SItem(Material.SAND, 10)),
+        arrayOf(SItem(Material.MYCELIUM, 4)),
+        "§d恭喜你制造出了菌丝！","§f任务需要:","§b菌丝 x4","§f任务奖励:","§e沙子 x10"
+    )
+    
+    val task3_3 = ItemTask(
+        stage2,
+        "MushroomCollector", "蘑菇收藏家",
+        6 orderWith 2, task3_2,
+        SItem.createTaskSymbol(Material.RED_MUSHROOM, "§d用筛子筛菌丝来获得", "§e棕色蘑菇 红色蘑菇"),
+        arrayOf(SItem(Material.DIRT, 16)),
+        arrayOf(SItem(Material.BROWN_MUSHROOM, 16), SItem(Material.RED_MUSHROOM, 16)),
+        "§d蘑 菇 种 植 业","§f任务需要:","§b棕色蘑菇 x16","§b红色蘑菇 x16","§f任务奖励:","§e泥土 x16"
+    )
+    
+    val task3_4 = ItemTask(
+        stage2,
+        "MushroomCooker", "蘑菇烹饪家",
+        7 orderWith 2, task3_3,
+        SItem.createTaskSymbol(Material.MUSHROOM_STEW, "§d制作几碗蘑菇煲！"),
+        arrayOf(SItem(Material.COBBLESTONE, 16), SItem(Material.GRAVEL, 16), SItem(Material.SAND, 16), SItem(Material.COARSE_DIRT, 16)),
+        arrayOf(SItem(Material.MUSHROOM_STEW, 9)),
+        "§d蘑 菇 王","§f任务需要:","§b蘑菇煲 x9","§f任务奖励:","§e圆石 x16","§e沙砾 x16","§e沙子 x16","§e砂土 x16"
     )
     
     val task4_1 = ItemCraftTask(

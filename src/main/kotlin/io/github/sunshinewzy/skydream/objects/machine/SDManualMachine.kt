@@ -9,8 +9,9 @@ object SDManualMachine : Initable {
         WoodenBarrel.init()
         Squeezer.init()
         Millstone.init()
-        ClayMaker.init()
+        WaterPouringMachine.init()
         Crucible.init()
-        
+        StoneBarrel.init()
+        FluidTank.init()
     }
 }

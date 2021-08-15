@@ -63,6 +63,10 @@ object Sieve : SMachineManual(
         
         addSieveRecipe(
             SieveRecipe(0, SBlock(Material.DIRT), SRandomItems(SRandomItem(100, SDItem.PEBBLE).setRandomAmount(2, 4)), 4),
+            SieveRecipe(0, SBlock(Material.MYCELIUM), SRandomItems(
+                SRandomItem(25, SItem(Material.BROWN_MUSHROOM)),
+                SRandomItem(25, SItem(Material.RED_MUSHROOM))
+            ), 4),
             
             SieveRecipe(1, SBlock(Material.GRAVEL), SRandomItems(SRandomItem(100, SItem(Material.IRON_NUGGET)).setRandomAmount(4, 6))),
             SieveRecipe(1, SBlock(Material.DIRT), SRandomItems(
@@ -81,17 +85,13 @@ object Sieve : SMachineManual(
             
             SieveRecipe(2, SBlock(Material.SAND), SRandomItems(
                 SRandomItem(100, SItem(Material.GOLD_NUGGET)).setRandomAmount(4, 6),
-                SRandomItem(5, SItem(Material.CACTUS)),
-                SRandomItem(1, SItem(Material.RED_MUSHROOM)).setRandomAmount(1, 3),
-                SRandomItem(1, SItem(Material.BROWN_MUSHROOM)).setRandomAmount(1, 3)
+                SRandomItem(5, SItem(Material.CACTUS))
             ), sieveSound = Sound.BLOCK_SAND_HIT, completeSound = Sound.BLOCK_SAND_BREAK),
             SieveRecipe(2, SBlock(Material.GRAVEL), SRandomItems(SRandomItem(100, SItem(Material.IRON_NUGGET)).setRandomAmount(7, 9))),
             
             SieveRecipe(3, SBlock(Material.SAND), SRandomItems(
                 SRandomItem(100, SItem(Material.GOLD_NUGGET)).setRandomAmount(7, 9),
-                SRandomItem(5, SItem(Material.CACTUS)),
-                SRandomItem(1, SItem(Material.RED_MUSHROOM)).setRandomAmount(1, 3),
-                SRandomItem(1, SItem(Material.BROWN_MUSHROOM)).setRandomAmount(1, 3)
+                SRandomItem(5, SItem(Material.CACTUS))
             ), sieveSound = Sound.BLOCK_SAND_HIT, completeSound = Sound.BLOCK_SAND_BREAK),
             SieveRecipe(3, SBlock(Material.CLAY), SRandomItems(SRandomItem(25, SItem(Material.REDSTONE)).setRandomAmount(2))),
             SieveRecipe(3, SBlock(Material.COARSE_DIRT), SRandomItems(
@@ -108,9 +108,7 @@ object Sieve : SMachineManual(
             SieveRecipe(4, SBlock(Material.SAND), SRandomItems(
                 SRandomItem(100, SItem(Material.GOLD_NUGGET)).setRandomAmount(7, 9),
                 SRandomItem(30, SDItem.COPPER_POWDER),
-                SRandomItem(5, SItem(Material.CACTUS)),
-                SRandomItem(1, SItem(Material.RED_MUSHROOM)).setRandomAmount(1, 3),
-                SRandomItem(1, SItem(Material.BROWN_MUSHROOM)).setRandomAmount(1, 3)
+                SRandomItem(5, SItem(Material.CACTUS))
             ), sieveSound = Sound.BLOCK_SAND_HIT, completeSound = Sound.BLOCK_SAND_BREAK),
             SieveRecipe(4, SBlock(Material.COARSE_DIRT), SRandomItems(
                 SRandomItem(50, SItem(Material.COAL)).setRandomAmount(2),
@@ -122,19 +120,17 @@ object Sieve : SMachineManual(
                 SRandomItem(1, SItem(Material.COCOA_BEANS)),
                 SRandomItem(1, SItem(Material.SWEET_BERRIES))
             )),
-            SieveRecipe(4, SBlock(Material.NETHERRACK), SRandomItems(
-                SRandomItem(10, SItem(Material.NETHER_WART)),
-                SRandomItem(5, SItem(Material.CRIMSON_FUNGUS)),
-                SRandomItem(5, SItem(Material.WARPED_FUNGUS))
-            )),
 
-            SieveRecipe(5, SBlock(Material.GRAVEL), SRandomItems(SRandomItem(100, SItem(Material.IRON_NUGGET)).setRandomAmount(7, 9), SRandomItem(25, SDItem.TIN_POWDER)), 4),
+            SieveRecipe(5, SBlock(Material.GRAVEL), SRandomItems(
+                SRandomItem(100, SItem(Material.IRON_NUGGET)).setRandomAmount(7, 9),
+                SRandomItem(25, SDItem.TIN_POWDER),
+                SRandomItem(10, SItem(Material.LAPIS_LAZULI))
+            ), 4),
             SieveRecipe(5, SBlock(Material.SAND), SRandomItems(
                 SRandomItem(100, SItem(Material.GOLD_NUGGET)).setRandomAmount(7, 9),
                 SRandomItem(35, SDItem.COPPER_POWDER),
                 SRandomItem(5, SItem(Material.CACTUS)),
-                SRandomItem(1, SItem(Material.RED_MUSHROOM)).setRandomAmount(1, 3),
-                SRandomItem(1, SItem(Material.BROWN_MUSHROOM)).setRandomAmount(1, 3)
+                SRandomItem(1, SItem(Material.EMERALD))
             ), 4, sieveSound = Sound.BLOCK_SAND_HIT, completeSound = Sound.BLOCK_SAND_BREAK),
             SieveRecipe(5, SBlock(Material.COARSE_DIRT), SRandomItems(
                 SRandomItem(50, SItem(Material.COAL)).setRandomAmount(3),
@@ -145,6 +141,17 @@ object Sieve : SMachineManual(
                 SRandomItem(1, SItem(Material.VINE)),
                 SRandomItem(1, SItem(Material.COCOA_BEANS)),
                 SRandomItem(1, SItem(Material.SWEET_BERRIES))
+            ), 4),
+            SieveRecipe(5, SBlock(Material.SOUL_SAND), SRandomItems(
+                SRandomItem(5, SItem(Material.NETHERITE_SCRAP)),
+                SRandomItem(1, SItem(Material.GHAST_TEAR)),
+                SRandomItem(10, SItem(Material.NETHER_WART)),
+                SRandomItem(5, SItem(Material.CRIMSON_FUNGUS)),
+                SRandomItem(5, SItem(Material.WARPED_FUNGUS))
+            ), 4, sieveSound = Sound.BLOCK_STONE_HIT, completeSound = Sound.BLOCK_STONE_BREAK),
+            SieveRecipe(5, SBlock(Material.CLAY), SRandomItems(
+                SRandomItem(25, SItem(Material.REDSTONE)).setRandomAmount(3),
+                SRandomItem(25, SItem(Material.GLOWSTONE_DUST)).setRandomAmount(3)
             ), 4)
 
         )
@@ -394,7 +401,7 @@ object Sieve : SMachineManual(
                     val inv = state.blockInventory
 
                     for(storageItem in inv.storageContents) {
-                        val itemType = storageItem.type
+                        val itemType = storageItem?.type ?: continue
                         if(itemType != Material.AIR && itemType.isBlock) {
                             storageItem.amount--
                             block.type = storageItem.type

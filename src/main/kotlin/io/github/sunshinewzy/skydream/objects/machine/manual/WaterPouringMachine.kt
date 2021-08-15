@@ -11,9 +11,9 @@ import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Sound
 
-object ClayMaker : SMachineManual(
-    "ClayMaker",
-    "粘土制造机",
+object WaterPouringMachine : SMachineManual(
+    "WaterPouringMachine",
+    "水流灌注机",
     SDMachine.wrench,
     SMachineStructure.CentralSymmetry(
         SMachineSize.SIZE3,
@@ -53,8 +53,7 @@ object ClayMaker : SMachineManual(
             Material.SAND -> {
                 when(addMetaCnt(centerLoc, 8)) {
                     SMachineStatus.START -> {
-                        player.sendMsg(name, "&e水流灌注中...")
-                        player.playSound(loc, Sound.BLOCK_STONE_HIT, 1f, 0f)
+                        player.playSound(loc, Sound.ITEM_BUCKET_FILL, 1f, 0f)
                     }
                     
                     SMachineStatus.RUNNING -> {
@@ -63,8 +62,41 @@ object ClayMaker : SMachineManual(
                     
                     SMachineStatus.FINISH -> {
                         block.type = Material.CLAY
-                        player.sendMsg(name, "&a粘土制造成功！")
                         player.playSound(loc, Sound.BLOCK_GRAVEL_PLACE, 1f, 2f)
+                    }
+                }
+            }
+
+            Material.CLAY -> {
+                when(addMetaCnt(centerLoc, 8)) {
+                    SMachineStatus.START -> {
+                        player.playSound(loc, Sound.ITEM_BUCKET_FILL, 1f, 0f)
+                    }
+
+                    SMachineStatus.RUNNING -> {
+                        player.playSound(loc, Sound.BLOCK_SAND_HIT, 1f, 0f)
+                    }
+
+                    SMachineStatus.FINISH -> {
+                        block.type = Material.MYCELIUM
+                        player.playSound(loc, Sound.BLOCK_GRAVEL_PLACE, 1f, 2f)
+                    }
+                }
+            }
+
+            Material.NETHERRACK -> {
+                when(addMetaCnt(centerLoc, 8)) {
+                    SMachineStatus.START -> {
+                        player.playSound(loc, Sound.ITEM_BUCKET_FILL, 1f, 0f)
+                    }
+
+                    SMachineStatus.RUNNING -> {
+                        player.playSound(loc, Sound.BLOCK_STONE_HIT, 1f, 0f)
+                    }
+
+                    SMachineStatus.FINISH -> {
+                        block.type = Material.SOUL_SAND
+                        player.playSound(loc, Sound.BLOCK_SOUL_SAND_PLACE, 1f, 2f)
                     }
                 }
             }

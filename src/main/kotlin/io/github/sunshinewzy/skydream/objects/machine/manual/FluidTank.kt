@@ -22,13 +22,13 @@ object FluidTank : SMachineManual(
     SMachineStructure.CentralSymmetry(
         SMachineSize.SIZE3,
         """
-            ab
+            a
             b
             
-             c
+             
             c
             
-            ab
+            a
             b
         """.trimIndent(),
         mapOf('a' to SBlock(Material.IRON_BLOCK), 'b' to SBlock(Material.IRON_BARS), 'c' to SBlock(Material.GLASS)),

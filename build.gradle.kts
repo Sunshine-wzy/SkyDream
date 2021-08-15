@@ -7,7 +7,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "5.2.0"
 }
 group = "io.github.sunshinewzy"
-version = "4.1"
+version = "4.2"
 
 kotlin {
     target { 
