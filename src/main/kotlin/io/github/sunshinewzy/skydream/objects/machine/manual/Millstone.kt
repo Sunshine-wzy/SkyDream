@@ -61,7 +61,23 @@ object Millstone : SMachineManual(
             Material.HAY_BLOCK ->
                 mill(cnt, 8, loc, player, SItem(SDItem.FLOUR.item, 9), Sound.BLOCK_GRASS_BREAK, Sound.BLOCK_GRASS_HIT)
             
+            Material.STONE ->
+                mill(cnt, 8, loc, player, SItem(Material.COBBLESTONE), Sound.BLOCK_STONE_BREAK, Sound.BLOCK_STONE_HIT)
+            
             else -> {
+                if(block.type == Material.AIR) {
+                    event.loc.addClone(1).block.getChest()?.let { chest ->
+                        for(storageItem in chest.blockInventory.storageContents) {
+                            val itemType = storageItem?.type ?: continue
+                            if(itemType != Material.AIR && itemType.isBlock) {
+                                block.type = storageItem.type
+                                storageItem.amount--
+                                return
+                            }
+                        }
+                    }
+                }
+                
                 player.sendMsg(name, "§4待研磨的方块不正确！")
                 player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 1.8f)
                 0

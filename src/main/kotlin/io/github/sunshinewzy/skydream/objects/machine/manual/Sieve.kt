@@ -10,13 +10,9 @@ import io.github.sunshinewzy.sunstcore.modules.machine.SMachineStructure
 import io.github.sunshinewzy.sunstcore.objects.*
 import io.github.sunshinewzy.sunstcore.objects.SBlock.Companion.getSBlock
 import io.github.sunshinewzy.sunstcore.objects.inventoryholder.SPartProtectInventoryHolder
-import io.github.sunshinewzy.sunstcore.utils.addClone
-import io.github.sunshinewzy.sunstcore.utils.putElement
-import io.github.sunshinewzy.sunstcore.utils.sendMsg
-import io.github.sunshinewzy.sunstcore.utils.subtractClone
+import io.github.sunshinewzy.sunstcore.utils.*
 import org.bukkit.Material
 import org.bukkit.Sound
-import org.bukkit.block.Chest
 import java.util.*
 
 object Sieve : SMachineManual(
@@ -134,7 +130,7 @@ object Sieve : SMachineManual(
             ), 4, sieveSound = Sound.BLOCK_SAND_HIT, completeSound = Sound.BLOCK_SAND_BREAK),
             SieveRecipe(5, SBlock(Material.COARSE_DIRT), SRandomItems(
                 SRandomItem(50, SItem(Material.COAL)).setRandomAmount(3),
-                SRandomItem(5, SItem(Material.DIAMOND)),
+                SRandomItem(1, SItem(Material.DIAMOND)),
                 SRandomItem(5, SItem(Material.SUGAR_CANE)),
                 SRandomItem(1, SItem(Material.BAMBOO)),
                 SRandomItem(1, SItem(Material.LILY_PAD)),
@@ -143,6 +139,7 @@ object Sieve : SMachineManual(
                 SRandomItem(1, SItem(Material.SWEET_BERRIES))
             ), 4),
             SieveRecipe(5, SBlock(Material.SOUL_SAND), SRandomItems(
+                SRandomItem(25, SItem(Material.QUARTZ)).setRandomAmount(3),
                 SRandomItem(5, SItem(Material.NETHERITE_SCRAP)),
                 SRandomItem(1, SItem(Material.GHAST_TEAR)),
                 SRandomItem(10, SItem(Material.NETHER_WART)),
@@ -392,21 +389,13 @@ object Sieve : SMachineManual(
         */
 
         if(block.type == Material.AIR || block.type == Material.WATER) {
-            val bottomLoc = event.loc.subtractClone(1)
-            val bottomBlock = bottomLoc.block
-
-            if(bottomBlock.type == Material.CHEST) {
-                val state = bottomBlock.state
-                if(state is Chest) {
-                    val inv = state.blockInventory
-
-                    for(storageItem in inv.storageContents) {
-                        val itemType = storageItem?.type ?: continue
-                        if(itemType != Material.AIR && itemType.isBlock) {
-                            storageItem.amount--
-                            block.type = storageItem.type
-                            return
-                        }
+            event.loc.subtractClone(1).block.getChest()?.let { chest ->
+                for(storageItem in chest.blockInventory.storageContents) {
+                    val itemType = storageItem?.type ?: continue
+                    if(itemType != Material.AIR && itemType.isBlock) {
+                        block.type = storageItem.type
+                        storageItem.amount--
+                        return
                     }
                 }
             }

@@ -11,6 +11,7 @@ import io.github.sunshinewzy.sunstcore.objects.SCoordinate
 import io.github.sunshinewzy.sunstcore.objects.SItem
 import io.github.sunshinewzy.sunstcore.objects.SItem.Companion.isItemSimilar
 import io.github.sunshinewzy.sunstcore.objects.SLocation
+import io.github.sunshinewzy.sunstcore.utils.giveItemInMainHand
 import io.github.sunshinewzy.sunstcore.utils.sendMsg
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -47,15 +48,6 @@ object FluidTank : SMachineManual(
             val handItem = inv.itemInMainHand
 
             when (handItem.type) {
-                Material.AIR -> {
-                    getStorageFluid(sLoc)?.let {
-                        player.sendMsg(name, "&b${it.name} &f-> &a${it.volume}mL")
-                        return
-                    }
-
-                    player.sendMsg(name, "&c空")
-                }
-                
                 Material.BUCKET -> {
                     val pair = removeStorageFluid(sLoc)
                     val sFluid = pair.second
@@ -67,39 +59,64 @@ object FluidTank : SMachineManual(
 
                     when(pair.first) {
                         0 -> {
-                            inv.setItemInMainHand(sFluid.bucket)
+                            handItem.amount--
+                            player.giveItemInMainHand(sFluid.bucket)
                             player.playSound(player.location, Sound.ITEM_BUCKET_FILL, 1f, 1f)
                         }
 
                         else -> {
-                            player.playSound(player.location, Sound.BLOCK_WATER_AMBIENT, 1f, 1f)
+                            player.playSound(player.location, Sound.ENTITY_PLAYER_SWIM, 1f, 1f)
                         }
                     }
                 }
                 
-                else -> bucketToFluid[handItem.type]?.forEach { sFluid ->
-                    if(handItem.isItemSimilar(sFluid.bucket, checkAmount = false)) {
-                        
+                else -> {
+                    getStorageFluid(sLoc)?.let { sFluid->
+                        if(handItem.isItemSimilar(sFluid.bucket, checkAmount = false)) {
+                            if(addStorageFluid(sLoc, sFluid) != -1) {
+                                handItem.amount--
+                                player.giveItemInMainHand(SItem(Material.BUCKET))
+                            }
+                        }
+
+                        if(sFluid.volume != 0) {
+                            player.sendMsg(name, "&b${sFluid.name} &f-> &a${sFluid.volume}mL")
+                            return
+                        }
                     }
+                    
+                    bucketToFluid[handItem.type]?.forEach { sFluid ->
+                        if(handItem.isItemSimilar(sFluid.bucket, checkAmount = false)) {
+                            if(addStorageFluid(sLoc, sFluid, true) != -1) {
+                                handItem.amount--
+                                player.giveItemInMainHand(SItem(Material.BUCKET))
+                                return
+                            }
+                        }
+                    }
+
+                    player.sendMsg(name, "&c空")
                 }
             }
         }
     }
     
     
-    fun addStorageFluid(sLoc: SLocation, volume: Int = 1000): Pair<Int, SFluid?> {
-        getStorageFluid(sLoc)?.let { sFluid ->
-            return when(getLevel(sLoc)) {
-                0.toShort() -> sFluid.addFluid(volume, LEVEL0)
-                1.toShort() -> sFluid.addFluid(volume, LEVEL1)
-                2.toShort() -> sFluid.addFluid(volume, LEVEL2)
-                3.toShort() -> sFluid.addFluid(volume, LEVEL3)
-                
-                else -> -1
-            } to sFluid
+    fun addStorageFluid(sLoc: SLocation, fluid: SFluid, isNew: Boolean = false, volume: Int = 1000): Int {
+        val sFluid = if(isNew) {
+            val newFluid = fluid.copy()
+            setData(sLoc, "StorageFluid", newFluid)
+            newFluid
+        } else fluid
+
+        return when(getLevel(sLoc)) {
+            0.toShort() -> sFluid.addFluid(volume, LEVEL0)
+            1.toShort() -> sFluid.addFluid(volume, LEVEL1)
+            2.toShort() -> sFluid.addFluid(volume, LEVEL2)
+            3.toShort() -> sFluid.addFluid(volume, LEVEL3)
+
+            else -> -1
         }
-        
-        return -1 to null
     }
     
     fun removeStorageFluid(sLoc: SLocation, volume: Int = 1000): Pair<Int, SFluid?> {
@@ -122,6 +139,8 @@ data class SFluid(val name: String, val bucket: ItemStack, val blockType: Materi
 
 
     fun addFluid(addVolume: Int, maxVolume: Int): Int {
+        if(volume == maxVolume) return -1
+        
         val sum = volume + addVolume
         if(sum > maxVolume) {
             volume = maxVolume
@@ -138,9 +157,7 @@ data class SFluid(val name: String, val bucket: ItemStack, val blockType: Materi
             return 0
         }
         
-        val res = removeVolume - volume
-        volume = 0
-        return res
+        return removeVolume - volume
     }
     
     

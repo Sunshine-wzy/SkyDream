@@ -83,7 +83,7 @@ object SDTStage1 : Initable {
         "筛子",
         6 orderWith 3,
         task3_1,
-        SItem.createTaskSymbol(Material.OAK_FENCE, "§d多方块机器是SkyDream的重要组成部分","§6按照提示搭建多方块机器","§6并用扳手右键敲击中心方块","§6(最中间的活板门)","§6来构建多方块机器", "§b将泥土放在活板门的上面","§b然后右键活板门来筛土！","§c这样你就会得到石子","§c4个石子能合成1个圆石！"),
+        SItem.createTaskSymbol(Material.OAK_TRAPDOOR, "§d多方块机器是SkyDream的重要组成部分","§6按照提示搭建多方块机器","§6并用扳手右键敲击中心方块","§6(最中间的活板门)","§6来构建多方块机器", "§b将泥土放在活板门的上面","§b然后右键活板门来筛土！","§c这样你就会得到石子","§c4个石子能合成1个圆石！"),
         arrayOf(SItem(Material.STONE_AXE)),
         Sieve, 0,
         arrayOf(SItem(Material.COBBLESTONE)),

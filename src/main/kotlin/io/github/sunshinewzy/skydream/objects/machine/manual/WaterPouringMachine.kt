@@ -6,10 +6,13 @@ import io.github.sunshinewzy.sunstcore.objects.SBlock
 import io.github.sunshinewzy.sunstcore.objects.SCoordinate
 import io.github.sunshinewzy.sunstcore.objects.SItem
 import io.github.sunshinewzy.sunstcore.utils.addClone
+import io.github.sunshinewzy.sunstcore.utils.containsItem
+import io.github.sunshinewzy.sunstcore.utils.removeSItem
 import io.github.sunshinewzy.sunstcore.utils.sendMsg
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Sound
+import org.bukkit.block.Dropper
 
 object WaterPouringMachine : SMachineManual(
     "WaterPouringMachine",
@@ -97,6 +100,31 @@ object WaterPouringMachine : SMachineManual(
                     SMachineStatus.FINISH -> {
                         block.type = Material.SOUL_SAND
                         player.playSound(loc, Sound.BLOCK_SOUL_SAND_PLACE, 1f, 2f)
+                    }
+                }
+            }
+            
+            Material.DROPPER -> {
+                val state = block.state
+                if(state is Dropper) {
+                    val inv = state.inventory
+                    if(inv.containsItem(SItem(Material.NAUTILUS_SHELL, 64), 9)) {
+                        when(addMetaCnt(centerLoc, 8)) {
+                            SMachineStatus.START -> {
+                                player.playSound(loc, Sound.ITEM_BUCKET_FILL, 1f, 0f)
+                            }
+
+                            SMachineStatus.RUNNING -> {
+                                player.playSound(loc, Sound.ENTITY_PLAYER_SWIM, 1f, 0f)
+                            }
+
+                            SMachineStatus.FINISH -> {
+                                if(inv.removeSItem(SItem(Material.NAUTILUS_SHELL, 64))) {
+                                    inv.setItem(0, SItem(Material.HEART_OF_THE_SEA))
+                                }
+                                player.playSound(loc, Sound.ITEM_BUCKET_EMPTY, 1f, 2f)
+                            }
+                        }
                     }
                 }
             }
