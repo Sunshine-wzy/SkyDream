@@ -132,7 +132,7 @@ object SDTStage3 : Initable {
         stage3,
         "HeartOfTheSea", "海洋之心",
         6 orderWith 4, task3_3,
-        createTaskSymbol(Material.HEART_OF_THE_SEA, "§b将§e装满鹦鹉螺壳的§c投掷器","§b放在水流灌注机的圆石墙上","§d然后不断右击底部的圆石墙来制造海洋之心！"),
+        createTaskSymbol(Material.HEART_OF_THE_SEA, "§b将§c投掷器§b放在水流灌注机的圆石墙上","§b在投掷器的§c每个格子§b上均放§c一个§e鹦鹉螺壳","§d然后不断右击底部的圆石墙来制造海洋之心！"),
         arrayOf(SItem(Material.TURTLE_EGG)),
         arrayOf(SItem(Material.HEART_OF_THE_SEA)),
         "§d钓 鱼 大 师","§f任务需要:","§b海洋之心 x1","§f任务奖励:","§e海龟蛋 x1"

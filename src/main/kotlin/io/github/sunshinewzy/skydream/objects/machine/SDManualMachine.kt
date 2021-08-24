@@ -13,6 +13,7 @@ object SDManualMachine : Initable {
         Crucible.init()
         StoneBarrel.init()
         HeavyMillstone.init()
+        Composter.init()
 //        FluidTank.init()
     }
 }

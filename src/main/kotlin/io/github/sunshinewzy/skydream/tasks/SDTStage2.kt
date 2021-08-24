@@ -1,10 +1,7 @@
 package io.github.sunshinewzy.skydream.tasks
 
 import io.github.sunshinewzy.skydream.objects.item.SDItem
-import io.github.sunshinewzy.skydream.objects.machine.manual.Crucible
-import io.github.sunshinewzy.skydream.objects.machine.manual.Millstone
-import io.github.sunshinewzy.skydream.objects.machine.manual.Squeezer
-import io.github.sunshinewzy.skydream.objects.machine.manual.WaterPouringMachine
+import io.github.sunshinewzy.skydream.objects.machine.manual.*
 import io.github.sunshinewzy.skydream.tasks.SDTask.stage2
 import io.github.sunshinewzy.sunstcore.interfaces.Initable
 import io.github.sunshinewzy.sunstcore.modules.task.tasks.ItemCraftTask
@@ -159,6 +156,17 @@ object SDTStage2 : Initable {
         arrayOf(SItem(Material.IRON_PICKAXE)),
         arrayOf(SItem(Material.COBBLESTONE, 64)),
         "§f任务需要:","§b圆石 x64","§f任务奖励:","§e铁镐 x1","§e<解锁第三阶段>"
+    )
+    
+    val task5_2 = MachineTask(
+        stage2,
+        "Composter", "堆肥器",
+        7 orderWith 4, task5_1,
+        SItem.createTaskSymbol(Material.COMPOSTER, "&d有了充足的圆石就来养些花吧", "&6手持9个骨粉不断右键堆肥器的堆肥桶", "&6来制造富集骨粉！"),
+        arrayOf(SItem(Material.BONE_MEAL, 16), SItem(Material.IRON_SHOVEL)),
+        Composter, 0,
+        arrayOf(SDItem.ENRICHED_BONE_MEAL.item),
+        "&d在草方块上使用富集骨粉","&d会长出各种各样的花哦~","&f任务需要:","&b富集骨粉 x1","&f任务奖励:","&e骨粉 x16","&e铁锹 x1"
     )
     
 }

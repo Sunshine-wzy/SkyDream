@@ -1,19 +1,11 @@
 plugins {
-    val kotlinVersion = "1.4.30"
+    val kotlinVersion = "1.5.10"
     kotlin("jvm") version kotlinVersion
-    kotlin("plugin.serialization") version kotlinVersion
 
-    id("maven")
     id("com.github.johnrengelman.shadow") version "5.2.0"
 }
 group = "io.github.sunshinewzy"
-version = "4.3"
-
-kotlin {
-    target { 
-        
-    }
-}
+version = "4.4"
 
 repositories {
     
@@ -22,20 +14,12 @@ repositories {
     }
     mavenLocal()
     mavenCentral()
-    jcenter()
 
     maven { url = uri("https://jitpack.io") }
-    maven("https://dl.bintray.com/kotlin/kotlin-eap")
-    maven {
-        name = "spigotmc-repo"
-        url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
-    }
 }
 
 dependencies {
-//    implementation("com.github.Sunshine-wzy:SunSTCore:1.0.9.5")
-    
-    testImplementation(kotlin("test-junit"))
+    compileOnly(kotlin("stdlib"))
 
     compileOnly(fileTree(mapOf("dir" to "cores", "include" to listOf("*.jar"))))
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
@@ -47,7 +31,13 @@ tasks {
         archiveBaseName.set("SkyDream")
         archiveVersion.set(project.version.toString())
         destinationDirectory.set(file("F:/Kotlin/Debug/Spigot-1.16.5/plugins"))
-//        destinationDirectory.set(file("F:/Java/Debug/Spigot-1.12/plugins"))
+    }
+    
+    shadowJar {
+        archiveBaseName.set("SkyDream")
+        archiveVersion.set(project.version.toString())
+        archiveClassifier.set("")
+        destinationDirectory.set(file("F:/Kotlin/Debug/Spigot-1.16.5/plugins"))
     }
     
     compileKotlin {
@@ -59,6 +49,16 @@ tasks {
     compileTestKotlin {
         kotlinOptions {
             jvmTarget = "1.8"
+        }
+    }
+
+    processResources {
+        filesMatching("plugin.yml") {
+            expand(
+                "name" to rootProject.name,
+                "main" to "${project.group}.skydream.SkyDream",
+                "version" to project.version
+            )
         }
     }
 }

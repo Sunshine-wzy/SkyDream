@@ -56,6 +56,10 @@ object HeavyMillstone : SMachineManual(
         SCoordinate(0, 4, 0)
     )
 ) {
+    
+    init {
+        isCancelInteract = false
+    }
 
     override fun manualRun(event: SMachineRunEvent.Manual, level: Short) {
         val loc = event.loc.subtractClone(2)

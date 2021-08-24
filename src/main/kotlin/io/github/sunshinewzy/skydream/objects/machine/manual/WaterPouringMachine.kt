@@ -108,7 +108,7 @@ object WaterPouringMachine : SMachineManual(
                 val state = block.state
                 if(state is Dropper) {
                     val inv = state.inventory
-                    if(inv.containsItem(SItem(Material.NAUTILUS_SHELL, 64), 9)) {
+                    if(inv.containsItem(SItem(Material.NAUTILUS_SHELL, 1), 9)) {
                         when(addMetaCnt(centerLoc, 8)) {
                             SMachineStatus.START -> {
                                 player.playSound(loc, Sound.ITEM_BUCKET_FILL, 1f, 0f)
@@ -119,8 +119,8 @@ object WaterPouringMachine : SMachineManual(
                             }
 
                             SMachineStatus.FINISH -> {
-                                if(inv.removeSItem(SItem(Material.NAUTILUS_SHELL, 64))) {
-                                    inv.setItem(0, SItem(Material.HEART_OF_THE_SEA))
+                                if(inv.removeSItem(SItem(Material.NAUTILUS_SHELL, 1), 9)) {
+                                    inv.addItem(SItem(Material.HEART_OF_THE_SEA))
                                 }
                                 player.playSound(loc, Sound.ITEM_BUCKET_EMPTY, 1f, 2f)
                             }

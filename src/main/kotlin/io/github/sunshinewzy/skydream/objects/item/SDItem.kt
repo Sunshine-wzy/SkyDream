@@ -84,15 +84,14 @@ enum class SDItem(item: ItemStack) : Itemable {
 	SILKWORM(SItem(LIGHT_GRAY_DYE, "§8蚕", "§a将我拿在副手，用主手喂桑叶给我吃哦~")),
 	MULBERRY_LEAVES(SItem(FERN, 2, 1, "§a桑叶", "§f拿在主手时可喂食副手的蚕").addAction { 
 	    val offHandItem = player.inventory.itemInOffHand
-        if(offHandItem.type != AIR){
+        if(offHandItem.type != AIR) {
             when(offHandItem.type) {
                 LIGHT_GRAY_DYE -> {
-                    if(offHandItem.isItemSimilar(SILKWORM, ignoreLastTwoLine = true)){
-                        if(offHandItem.addUseCount(4)){
+                    if(offHandItem.isItemSimilar(SILKWORM, ignoreLastTwoLine = true)) {
+                        if(offHandItem.addUseCount(player, 4)){
                             player.giveItem(SItem(STRING, Random.nextInt(3) + 1))
                             player.playSound(player.location, Sound.ENTITY_PLAYER_BURP, 1f, 1f)
-                        }
-                        else{
+                        } else {
                             player.giveItem(SItem(STRING))
                             player.playSound(player.location, Sound.ENTITY_GENERIC_EAT, 1f, 1f)
                             item?.removeOne()
@@ -101,12 +100,11 @@ enum class SDItem(item: ItemStack) : Itemable {
                 }
                 
                 DIRT -> {
-                    if(offHandItem.addUseCount(16)){
+                    if(offHandItem.addUseCount(player, 16)) {
                         offHandItem.amount--
                         player.giveItem(SItem(GRASS_BLOCK))
                         player.playSound(player.location, Sound.BLOCK_GRASS_PLACE, 1f, 1.5f)
-                    }
-                    else{
+                    } else {
                         item?.removeOne()
                         player.giveItem(SItem(GRASS, 1))
                         player.playSound(player.location, Sound.BLOCK_GRASS_HIT, 1f, 0.5f)
@@ -150,7 +148,9 @@ enum class SDItem(item: ItemStack) : Itemable {
         "HAMMER_IRON",
         mapOf('x' to IRON_INGOT, 'y' to STICK, 'z' to STRING),
         "xx ","xzy","xx "
-    )
+    ),
+    
+    ENRICHED_BONE_MEAL(SItem(BONE_MEAL, "&d富集骨粉"))
     
     
     ;
