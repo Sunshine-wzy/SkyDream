@@ -5,14 +5,12 @@ import io.github.sunshinewzy.sunstcore.modules.machine.*
 import io.github.sunshinewzy.sunstcore.objects.SBlock
 import io.github.sunshinewzy.sunstcore.objects.SCoordinate
 import io.github.sunshinewzy.sunstcore.objects.SItem
-import io.github.sunshinewzy.sunstcore.utils.addClone
-import io.github.sunshinewzy.sunstcore.utils.containsItem
-import io.github.sunshinewzy.sunstcore.utils.removeSItem
-import io.github.sunshinewzy.sunstcore.utils.sendMsg
+import io.github.sunshinewzy.sunstcore.utils.*
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.block.Dropper
+import org.bukkit.inventory.ItemStack
 
 object WaterPouringMachine : SMachineManual(
     "WaterPouringMachine",
@@ -108,7 +106,7 @@ object WaterPouringMachine : SMachineManual(
                 val state = block.state
                 if(state is Dropper) {
                     val inv = state.inventory
-                    if(inv.containsItem(SItem(Material.NAUTILUS_SHELL, 1), 9)) {
+                    if(inv.containsItem(SItem(Material.NAUTILUS_SHELL), 9)) {
                         when(addMetaCnt(centerLoc, 8)) {
                             SMachineStatus.START -> {
                                 player.playSound(loc, Sound.ITEM_BUCKET_FILL, 1f, 0f)
@@ -119,7 +117,7 @@ object WaterPouringMachine : SMachineManual(
                             }
 
                             SMachineStatus.FINISH -> {
-                                if(inv.removeSItem(SItem(Material.NAUTILUS_SHELL, 1), 9)) {
+                                if(inv.removeSItem(SItem(Material.NAUTILUS_SHELL), 9)) {
                                     inv.addItem(SItem(Material.HEART_OF_THE_SEA))
                                 }
                                 player.playSound(loc, Sound.ITEM_BUCKET_EMPTY, 1f, 2f)
@@ -142,9 +140,9 @@ object WaterPouringMachine : SMachineManual(
         if(topBlock.type != Material.WATER)
             return false
         
-        if(isFirst){
+        if(isFirst) {
             val upLoc = loc.addClone(1)
-            if(upLoc.block.type == Material.COBBLESTONE_WALL){
+            if(upLoc.block.type == Material.COBBLESTONE_WALL) {
                 upLoc.block.type = Material.AIR
                 return true
             }
@@ -152,6 +150,19 @@ object WaterPouringMachine : SMachineManual(
         }
 
         return true
+    }
+    
+    
+    private fun Location.dropItem(item: ItemStack) {
+        subtractClone(2).block.getHopper()?.let { 
+            val inv = it.inventory
+            if(!inv.isFull()) {
+                inv.addItem(item)
+                return
+            }
+        }
+        
+        world?.dropItem(addClone(1), item)
     }
     
 }

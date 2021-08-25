@@ -211,6 +211,16 @@ object SDTStage3 : Initable {
         "§d菌 岩 工 业", "§f任务需要:", "§b绯红菌岩 x16", "§b诡异菌岩 x16", "§f任务奖励:", "§e下界岩 x16", "§e骨粉 x16"
     )
     
+    val task6_6 = ItemTask(
+        stage3,
+        "MakeObsidian", "制造黑曜石",
+        6 orderWith 2, task6_1,
+        createTaskSymbol(Material.OBSIDIAN, "&d手动挖黑曜石太慢", "&d试试石桶制法 批量制造！", "&b在石桶底部中间的平滑石台阶下方", "&b放一个装有岩浆桶的&c小箱子", "&6并将水放在石桶中间的圆石墙上", "&6空手右键中间的圆石墙来批量制造黑曜石"),
+        arrayOf(SItem(Material.BUCKET, 16)),
+        arrayOf(SItem(Material.OBSIDIAN, 16)),
+        "&d黑 曜 石 工 业", "&f任务需要:", "&b黑曜石 x16", "&f任务奖励:", "&e桶 x16"
+    )
+    
 //    val task3_1 = MachineTask(
 //        stage3,
 //        "ForgingTable", "锻造台",

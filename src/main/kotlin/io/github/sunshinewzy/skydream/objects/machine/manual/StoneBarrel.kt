@@ -7,13 +7,9 @@ import io.github.sunshinewzy.sunstcore.modules.machine.SMachineRunEvent
 import io.github.sunshinewzy.sunstcore.modules.machine.SMachineSize
 import io.github.sunshinewzy.sunstcore.modules.machine.SMachineStructure
 import io.github.sunshinewzy.sunstcore.objects.SBlock
-import io.github.sunshinewzy.sunstcore.objects.SBlock.Companion.getSBlock
 import io.github.sunshinewzy.sunstcore.objects.SCoordinate
 import io.github.sunshinewzy.sunstcore.objects.SItem
-import io.github.sunshinewzy.sunstcore.utils.addClone
-import io.github.sunshinewzy.sunstcore.utils.asPair
-import io.github.sunshinewzy.sunstcore.utils.getSMetadata
-import io.github.sunshinewzy.sunstcore.utils.sendMsg
+import io.github.sunshinewzy.sunstcore.utils.*
 import org.bukkit.Material
 import org.bukkit.Sound
 
@@ -42,9 +38,7 @@ object StoneBarrel : SMachineManual(
 ) {
     override fun manualRun(event: SMachineRunEvent.Manual, level: Short) {
         val loc = event.loc.addClone(0, 1, 0)
-        val upLoc = loc.addClone(0, 1, 0)
         val block = loc.block
-        val sBlock = loc.getSBlock()
         val player = event.player
         val inv = player.inventory
         val offHandItem = inv.itemInOffHand
@@ -150,6 +144,22 @@ object StoneBarrel : SMachineManual(
                     }
                 }
 
+            }
+            
+            Material.WATER -> {
+                event.loc.subtractClone(2).block.getChest()?.let { chest ->
+                    val chestInv = chest.inventory
+                    if(chestInv.removeSItem(Material.LAVA_BUCKET)) {
+                        player.playSound(loc, Sound.BLOCK_LAVA_EXTINGUISH, 1f, 1f)
+                        loc.world?.apply {
+                            dropItemNaturally(loc, SItem(Material.OBSIDIAN))
+                            dropItemNaturally(loc, SItem(Material.BUCKET))
+                        }
+                        return
+                    }
+                }
+                
+                player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 1.8f)
             }
 
             Material.AIR -> {
