@@ -36,7 +36,7 @@ object SDTStage1 : Initable {
         3 orderWith 4,
         task1_1,
         SItem.createTaskSymbol(Material.WOODEN_SWORD, "§6升级你的钩子！"),
-        arrayOf(SItem(Material.DIRT, 10)),
+        arrayOf(SItem(Material.TORCH, 10)),
         SDItem.HOOK_WOOD.item,
         "§f任务需要:","§b木钩 x1","§f任务奖励:","§e火把 x8"
     )
