@@ -15,6 +15,7 @@ import io.github.sunshinewzy.sunstcore.utils.giveItemInMainHand
 import io.github.sunshinewzy.sunstcore.utils.sendMsg
 import org.bukkit.Material
 import org.bukkit.Sound
+import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.inventory.ItemStack
 
 object FluidTank : SMachineManual(
@@ -133,7 +134,7 @@ object FluidTank : SMachineManual(
     
 }
 
-data class SFluid(val name: String, val bucket: ItemStack, val blockType: Material, var volume: Int = 0) {
+data class SFluid(var name: String = "空", var bucket: ItemStack = SItem(Material.AIR), var blockType: Material = Material.AIR, var volume: Int = 0) : ConfigurationSerializable {
     
     constructor(name: String, bucket: Material, blockType: Material, volume: Int = 0) : this(name, SItem(bucket), blockType, volume)
 
@@ -160,7 +161,15 @@ data class SFluid(val name: String, val bucket: ItemStack, val blockType: Materi
         return removeVolume - volume
     }
     
-    
+    override fun serialize(): MutableMap<String, Any> {
+        val map = HashMap<String, Any>()
+        map["name"] = name
+        map["bucket"] = bucket
+        map["blockType"] = blockType.name
+        map["volume"] = volume
+        return map
+    }
+
     companion object {
         val bucketToFluid = hashMapOf<Material, ArrayList<SFluid>>()
         
@@ -180,6 +189,38 @@ data class SFluid(val name: String, val bucket: ItemStack, val blockType: Materi
             if(listFluid != null) {
                 listFluid += sFluid
             } else bucketToFluid[sFluid.bucket.type] = arrayListOf(sFluid)
+        }
+        
+
+        @JvmStatic
+        fun deserialize(map: Map<String, Any>): SFluid {
+            val sFluid = SFluid()
+            
+            map["name"]?.let { name ->
+                if(name is String) {
+                    sFluid.name = name
+                }
+            }
+
+            map["bucket"]?.let { bucket ->
+                if(bucket is ItemStack) {
+                    sFluid.bucket = bucket
+                }
+            }
+
+            map["blockType"]?.let { blockType ->
+                if(blockType is String) {
+                    sFluid.blockType = Material.valueOf(blockType)
+                }
+            }
+
+            map["volume"]?.let { volume ->
+                if(volume is Int) {
+                    sFluid.volume = volume
+                }
+            }
+            
+            return sFluid
         }
     }
     

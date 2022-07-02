@@ -14,6 +14,6 @@ object SDManualMachine : Initable {
         StoneBarrel.init()
         HeavyMillstone.init()
         Composter.init()
-//        FluidTank.init()
+        FluidTank.init()
     }
 }

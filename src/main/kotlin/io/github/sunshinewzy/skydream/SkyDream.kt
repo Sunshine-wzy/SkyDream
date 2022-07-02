@@ -4,11 +4,13 @@ import io.github.sunshinewzy.skydream.commands.SDCommand
 import io.github.sunshinewzy.skydream.listeners.SDSubscriber
 import io.github.sunshinewzy.skydream.objects.item.SDItem
 import io.github.sunshinewzy.skydream.objects.machine.SDMachine
+import io.github.sunshinewzy.skydream.objects.machine.manual.SFluid
 import io.github.sunshinewzy.skydream.tasks.SDTask
 import io.github.sunshinewzy.sunstcore.libs.bstats.bukkit.Metrics
 import io.github.sunshinewzy.sunstcore.utils.SunSTTestApi
 import io.github.sunshinewzy.sunstcore.utils.subscribeEvent
 import org.bukkit.Bukkit
+import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.EquipmentSlot
@@ -44,6 +46,8 @@ class SkyDream : JavaPlugin() {
         logger.info("作者: Sunshine_wzy")
         
         saveDefaultConfig()
+
+        registerSerialization()
         
         //注册监听器
         registerListeners()
@@ -64,6 +68,12 @@ class SkyDream : JavaPlugin() {
         version = Bukkit.getServer().javaClass.getPackage().name.split("\\.".toRegex()).toTypedArray()[3]
         nms = "net.minecraft.server.$version."
         obc = "org.bukkit.craftbukkit.$version."
+    }
+    
+    private fun registerSerialization() {
+        arrayOf(SFluid::class.java).forEach {
+            ConfigurationSerialization.registerClass(it)
+        }
     }
     
     private fun registerListeners() {
