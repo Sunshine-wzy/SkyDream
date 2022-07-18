@@ -5,7 +5,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "5.2.0"
 }
 group = "io.github.sunshinewzy"
-version = "4.4.1"
+version = "4.4.2"
 
 repositories {
     
@@ -30,14 +30,12 @@ tasks {
     jar {
         archiveBaseName.set("SkyDream")
         archiveVersion.set(project.version.toString())
-        destinationDirectory.set(file("F:/Kotlin/Debug/Spigot-1.16.5/plugins"))
     }
     
     shadowJar {
         archiveBaseName.set("SkyDream")
         archiveVersion.set(project.version.toString())
         archiveClassifier.set("")
-        destinationDirectory.set(file("F:/Kotlin/Debug/Spigot-1.16.5/plugins"))
     }
     
     compileKotlin {
