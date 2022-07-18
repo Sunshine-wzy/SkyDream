@@ -49,7 +49,7 @@ object HeavyMillstone : SMachineManual(
             'h' to SBlock(Material.HOPPER),
             's' to SBlock(Material.STONE_BRICK_WALL),
             'y' to SBlock(Material.OBSIDIAN),
-            'k' to SBlock(Material.CRYING_OBSIDIAN),
+            'k' to SBlock(Material.DIAMOND_BLOCK),
             'f' to SBlock(Material.IRON_BARS),
             'i' to SBlock(Material.IRON_BLOCK),
         ),

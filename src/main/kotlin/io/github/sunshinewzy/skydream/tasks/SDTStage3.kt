@@ -16,7 +16,27 @@ import org.bukkit.Material
 object SDTStage3 : Initable {
 
     override fun init() {
-        
+        try {
+            val task6_4 = ItemTask(
+                stage3,
+                "NetherPlantCollector", "下界植物收藏家",
+                8 orderWith 4, task6_3,
+                createTaskSymbol(Material.NETHER_WART, "§d用钻石筛子筛灵魂沙来获得", "§e下界疣(地狱疣) 绯红菌 诡异菌"),
+                arrayOf(SItem(Material.NETHERRACK, 16), SItem(Material.DIAMOND_SWORD)),
+                arrayOf(SItem(Material.NETHER_WART, 16), SItem(Material.CRIMSON_FUNGUS), SItem(Material.WARPED_FUNGUS)),
+                "§d下界种植业复兴", "§f任务需要:", "§b下界疣 x16", "§b绯红菌 x1", "§b诡异菌 x1", "§f任务奖励:", "§e下界岩 x16", "§e钻石剑 x1"
+            )
+
+            val task6_5 = ItemTask(
+                stage3,
+                "MakeNylium", "制作菌岩",
+                7 orderWith 4, task6_4,
+                createTaskSymbol(Material.CRIMSON_NYLIUM, "§d将岩浆放在石桶中间的圆石墙上", "§e副手拿绯红/诡异菌不断右键", "§e中间的圆石墙来制造绯红/诡异菌岩！"),
+                arrayOf(SItem(Material.NETHERRACK, 16), SItem(Material.BONE_MEAL, 16)),
+                arrayOf(SItem(Material.CRIMSON_NYLIUM, 16), SItem(Material.WARPED_NYLIUM, 16)),
+                "§d菌 岩 工 业", "§f任务需要:", "§b绯红菌岩 x16", "§b诡异菌岩 x16", "§f任务奖励:", "§e下界岩 x16", "§e骨粉 x16"
+            )
+        } catch (_: Exception) { }
     }
     
     val task1_1 = MachineTask(
@@ -91,10 +111,10 @@ object SDTStage3 : Initable {
         "HeavyMillstone", "重型磨盘",
         4 orderWith 4, task2_1,
         createTaskSymbol(Material.STONE_BRICK_WALL, "§d磨盘效率太低？","§d快试试重型磨盘","§e5x5x5大型机器","§a一次研磨9个方块","§a包您满意！"),
-        arrayOf(SItem(Material.GRAVEL, 64), SItem(Material.NETHERITE_PICKAXE)),
+        arrayOf(SItem(Material.GRAVEL, 64), SItem(Material.DIAMOND_PICKAXE)),
         HeavyMillstone, 0,
         emptyArray(),
-        "§d你的第一台大型机器","§7悄悄告诉你:","§7在重型磨盘顶部的石砖墙上放一个§c小箱子","§7在箱子里放入要研磨的方块","§7重型磨盘就能自动从中抽取方块！","§f任务奖励:","§e沙砾 x64","§e下界合金镐 x1"
+        "§d你的第一台大型机器","§7悄悄告诉你:","§7在重型磨盘顶部的石砖墙上放一个§c小箱子","§7在箱子里放入要研磨的方块","§7重型磨盘就能自动从中抽取方块！","§f任务奖励:","§e沙砾 x64","§e钻石镐 x1"
     )
     
     val task3_1 = MachineTask(
@@ -186,29 +206,9 @@ object SDTStage3 : Initable {
         "MakeSoulSand", "制作灵魂沙",
         7 orderWith 2, task6_1,
         createTaskSymbol(Material.SOUL_SAND, "§b将下界岩放在水流灌注机的圆石墙上","§d然后不断右击底部的圆石墙来制造灵魂沙！"),
-        arrayOf(SItem(Material.NETHERRACK, 32), SItem(Material.NETHERITE_SHOVEL)),
+        arrayOf(SItem(Material.NETHERRACK, 32), SItem(Material.DIAMOND_SHOVEL)),
         arrayOf(SItem(Material.SOUL_SAND, 16)),
-        "§d灵 魂 沙 工 业", "§f任务需要:", "§b灵魂沙 x16", "§f任务奖励:", "§e下界岩 x32", "§e下界合金锹 x1"
-    )
-    
-    val task6_4 = ItemTask(
-        stage3,
-        "NetherPlantCollector", "下界植物收藏家",
-        8 orderWith 4, task6_3,
-        createTaskSymbol(Material.NETHER_WART, "§d用钻石筛子筛灵魂沙来获得", "§e下界疣(地狱疣) 绯红菌 诡异菌"),
-        arrayOf(SItem(Material.NETHERRACK, 16), SItem(Material.DIAMOND_SWORD)),
-        arrayOf(SItem(Material.NETHER_WART, 16), SItem(Material.CRIMSON_FUNGUS), SItem(Material.WARPED_FUNGUS)),
-        "§d下界种植业复兴", "§f任务需要:", "§b下界疣 x16", "§b绯红菌 x1", "§b诡异菌 x1", "§f任务奖励:", "§e下界岩 x16", "§e钻石剑 x1"
-    )
-    
-    val task6_5 = ItemTask(
-        stage3,
-        "MakeNylium", "制作菌岩",
-        7 orderWith 4, task6_4,
-        createTaskSymbol(Material.CRIMSON_NYLIUM, "§d将岩浆放在石桶中间的圆石墙上", "§e副手拿绯红/诡异菌不断右键", "§e中间的圆石墙来制造绯红/诡异菌岩！"),
-        arrayOf(SItem(Material.NETHERRACK, 16), SItem(Material.BONE_MEAL, 16)),
-        arrayOf(SItem(Material.CRIMSON_NYLIUM, 16), SItem(Material.WARPED_NYLIUM, 16)),
-        "§d菌 岩 工 业", "§f任务需要:", "§b绯红菌岩 x16", "§b诡异菌岩 x16", "§f任务奖励:", "§e下界岩 x16", "§e骨粉 x16"
+        "§d灵 魂 沙 工 业", "§f任务需要:", "§b灵魂沙 x16", "§f任务奖励:", "§e下界岩 x32", "§e钻石锹 x1"
     )
     
     val task6_6 = ItemTask(
