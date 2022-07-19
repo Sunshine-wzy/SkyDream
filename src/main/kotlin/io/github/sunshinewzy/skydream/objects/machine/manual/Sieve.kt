@@ -138,20 +138,33 @@ object Sieve : SMachineManual(
                 SRandomItem(1, SItem(Material.COCOA_BEANS)),
                 SRandomItem(1, SItem(Material.SWEET_BERRIES))
             ), 4),
-            SieveRecipe(5, SBlock(Material.SOUL_SAND), SRandomItems(
-                SRandomItem(25, SItem(Material.QUARTZ)).setRandomAmount(3),
-                SRandomItem(5, SItem(Material.NETHERITE_SCRAP)),
-                SRandomItem(1, SItem(Material.GHAST_TEAR)),
-                SRandomItem(10, SItem(Material.NETHER_WART)),
-                SRandomItem(5, SItem(Material.CRIMSON_FUNGUS)),
-                SRandomItem(5, SItem(Material.WARPED_FUNGUS))
-            ), 4, sieveSound = Sound.BLOCK_STONE_HIT, completeSound = Sound.BLOCK_STONE_BREAK),
             SieveRecipe(5, SBlock(Material.CLAY), SRandomItems(
                 SRandomItem(25, SItem(Material.REDSTONE)).setRandomAmount(3),
                 SRandomItem(25, SItem(Material.GLOWSTONE_DUST)).setRandomAmount(3)
             ), 4)
-
         )
+        
+        try {
+            addSieveRecipe(
+                SieveRecipe(5, SBlock(Material.SOUL_SAND), SRandomItems(
+                    SRandomItem(25, SItem(Material.QUARTZ)).setRandomAmount(3),
+                    SRandomItem(5, SItem(Material.NETHERITE_SCRAP)),
+                    SRandomItem(1, SItem(Material.GHAST_TEAR)),
+                    SRandomItem(10, SItem(Material.NETHER_WART)),
+                    SRandomItem(5, SItem(Material.CRIMSON_FUNGUS)),
+                    SRandomItem(5, SItem(Material.WARPED_FUNGUS))
+                ), 4, sieveSound = Sound.BLOCK_STONE_HIT, completeSound = Sound.BLOCK_STONE_BREAK),
+            )
+        } catch (_: Exception) {
+            addSieveRecipe(
+                SieveRecipe(5, SBlock(Material.SOUL_SAND), SRandomItems(
+                    SRandomItem(25, SItem(Material.QUARTZ)).setRandomAmount(3),
+                    SRandomItem(1, SItem(Material.GHAST_TEAR)),
+                    SRandomItem(10, SItem(Material.NETHER_WART))
+                ), 4, sieveSound = Sound.BLOCK_STONE_HIT, completeSound = Sound.BLOCK_STONE_BREAK),
+            )
+        }
+        
         
         
         editItemsMenu.createEdge(SItem(Material.WHITE_STAINED_GLASS_PANE))

@@ -83,7 +83,9 @@ object StoneBarrel : SMachineManual(
                             }
                             else{
                                 cnt = 0
-                                block.type = Material.CRIMSON_NYLIUM
+                                try {
+                                    block.type = Material.CRIMSON_NYLIUM
+                                } catch (_: Exception) {}
                                 player.world.playSound(loc, Sound.ITEM_BUCKET_EMPTY_LAVA, 1f, 2f)
                             }
                         }
@@ -95,7 +97,9 @@ object StoneBarrel : SMachineManual(
                             }
                             else{
                                 cnt = 0
-                                block.type = Material.WARPED_NYLIUM
+                                try {
+                                    block.type = Material.WARPED_NYLIUM
+                                } catch (_: Exception) {}
                                 player.world.playSound(loc, Sound.ITEM_BUCKET_EMPTY_LAVA, 1f, 2f)
                             }
                         }
@@ -123,24 +127,32 @@ object StoneBarrel : SMachineManual(
                         player.playSound(loc, Sound.ITEM_BUCKET_FILL_LAVA, 1f, 2f)
                     }
 
-                    // + 1绯红菌 -> 1绯红菌岩
-                    Material.CRIMSON_FUNGUS -> {
-                        offHandItem.amount -= 1
-                        pair = "CRIMSON_NYLIUM" to 8
-                        player.playSound(loc, Sound.ITEM_BUCKET_FILL_LAVA, 1f, 2f)
-                    }
-
-                    // + 1诡异菌 -> 1诡异菌岩
-                    Material.WARPED_FUNGUS -> {
-                        offHandItem.amount -= 1
-                        pair = "WARPED_NYLIUM" to 8
-                        player.playSound(loc, Sound.ITEM_BUCKET_FILL_LAVA, 1f, 2f)
-                    }
-
-
                     else -> {
-                        player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 1.8f)
-                        player.sendMsg(name, "§4您副手上的物品无法被塞进装有岩浆的石桶！")
+                        try {
+                            when(offHandItem.type) {
+                                // + 1绯红菌 -> 1绯红菌岩
+                                Material.CRIMSON_FUNGUS -> {
+                                    offHandItem.amount -= 1
+                                    pair = "CRIMSON_NYLIUM" to 8
+                                    player.playSound(loc, Sound.ITEM_BUCKET_FILL_LAVA, 1f, 2f)
+                                }
+
+                                // + 1诡异菌 -> 1诡异菌岩
+                                Material.WARPED_FUNGUS -> {
+                                    offHandItem.amount -= 1
+                                    pair = "WARPED_NYLIUM" to 8
+                                    player.playSound(loc, Sound.ITEM_BUCKET_FILL_LAVA, 1f, 2f)
+                                }
+                                
+                                else -> {
+                                    player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 1.8f)
+                                    player.sendMsg(name, "§4您副手上的物品无法被塞进装有岩浆的石桶！")
+                                }
+                            }
+                        } catch (_: Exception) {
+                            player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 1.8f)
+                            player.sendMsg(name, "§4您副手上的物品无法被塞进装有岩浆的石桶！")
+                        }
                     }
                 }
 
