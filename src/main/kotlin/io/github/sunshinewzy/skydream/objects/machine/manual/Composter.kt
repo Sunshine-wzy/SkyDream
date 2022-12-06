@@ -9,10 +9,8 @@ import io.github.sunshinewzy.sunstcore.modules.machine.SMachineStructure
 import io.github.sunshinewzy.sunstcore.objects.SBlock
 import io.github.sunshinewzy.sunstcore.objects.SCoordinate
 import io.github.sunshinewzy.sunstcore.objects.SItem
-import io.github.sunshinewzy.sunstcore.objects.SItem.Companion.isItemSimilar
-import io.github.sunshinewzy.sunstcore.utils.BlockOperator.Companion.operate
-import io.github.sunshinewzy.sunstcore.utils.addClone
-import io.github.sunshinewzy.sunstcore.utils.sendMsg
+import io.github.sunshinewzy.sunstcore.utils.BlockOperator
+import io.github.sunshinewzy.sunstcore.utils.SExtensionKt
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -51,9 +49,9 @@ object Composter : SMachineManual(
         val player = event.player
         val handItem = player.inventory.itemInMainHand
         val loc = event.loc
-        val upLoc = loc.addClone(1)
+        val upLoc = SExtensionKt.addClone(loc, 1)
         
-        if(handItem.isItemSimilar(boneMeal)) {
+        if(SItem.isItemSimilar(handItem, boneMeal)) {
             if(handItem.amount >= 9) {
                 if(addMetaCnt(event, 8).flag) {
                     player.playSound(loc, Sound.BLOCK_COMPOSTER_FILL, 1f, 1.5f)
@@ -63,7 +61,7 @@ object Composter : SMachineManual(
                     player.playSound(loc, Sound.BLOCK_COMPOSTER_FILL_SUCCESS, 1f, 1.5f)
                 }
             } else {
-                player.sendMsg(name, "&c至少需要9个骨粉")
+                SExtensionKt.sendMsg(player, name, "&c至少需要9个骨粉")
                 player.playSound(loc, Sound.ENTITY_VILLAGER_NO, 1f, 0.5f)
             }
         } else {
@@ -77,17 +75,19 @@ object Composter : SMachineManual(
         var cornflower = false
         var oxeyeDaisy = false
         
-        loc.addClone(1).block.operate { 
-            horizontal(true) {
-                when(type) {
-                    Material.POPPY -> poppy = true
-                    Material.DANDELION -> dandelion = true
-                    Material.CORNFLOWER -> cornflower = true
-                    Material.OXEYE_DAISY -> oxeyeDaisy = true
-                    
-                    else -> {}
+        BlockOperator.operate(SExtensionKt.addClone(loc, 1).block) { operator ->
+            operator.apply {
+                horizontal(true) { theBlock ->
+                    when(theBlock.type) {
+                        Material.POPPY -> poppy = true
+                        Material.DANDELION -> dandelion = true
+                        Material.CORNFLOWER -> cornflower = true
+                        Material.OXEYE_DAISY -> oxeyeDaisy = true
+
+                        else -> {}
+                    }
+                    false
                 }
-                false
             }
         }
         

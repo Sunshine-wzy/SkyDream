@@ -3,12 +3,12 @@ package io.github.sunshinewzy.skydream.tasks
 import io.github.sunshinewzy.skydream.objects.item.SDItem
 import io.github.sunshinewzy.skydream.objects.machine.manual.*
 import io.github.sunshinewzy.skydream.tasks.SDTask.stage2
+import io.github.sunshinewzy.skydream.util.orderWith
 import io.github.sunshinewzy.sunstcore.interfaces.Initable
 import io.github.sunshinewzy.sunstcore.modules.task.tasks.ItemCraftTask
 import io.github.sunshinewzy.sunstcore.modules.task.tasks.ItemTask
 import io.github.sunshinewzy.sunstcore.modules.task.tasks.MachineTask
 import io.github.sunshinewzy.sunstcore.objects.SItem
-import io.github.sunshinewzy.sunstcore.objects.orderWith
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.inventory.meta.PotionMeta

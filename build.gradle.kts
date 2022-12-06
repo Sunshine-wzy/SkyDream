@@ -5,7 +5,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "5.2.0"
 }
 group = "io.github.sunshinewzy"
-version = "4.4.2"
+version = "4.4.3"
 
 repositories {
     
@@ -36,6 +36,8 @@ tasks {
         archiveBaseName.set("SkyDream")
         archiveVersion.set(project.version.toString())
         archiveClassifier.set("")
+
+        relocate("kotlin", "kotlin1510")
     }
     
     compileKotlin {

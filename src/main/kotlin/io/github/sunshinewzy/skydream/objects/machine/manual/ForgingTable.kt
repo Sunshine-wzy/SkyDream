@@ -38,10 +38,10 @@ object ForgingTable : SMachineManual(
             ArrayList<Int>().apply {
                 for (i in 2..4) {
                     for (j in 2..4) {
-                        add(i orderWith j)
+                        add(SOrderKt.orderWith(i, j))
                     }
                 }
-                add(7 orderWith 3)
+                add(SOrderKt.orderWith(7, 3))
             }, id
     )
     

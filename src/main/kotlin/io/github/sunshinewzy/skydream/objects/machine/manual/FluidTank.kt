@@ -9,10 +9,8 @@ import io.github.sunshinewzy.sunstcore.modules.machine.SMachineStructure
 import io.github.sunshinewzy.sunstcore.objects.SBlock
 import io.github.sunshinewzy.sunstcore.objects.SCoordinate
 import io.github.sunshinewzy.sunstcore.objects.SItem
-import io.github.sunshinewzy.sunstcore.objects.SItem.Companion.isItemSimilar
 import io.github.sunshinewzy.sunstcore.objects.SLocation
-import io.github.sunshinewzy.sunstcore.utils.giveItemInMainHand
-import io.github.sunshinewzy.sunstcore.utils.sendMsg
+import io.github.sunshinewzy.sunstcore.utils.SExtensionKt
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.configuration.serialization.ConfigurationSerializable
@@ -54,14 +52,14 @@ object FluidTank : SMachineManual(
                     val sFluid = pair.second
 
                     if(sFluid == null || pair.first == -1) {
-                        player.sendMsg(name, "&c空")
+                        SExtensionKt.sendMsg(player, name, "&c空")
                         return
                     }
 
                     when(pair.first) {
                         0 -> {
                             handItem.amount--
-                            player.giveItemInMainHand(sFluid.bucket)
+                            SExtensionKt.giveItemInMainHand(player, sFluid.bucket)
                             player.playSound(player.location, Sound.ITEM_BUCKET_FILL, 1f, 1f)
                         }
 
@@ -73,30 +71,30 @@ object FluidTank : SMachineManual(
                 
                 else -> {
                     getStorageFluid(sLoc)?.let { sFluid->
-                        if(handItem.isItemSimilar(sFluid.bucket, checkAmount = false)) {
+                        if(SItem.isItemSimilar(handItem, sFluid.bucket, true, false, false, false)) {
                             if(addStorageFluid(sLoc, sFluid) != -1) {
                                 handItem.amount--
-                                player.giveItemInMainHand(SItem(Material.BUCKET))
+                                SExtensionKt.giveItemInMainHand(player, SItem(Material.BUCKET))
                             }
                         }
 
                         if(sFluid.volume != 0) {
-                            player.sendMsg(name, "&b${sFluid.name} &f-> &a${sFluid.volume}mL")
+                            SExtensionKt.sendMsg(player, name, "&b${sFluid.name} &f-> &a${sFluid.volume}mL")
                             return
                         }
                     }
                     
                     bucketToFluid[handItem.type]?.forEach { sFluid ->
-                        if(handItem.isItemSimilar(sFluid.bucket, checkAmount = false)) {
+                        if(SItem.isItemSimilar(handItem, sFluid.bucket, true, false, false, false)) {
                             if(addStorageFluid(sLoc, sFluid, true) != -1) {
                                 handItem.amount--
-                                player.giveItemInMainHand(SItem(Material.BUCKET))
+                                SExtensionKt.giveItemInMainHand(player, SItem(Material.BUCKET))
                                 return
                             }
                         }
                     }
 
-                    player.sendMsg(name, "&c空")
+                    SExtensionKt.sendMsg(player, name, "&c空")
                 }
             }
         }
@@ -130,7 +128,7 @@ object FluidTank : SMachineManual(
     
     
     fun getStorageFluid(sLoc: SLocation): SFluid? =
-        getDataByType<SFluid>(sLoc, "StorageFluid")
+        getDataByType(sLoc, "StorageFluid", SFluid::class.java)
     
 }
 

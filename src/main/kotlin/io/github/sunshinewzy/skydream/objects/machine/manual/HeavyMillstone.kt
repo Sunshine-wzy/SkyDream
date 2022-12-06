@@ -10,8 +10,8 @@ import io.github.sunshinewzy.sunstcore.modules.machine.SMachineStructure
 import io.github.sunshinewzy.sunstcore.objects.SBlock
 import io.github.sunshinewzy.sunstcore.objects.SCoordinate
 import io.github.sunshinewzy.sunstcore.objects.SItem
-import io.github.sunshinewzy.sunstcore.utils.*
-import io.github.sunshinewzy.sunstcore.utils.BlockOperator.Companion.operate
+import io.github.sunshinewzy.sunstcore.utils.BlockOperator
+import io.github.sunshinewzy.sunstcore.utils.SExtensionKt
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -62,13 +62,13 @@ object HeavyMillstone : SMachineManual(
     }
 
     override fun manualRun(event: SMachineRunEvent.Manual, level: Short) {
-        val loc = event.loc.subtractClone(2)
+        val loc = SExtensionKt.subtractClone(event.loc, 2)
         val block = loc.block
         val centerBlock = event.loc.block
         val player = event.player
-        val hopper = event.loc.subtractClone(4).block.getHopper() ?: return
+        val hopper = SExtensionKt.getHopper(SExtensionKt.subtractClone(event.loc, 4).block) ?: return
 
-        val meta = centerBlock.getSMetadata(SkyDream.plugin, name)
+        val meta = SExtensionKt.getSMetadata(centerBlock, SkyDream.plugin, name)
         var cnt = meta.asInt()
         val oldCnt = cnt
         var airCnt = 0
@@ -89,7 +89,7 @@ object HeavyMillstone : SMachineManual(
 
             else -> {
                 if(block.type == Material.AIR) {
-                    if(chestState == null) chestState = event.loc.addClone(1).block.getChest()
+                    if(chestState == null) chestState = SExtensionKt.getChest(SExtensionKt.addClone(event.loc, 1).block)
                     chestState?.let { chest ->
                         for(storageItem in chest.blockInventory.storageContents) {
                             val itemType = storageItem?.type ?: continue
@@ -103,7 +103,7 @@ object HeavyMillstone : SMachineManual(
                         airCnt++
                     }
                 } else {
-                    player.sendMsg(name, "§4待研磨的方块不正确！")
+                    SExtensionKt.sendMsg(player, name, "§4待研磨的方块不正确！")
                     player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 1.8f)
                 }
 
@@ -114,49 +114,51 @@ object HeavyMillstone : SMachineManual(
         meta.data = cnt
         centerBlock.setMetadata(name, meta)
 
-        block.operate {
-            horizontal(true) {
-                when(type) {
-                    Material.COBBLESTONE ->
-                        mill(oldCnt, 8, location, player, hopper, SItem(Material.GRAVEL), Sound.BLOCK_STONE_BREAK, Sound.BLOCK_STONE_HIT)
+        BlockOperator.operate(block) { operator ->
+            operator.horizontal(true) { theBlock ->
+                theBlock.apply {
+                    when(type) {
+                        Material.COBBLESTONE ->
+                            mill(oldCnt, 8, location, player, hopper, SItem(Material.GRAVEL), Sound.BLOCK_STONE_BREAK, Sound.BLOCK_STONE_HIT)
 
-                    Material.GRAVEL ->
-                        mill(oldCnt, 8, location, player, hopper, SItem(Material.SAND), Sound.BLOCK_GRAVEL_BREAK, Sound.BLOCK_GRAVEL_HIT)
+                        Material.GRAVEL ->
+                            mill(oldCnt, 8, location, player, hopper, SItem(Material.SAND), Sound.BLOCK_GRAVEL_BREAK, Sound.BLOCK_GRAVEL_HIT)
 
-                    Material.HAY_BLOCK ->
-                        mill(oldCnt, 8, location, player, hopper, SItem(SDItem.FLOUR.item, 9), Sound.BLOCK_GRASS_BREAK, Sound.BLOCK_GRASS_HIT)
+                        Material.HAY_BLOCK ->
+                            mill(oldCnt, 8, location, player, hopper, SItem(SDItem.FLOUR.item, 9), Sound.BLOCK_GRASS_BREAK, Sound.BLOCK_GRASS_HIT)
 
-                    Material.STONE ->
-                        mill(oldCnt, 8, location, player, hopper, SItem(Material.COBBLESTONE), Sound.BLOCK_STONE_BREAK, Sound.BLOCK_STONE_HIT)
+                        Material.STONE ->
+                            mill(oldCnt, 8, location, player, hopper, SItem(Material.COBBLESTONE), Sound.BLOCK_STONE_BREAK, Sound.BLOCK_STONE_HIT)
 
-                    else -> {
-                        if(type == Material.AIR) {
-                            if(chestState == null) chestState = event.loc.addClone(1).block.getChest()
-                            chestState?.let { chest ->
-                                for(storageItem in chest.blockInventory.storageContents) {
-                                    val itemType = storageItem?.type ?: continue
-                                    if(itemType != Material.AIR && itemType.isBlock) {
-                                        type = storageItem.type
-                                        storageItem.amount--
-                                        return@horizontal false
+                        else -> {
+                            if(type == Material.AIR) {
+                                if(chestState == null) chestState = SExtensionKt.getChest(SExtensionKt.addClone(event.loc, 1).block)
+                                chestState?.let { chest ->
+                                    for(storageItem in chest.blockInventory.storageContents) {
+                                        val itemType = storageItem?.type ?: continue
+                                        if(itemType != Material.AIR && itemType.isBlock) {
+                                            type = storageItem.type
+                                            storageItem.amount--
+                                            return@horizontal false
+                                        }
                                     }
-                                }
 
-                                airCnt++
+                                    airCnt++
+                                }
+                            } else {
+                                SExtensionKt.sendMsg(player, name, "§4待研磨的方块不正确！")
+                                player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 1.8f)
                             }
-                        } else {
-                            player.sendMsg(name, "§4待研磨的方块不正确！")
-                            player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 1.8f)
                         }
                     }
                 }
-
+                
                 false
             }
         }
         
         if(airCnt == 9) {
-            player.sendMsg(name, "§4没有待研磨的方块了！")
+            SExtensionKt.sendMsg(player, name, "§4没有待研磨的方块了！")
             player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 2f)
         }
     }
@@ -182,7 +184,7 @@ object HeavyMillstone : SMachineManual(
                 player.playSound(loc, breakSound, 1f, 2f)
 
                 val inv = hopper.inventory
-                if(!inv.isFull()) {
+                if(!SExtensionKt.isFull(inv)) {
                     inv.addItem(dropItem)
                     return cnt
                 }

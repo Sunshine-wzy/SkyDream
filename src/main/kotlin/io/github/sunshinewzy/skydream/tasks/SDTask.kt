@@ -1,10 +1,10 @@
 package io.github.sunshinewzy.skydream.tasks
 
+import io.github.sunshinewzy.skydream.util.orderWith
 import io.github.sunshinewzy.sunstcore.interfaces.Initable
 import io.github.sunshinewzy.sunstcore.modules.task.TaskProject
 import io.github.sunshinewzy.sunstcore.modules.task.TaskStage
 import io.github.sunshinewzy.sunstcore.objects.SItem
-import io.github.sunshinewzy.sunstcore.objects.orderWith
 import org.bukkit.Material
 
 object SDTask : Initable {

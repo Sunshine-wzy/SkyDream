@@ -9,11 +9,9 @@ import io.github.sunshinewzy.sunstcore.modules.machine.SMachineRunEvent
 import io.github.sunshinewzy.sunstcore.modules.machine.SMachineSize
 import io.github.sunshinewzy.sunstcore.modules.machine.SMachineStructure
 import io.github.sunshinewzy.sunstcore.objects.SBlock
-import io.github.sunshinewzy.sunstcore.objects.SBlock.Companion.getSBlock
 import io.github.sunshinewzy.sunstcore.objects.SCoordinate
 import io.github.sunshinewzy.sunstcore.objects.SItem
-import io.github.sunshinewzy.sunstcore.objects.SItem.Companion.isItemSimilar
-import io.github.sunshinewzy.sunstcore.utils.*
+import io.github.sunshinewzy.sunstcore.utils.SExtensionKt
 import org.bukkit.Effect
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -43,14 +41,20 @@ object WoodenBarrel : SMachineManual(
     )
 ) {
     override fun manualRun(event: SMachineRunEvent.Manual, level: Short) {
-        val loc = event.loc.addClone(0, 1, 0)
-        val upLoc = loc.addClone(0, 1, 0)
+        val loc = SExtensionKt.addClone(event.loc, 0, 1, 0)
+        val upLoc = SExtensionKt.addClone(loc, 0, 1, 0)
         val block = loc.block
-        val sBlock = loc.getSBlock()
+        val sBlock = SBlock.getSBlock(loc)
         val player = event.player
         
-        val meta = event.loc.block.getSMetadata(SkyDream.plugin, name)
-        var pair = meta.asPair("" to 0)
+        val meta = SExtensionKt.getSMetadata(event.loc.block, SkyDream.plugin, name)
+        val value = meta.value()
+        var pair = if(value is Pair<*, *>) {
+            val (first, second) = value
+            if(first is String && second is Int){
+                first to second
+            } else "" to 0
+        } else "" to 0
         
         if(block.type == Material.AIR){
             var cnt = pair.second
@@ -77,7 +81,7 @@ object WoodenBarrel : SMachineManual(
                         }
                         else{
                             cnt = 0
-                            player.giveItem(SItem(Material.BONE_MEAL))
+                            SExtensionKt.giveItem(player, SItem(Material.BONE_MEAL))
                             player.world.playSound(loc, Sound.ENTITY_PLAYER_LEVELUP, 1f, 2f)
                             player.world.playEffect(upLoc, Effect.VILLAGER_PLANT_GROW, 3)
                         }
@@ -89,7 +93,7 @@ object WoodenBarrel : SMachineManual(
                             player.playSound(loc, Sound.BLOCK_GRASS_BREAK, 1f, 2f)
                         } else {
                             cnt = 0
-                            player.giveItem(SItem(Material.FEATHER))
+                            SExtensionKt.giveItem(player, SItem(Material.FEATHER))
                             player.world.playSound(loc, Sound.ENTITY_PLAYER_LEVELUP, 1f, 2f)
                             player.world.playEffect(upLoc, Effect.VILLAGER_PLANT_GROW, 3)
                         }
@@ -116,12 +120,12 @@ object WoodenBarrel : SMachineManual(
                     }
                     else{
                         player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 1.8f)
-                        player.sendMsg(name, "§4您副手上的树苗不足8棵！")
+                        SExtensionKt.sendMsg(player, name, "§4您副手上的树苗不足8棵！")
                     }
                 }
                 
                 // 8桑叶 -> 1骨粉
-                else if(offHandItem.isItemSimilar(SDItem.MULBERRY_LEAVES)){
+                else if(SItem.isItemSimilar(offHandItem, SDItem.MULBERRY_LEAVES.item)){
                     if(offHandItem.amount >= 8){
                         offHandItem.amount -= 8
                         pair = "BONE_MEAL" to 8
@@ -129,7 +133,7 @@ object WoodenBarrel : SMachineManual(
                     }
                     else{
                         player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 1.8f)
-                        player.sendMsg(name, "§4您副手上的桑叶不足8片！")
+                        SExtensionKt.sendMsg(player, name, "§4您副手上的桑叶不足8片！")
                     }
                 }
                 
@@ -141,25 +145,25 @@ object WoodenBarrel : SMachineManual(
                         player.playSound(loc, Sound.BLOCK_GRASS_PLACE, 1f, 2f)
                     } else {
                         player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 1.8f)
-                        player.sendMsg(name, "§4您副手上的线不足4根！")
+                        SExtensionKt.sendMsg(player, name, "§4您副手上的线不足4根！")
                     }
                 }
                 
                 else{
                     player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 1.8f)
-                    player.sendMsg(name, "§4您副手上的物品无法被塞进木桶！")
+                    SExtensionKt.sendMsg(player, name, "§4您副手上的物品无法被塞进木桶！")
                 }
             }
             
             else {
                 player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 0.5f)
-                player.sendMsg(name , "§4您的副手上没有东西！")
+                SExtensionKt.sendMsg(player, name , "§4您的副手上没有东西！")
             }
         }
         
         else {
             player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 0.5f)
-            player.sendMsg(name, "§4机器顶部中间被方块阻塞了！")
+            SExtensionKt.sendMsg(player, name, "§4机器顶部中间被方块阻塞了！")
         }
         
         meta.data = pair

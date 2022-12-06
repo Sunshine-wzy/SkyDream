@@ -9,7 +9,7 @@ import io.github.sunshinewzy.sunstcore.modules.machine.SMachineSize
 import io.github.sunshinewzy.sunstcore.modules.machine.SMachineStructure
 import io.github.sunshinewzy.sunstcore.objects.SBlock
 import io.github.sunshinewzy.sunstcore.objects.SCoordinate
-import io.github.sunshinewzy.sunstcore.utils.*
+import io.github.sunshinewzy.sunstcore.utils.SExtensionKt
 import org.bukkit.Material
 import org.bukkit.Sound
 
@@ -35,12 +35,12 @@ object Squeezer : SMachineManual(
 ) {
 
     override fun manualRun(event: SMachineRunEvent.Manual, level: Short) {
-        val loc = event.loc.subtractClone(2)
+        val loc = SExtensionKt.subtractClone(event.loc, 2)
         val centerBlock = event.loc.block
         val player = event.player
         val inv = player.inventory
         
-        val meta = centerBlock.getSMetadata(SkyDream.plugin, name)
+        val meta = SExtensionKt.getSMetadata(centerBlock, SkyDream.plugin, name)
         var cnt = meta.asInt()
         
         if(cnt >= 1){
@@ -54,20 +54,20 @@ object Squeezer : SMachineManual(
                 player.playSound(loc, Sound.BLOCK_GRASS_BREAK, 1f, 2f)
             }
         }
-        else if(inv.containsItem(SMaterial.SAPLING, 8)){
+        else if(SExtensionKt.containsItem(inv, SMaterial.SAPLING, 8)){
             if(loc.block.type == Material.AIR){
-                if(inv.removeSItem(SMaterial.SAPLING, 8)){
+                if(SExtensionKt.removeSItem(inv, SMaterial.SAPLING, 8)){
                     cnt = 1
                     player.playSound(loc, Sound.BLOCK_GRASS_PLACE, 1f, 2f)
                 }
             }
             else{
-                player.sendMsg(name, "§4机器底部中间被方块阻塞了！")
+                SExtensionKt.sendMsg(player, name, "§4机器底部中间被方块阻塞了！")
                 player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 0.5f)
             }
         }
         else{
-            player.sendMsg(name, "§4你的背包中没有8棵树苗！")
+            SExtensionKt.sendMsg(player, name, "§4你的背包中没有8棵树苗！")
             player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 1.8f)
         }
 

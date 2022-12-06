@@ -8,9 +8,8 @@ import io.github.sunshinewzy.sunstcore.modules.machine.SMachineRunEvent
 import io.github.sunshinewzy.sunstcore.modules.machine.SMachineSize
 import io.github.sunshinewzy.sunstcore.modules.machine.SMachineStructure
 import io.github.sunshinewzy.sunstcore.objects.*
-import io.github.sunshinewzy.sunstcore.objects.SBlock.Companion.getSBlock
 import io.github.sunshinewzy.sunstcore.objects.inventoryholder.SPartProtectInventoryHolder
-import io.github.sunshinewzy.sunstcore.utils.*
+import io.github.sunshinewzy.sunstcore.utils.SExtensionKt
 import org.bukkit.Material
 import org.bukkit.Sound
 import java.util.*
@@ -45,15 +44,15 @@ object Sieve : SMachineManual(
         
         structure.apply { 
             // Level 1 石砖筛子
-            addUpgrade(shape, copyIngredients('b' to SBlock(Material.STONE_BRICKS)))
+            addUpgrade(shape, copyIngredients(mapOf('b' to SBlock(Material.STONE_BRICKS))))
             // Level 2 铁制筛子
-            addUpgrade(shape, copyIngredients('b' to SBlock(Material.IRON_BLOCK)))
+            addUpgrade(shape, copyIngredients(mapOf('b' to SBlock(Material.IRON_BLOCK))))
             // Level 3 金制筛子
-            addUpgrade(shape, copyIngredients('b' to SBlock(Material.GOLD_BLOCK)))
+            addUpgrade(shape, copyIngredients(mapOf('b' to SBlock(Material.GOLD_BLOCK))))
             // Level 4 红石筛子
-            addUpgrade(shape, copyIngredients('b' to SBlock(Material.REDSTONE_BLOCK)))
+            addUpgrade(shape, copyIngredients(mapOf('b' to SBlock(Material.REDSTONE_BLOCK))))
             // Level 5 钻石筛子
-            addUpgrade(shape, copyIngredients('b' to SBlock(Material.DIAMOND_BLOCK)))
+            addUpgrade(shape, copyIngredients(mapOf('b' to SBlock(Material.DIAMOND_BLOCK))))
         }
         
         
@@ -173,7 +172,7 @@ object Sieve : SMachineManual(
             ArrayList<Int>().apply {
                 for (i in 2..8) {
                     for (j in 3..4) {
-                        add(i orderWith j)
+                        add(SOrderKt.orderWith(i, j))
                     }
                 }
             }, id
@@ -183,10 +182,10 @@ object Sieve : SMachineManual(
 
 
     override fun manualRun(event: SMachineRunEvent.Manual, level: Short) {
-        val theLoc = event.loc.addClone(0, 1, 0)
+        val theLoc = SExtensionKt.addClone(event.loc, 0, 1, 0)
         val block = theLoc.block
         val centerBlock = event.loc.block
-        val sBlock = theLoc.getSBlock()
+        val sBlock = SBlock.getSBlock(theLoc)
         val player = event.player
         val world = theLoc.world ?: return
         
@@ -395,14 +394,14 @@ object Sieve : SMachineManual(
                 
                 
                 player.playSound(theLoc, Sound.ENTITY_ITEM_BREAK, 1f, 1.8f)
-                player.sendMsg(name, "§4这个方块不能筛！")
+                SExtensionKt.sendMsg(player, name, "§4这个方块不能筛！")
                 return
             }
         }
         */
 
         if(block.type == Material.AIR || block.type == Material.WATER) {
-            event.loc.subtractClone(1).block.getChest()?.let { chest ->
+            SExtensionKt.getChest(SExtensionKt.subtractClone(event.loc, 1).block)?.let { chest ->
                 for(storageItem in chest.blockInventory.storageContents) {
                     val itemType = storageItem?.type ?: continue
                     if(itemType != Material.AIR && itemType.isBlock) {
@@ -416,13 +415,13 @@ object Sieve : SMachineManual(
 
 
         player.playSound(theLoc, Sound.ENTITY_ITEM_BREAK, 1f, 1.8f)
-        player.sendMsg(name, "§4这个方块不能筛！")
+        SExtensionKt.sendMsg(player, name, "§4这个方块不能筛！")
     }
     
     
     fun addSieveRecipe(vararg sieveRecipe: SieveRecipe) {
         sieveRecipe.forEach { 
-            sieveRecipes.putElement(it.level, it)
+            SExtensionKt.putElement(sieveRecipes, it.level, it)
         }
     }
     

@@ -37,14 +37,20 @@ object StoneBarrel : SMachineManual(
     )
 ) {
     override fun manualRun(event: SMachineRunEvent.Manual, level: Short) {
-        val loc = event.loc.addClone(0, 1, 0)
+        val loc = SExtensionKt.addClone(event.loc, 0, 1, 0)
         val block = loc.block
         val player = event.player
         val inv = player.inventory
         val offHandItem = inv.itemInOffHand
 
-        val meta = event.loc.block.getSMetadata(SkyDream.plugin, name)
-        var pair = meta.asPair("" to 0)
+        val meta = SExtensionKt.getSMetadata(event.loc.block, SkyDream.plugin, name)
+        val value = meta.value()
+        var pair = if(value is Pair<*, *>) {
+            val (first, second) = value
+            if(first is String && second is Int){
+                first to second
+            } else "" to 0
+        } else "" to 0
         var cnt = pair.second
         
         when(block.type) {
@@ -146,12 +152,12 @@ object StoneBarrel : SMachineManual(
                                 
                                 else -> {
                                     player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 1.8f)
-                                    player.sendMsg(name, "§4您副手上的物品无法被塞进装有岩浆的石桶！")
+                                    SExtensionKt.sendMsg(player, name, "§4您副手上的物品无法被塞进装有岩浆的石桶！")
                                 }
                             }
                         } catch (_: Exception) {
                             player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 1.8f)
-                            player.sendMsg(name, "§4您副手上的物品无法被塞进装有岩浆的石桶！")
+                            SExtensionKt.sendMsg(player, name, "§4您副手上的物品无法被塞进装有岩浆的石桶！")
                         }
                     }
                 }
@@ -159,9 +165,9 @@ object StoneBarrel : SMachineManual(
             }
             
             Material.WATER -> {
-                event.loc.subtractClone(2).block.getChest()?.let { chest ->
+                SExtensionKt.getChest(SExtensionKt.subtractClone(event.loc, 2).block)?.let { chest ->
                     val chestInv = chest.inventory
-                    if(chestInv.removeSItem(Material.LAVA_BUCKET)) {
+                    if(SExtensionKt.removeSItem(chestInv, Material.LAVA_BUCKET, 1)) {
                         player.playSound(loc, Sound.BLOCK_LAVA_EXTINGUISH, 1f, 1f)
                         loc.world?.apply {
                             dropItemNaturally(loc, SItem(Material.OBSIDIAN))
@@ -176,12 +182,12 @@ object StoneBarrel : SMachineManual(
 
             Material.AIR -> {
                 player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 1.8f)
-                player.sendMsg(name, "§4您副手上的物品无法被塞进空的石桶！")
+                SExtensionKt.sendMsg(player, name, "§4您副手上的物品无法被塞进空的石桶！")
             }
 
             else -> {
                 player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 0.5f)
-                player.sendMsg(name, "§4石桶顶部中间被方块阻塞了！")
+                SExtensionKt.sendMsg(player, name, "§4石桶顶部中间被方块阻塞了！")
             }
         }
         

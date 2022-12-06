@@ -45,7 +45,7 @@ object WaterPouringMachine : SMachineManual(
     
 
     override fun manualRun(event: SMachineRunEvent.Manual, level: Short) {
-        val loc = event.loc.addClone(1)
+        val loc = SExtensionKt.addClone(event.loc, 1)
         val centerLoc = event.loc
         val block = loc.block
         val player = event.player
@@ -106,7 +106,7 @@ object WaterPouringMachine : SMachineManual(
                 val state = block.state
                 if(state is Dropper) {
                     val inv = state.inventory
-                    if(inv.containsItem(SItem(Material.NAUTILUS_SHELL), 9)) {
+                    if(SExtensionKt.containsItem(inv, SItem(Material.NAUTILUS_SHELL), 9)) {
                         when(addMetaCnt(centerLoc, 8)) {
                             SMachineStatus.START -> {
                                 player.playSound(loc, Sound.ITEM_BUCKET_FILL, 1f, 0f)
@@ -117,7 +117,7 @@ object WaterPouringMachine : SMachineManual(
                             }
 
                             SMachineStatus.FINISH -> {
-                                if(inv.removeSItem(SItem(Material.NAUTILUS_SHELL), 9)) {
+                                if(SExtensionKt.removeSItem(inv, SItem(Material.NAUTILUS_SHELL), 9)) {
                                     inv.addItem(SItem(Material.HEART_OF_THE_SEA))
                                 }
                                 player.playSound(loc, Sound.ITEM_BUCKET_EMPTY, 1f, 2f)
@@ -128,7 +128,7 @@ object WaterPouringMachine : SMachineManual(
             }
             
             else -> {
-                player.sendMsg(name, "§4制造原料不正确！")
+                SExtensionKt.sendMsg(player, name, "§4制造原料不正确！")
                 player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 1.8f)
             }
         }
@@ -136,12 +136,12 @@ object WaterPouringMachine : SMachineManual(
     }
 
     override fun specialJudge(loc: Location, isFirst: Boolean, level: Short): Boolean {
-        val topBlock = loc.addClone(2).block
+        val topBlock = SExtensionKt.addClone(loc, 2).block
         if(topBlock.type != Material.WATER)
             return false
         
         if(isFirst) {
-            val upLoc = loc.addClone(1)
+            val upLoc = SExtensionKt.addClone(loc, 1)
             if(upLoc.block.type == Material.COBBLESTONE_WALL) {
                 upLoc.block.type = Material.AIR
                 return true
@@ -154,15 +154,15 @@ object WaterPouringMachine : SMachineManual(
     
     
     private fun Location.dropItem(item: ItemStack) {
-        subtractClone(2).block.getHopper()?.let { 
+        SExtensionKt.getHopper(SExtensionKt.subtractClone(this, 2).block)?.let { 
             val inv = it.inventory
-            if(!inv.isFull()) {
+            if(!SExtensionKt.isFull(inv)) {
                 inv.addItem(item)
                 return
             }
         }
         
-        world?.dropItem(addClone(1), item)
+        world?.dropItem(SExtensionKt.addClone(this, 1), item)
     }
     
 }

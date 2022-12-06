@@ -10,7 +10,7 @@ import io.github.sunshinewzy.sunstcore.modules.machine.SMachineStructure
 import io.github.sunshinewzy.sunstcore.objects.SBlock
 import io.github.sunshinewzy.sunstcore.objects.SCoordinate
 import io.github.sunshinewzy.sunstcore.objects.SItem
-import io.github.sunshinewzy.sunstcore.utils.*
+import io.github.sunshinewzy.sunstcore.utils.SExtensionKt
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -42,13 +42,13 @@ object Millstone : SMachineManual(
 ) {
 
     override fun manualRun(event: SMachineRunEvent.Manual, level: Short) {
-        val loc = event.loc.subtractClone(1)
+        val loc = SExtensionKt.subtractClone(event.loc, 1)
         val block = loc.block
         val centerBlock = event.loc.block
         val player = event.player
         val inv = player.inventory
 
-        val meta = centerBlock.getSMetadata(SkyDream.plugin, name)
+        val meta = SExtensionKt.getSMetadata(centerBlock, SkyDream.plugin, name)
         var cnt = meta.asInt()
         
         cnt = when(block.type) {
@@ -66,7 +66,7 @@ object Millstone : SMachineManual(
             
             else -> {
                 if(block.type == Material.AIR) {
-                    event.loc.addClone(1).block.getChest()?.let { chest ->
+                    SExtensionKt.getChest(SExtensionKt.addClone(event.loc, 1).block)?.let { chest ->
                         for(storageItem in chest.blockInventory.storageContents) {
                             val itemType = storageItem?.type ?: continue
                             if(itemType != Material.AIR && itemType.isBlock) {
@@ -78,7 +78,7 @@ object Millstone : SMachineManual(
                     }
                 }
                 
-                player.sendMsg(name, "§4待研磨的方块不正确！")
+                SExtensionKt.sendMsg(player, name, "§4待研磨的方块不正确！")
                 player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 1.8f)
                 0
             }
@@ -90,7 +90,7 @@ object Millstone : SMachineManual(
 
     override fun specialJudge(loc: Location, isFirst: Boolean, level: Short): Boolean {
         if(isFirst){
-            val theLoc = loc.addClone(1)
+            val theLoc = SExtensionKt.addClone(loc, 1)
             if(theLoc.block.type == Material.COBBLESTONE_WALL){
                 theLoc.block.type = Material.AIR
                 return true
@@ -120,12 +120,12 @@ object Millstone : SMachineManual(
                 block.type = Material.AIR
                 player.playSound(loc, breakSound, 1f, 2f)
                 
-                val bottomBlock = loc.subtractClone(2).block
+                val bottomBlock = SExtensionKt.subtractClone(loc, 2).block
                 if(bottomBlock.type == Material.HOPPER) {
                     val state = bottomBlock.state
                     if(state is Hopper) {
                         val inv = state.inventory
-                        if(!inv.isFull()) {
+                        if(!SExtensionKt.isFull(inv)) {
                             inv.addItem(dropItem)
                             return cnt
                         }

@@ -8,12 +8,8 @@ import io.github.sunshinewzy.skydream.objects.machine.manual.SFluid
 import io.github.sunshinewzy.skydream.tasks.SDTask
 import io.github.sunshinewzy.sunstcore.libs.bstats.bukkit.Metrics
 import io.github.sunshinewzy.sunstcore.utils.SunSTTestApi
-import io.github.sunshinewzy.sunstcore.utils.subscribeEvent
 import org.bukkit.Bukkit
 import org.bukkit.configuration.serialization.ConfigurationSerialization
-import org.bukkit.event.block.Action
-import org.bukkit.event.player.PlayerInteractEvent
-import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.plugin.PluginManager
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.logging.Logger
@@ -77,24 +73,19 @@ class SkyDream : JavaPlugin() {
     }
     
     private fun registerListeners() {
-        
+        pluginManager.registerEvents(SDSubscriber, this)
     }
     
     private fun init() {
         SDTask.init()
         SDItem.init()
         SDMachine.init()
-        SDSubscriber.init()
         
         SDCommand.register()
     }
     
     @SunSTTestApi
     private fun test() {
-        subscribeEvent<PlayerInteractEvent> {
-            if(hand == EquipmentSlot.HAND && action == Action.RIGHT_CLICK_BLOCK) {
-                
-            }
-        }
+        
     }
 }

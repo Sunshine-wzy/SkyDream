@@ -7,7 +7,11 @@ import io.github.sunshinewzy.sunstcore.objects.SItem
 import org.bukkit.Material
 
 object SDMachine : Initable {
-    val wrench = SMachineWrench(SkyDream.plugin, SItem(Material.BONE, "§b扳手", "§7一个普通的扳手", "§a敲击中心方块以构建多方块机器"), "SkyDream")
+    val wrench = SMachineWrench(
+        SkyDream.plugin,
+        SItem(Material.BONE, "§b扳手", "§7一个普通的扳手", "§a敲击中心方块以构建多方块机器"),
+        "SkyDream"
+    )
     
     
     override fun init() {

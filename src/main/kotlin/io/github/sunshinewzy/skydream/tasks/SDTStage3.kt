@@ -5,12 +5,12 @@ import io.github.sunshinewzy.skydream.objects.machine.manual.HeavyMillstone
 import io.github.sunshinewzy.skydream.objects.machine.manual.Sieve
 import io.github.sunshinewzy.skydream.objects.machine.manual.StoneBarrel
 import io.github.sunshinewzy.skydream.tasks.SDTask.stage3
+import io.github.sunshinewzy.skydream.util.orderWith
 import io.github.sunshinewzy.sunstcore.interfaces.Initable
 import io.github.sunshinewzy.sunstcore.modules.task.tasks.ItemTask
 import io.github.sunshinewzy.sunstcore.modules.task.tasks.MachineTask
 import io.github.sunshinewzy.sunstcore.objects.SItem
-import io.github.sunshinewzy.sunstcore.objects.SItem.Companion.createTaskSymbol
-import io.github.sunshinewzy.sunstcore.objects.orderWith
+import io.github.sunshinewzy.sunstcore.objects.SItem.createTaskSymbol
 import org.bukkit.Material
 
 object SDTStage3 : Initable {

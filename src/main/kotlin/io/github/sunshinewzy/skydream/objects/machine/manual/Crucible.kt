@@ -9,10 +9,7 @@ import io.github.sunshinewzy.sunstcore.modules.machine.SMachineStructure
 import io.github.sunshinewzy.sunstcore.objects.SBlock
 import io.github.sunshinewzy.sunstcore.objects.SCoordinate
 import io.github.sunshinewzy.sunstcore.objects.SItem
-import io.github.sunshinewzy.sunstcore.objects.SItem.Companion.isItemSimilar
-import io.github.sunshinewzy.sunstcore.utils.addClone
-import io.github.sunshinewzy.sunstcore.utils.countPlaneAround
-import io.github.sunshinewzy.sunstcore.utils.sendMsg
+import io.github.sunshinewzy.sunstcore.utils.SExtensionKt
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.block.Furnace
@@ -46,15 +43,15 @@ object Crucible : SMachineManual(
 
     override fun manualRun(event: SMachineRunEvent.Manual, level: Short) {
         val loc = event.loc
-        val topLoc = loc.addClone(1)
+        val topLoc = SExtensionKt.addClone(loc, 1)
         val player = event.player
         val inv = player.inventory
         
         if(topLoc.block.type == Material.AIR){
-            if(inv.itemInMainHand.isItemSimilar(SDItem.CRUCIBLE_TONGS)){
+            if(SItem.isItemSimilar(inv.itemInMainHand, SDItem.CRUCIBLE_TONGS.item)){
                 loc.block.blockData
-                val rate = loc.countPlaneAround(Material.FURNACE) {
-                    state.apply {
+                val rate = SExtensionKt.countPlaneAround(loc, Material.FURNACE, false) { block ->
+                    block.state.apply {
                         if(this is Furnace) {
                             return@countPlaneAround burnTime > 0
                         }
@@ -62,13 +59,13 @@ object Crucible : SMachineManual(
                     
                     false
                 }
-                player.sendMsg(name, "当前§b坩埚§f运行速率: §a${rate}x")
+                SExtensionKt.sendMsg(player, name, "当前§b坩埚§f运行速率: §a${rate}x")
                 
                 val offHandItem = inv.itemInOffHand
                 if(offHandItem.type != Material.COBBLESTONE) return
                 
                 if(rate == 0){
-                    player.sendMsg(name, "§4坩埚没有热源 §e请让熔炉燃烧起来！")
+                    SExtensionKt.sendMsg(player, name, "§4坩埚没有热源 §e请让熔炉燃烧起来！")
                     player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 1.4f)
                 }
                 else if(rate in 1..4){
@@ -83,12 +80,12 @@ object Crucible : SMachineManual(
                 }
             }
             else{
-                player.sendMsg(name, "&c危险！操作坩埚必须使用坩埚钳！")
+                SExtensionKt.sendMsg(player, name, "&c危险！操作坩埚必须使用坩埚钳！")
                 player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 0.5f)
             }
         }
         else{
-            player.sendMsg(name, "&4坩埚顶部中间被方块阻塞了！")
+            SExtensionKt.sendMsg(player, name, "&4坩埚顶部中间被方块阻塞了！")
             player.playSound(loc, Sound.ENTITY_ITEM_BREAK, 1f, 0.5f)
         }
     }

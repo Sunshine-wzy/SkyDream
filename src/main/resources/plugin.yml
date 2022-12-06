@@ -11,4 +11,4 @@ commands:
         aliases: [sd]
         description: Start your SkyDream journey...
 
-depend: [SunSTCore]
+depend: [SunSTCore-v1]
