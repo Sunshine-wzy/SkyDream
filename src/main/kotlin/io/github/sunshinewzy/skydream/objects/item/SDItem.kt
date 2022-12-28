@@ -87,7 +87,7 @@ enum class SDItem(item: ItemStack) : Itemable {
                 if(offHandItem.type != AIR) {
                     when(offHandItem.type) {
                         LIGHT_GRAY_DYE -> {
-                            if(SItem.isItemSimilar(offHandItem, SILKWORM.item, true)) {
+                            if(SItem.isItemSimilar(offHandItem, SILKWORM.item, true, true, false, true)) {
                                 if(SItem.addUseCount(offHandItem, player, 4)){
                                     SExtensionKt.giveItem(player, SItem(STRING, Random.nextInt(3) + 1))
                                     player.playSound(player.location, Sound.ENTITY_PLAYER_BURP, 1f, 1f)

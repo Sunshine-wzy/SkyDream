@@ -1,8 +1,8 @@
-name: SkyDream
-version: 4.4.2
+name: ${name}
+version: ${version}
 author: Sunshine_wzy
 
-main: io.github.sunshinewzy.skydream.SkyDream
+main: ${main}
 
 api-version: 1.13
 
@@ -11,4 +11,4 @@ commands:
         aliases: [sd]
         description: Start your SkyDream journey...
 
-depend: [SunSTCore-v1]
+depend: [SunSTCore]
