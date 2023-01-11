@@ -1,11 +1,11 @@
 plugins {
-    val kotlinVersion = "1.5.10"
+    val kotlinVersion = "1.7.21"
     kotlin("jvm") version kotlinVersion
 
     id("com.github.johnrengelman.shadow") version "5.2.0"
 }
 group = "io.github.sunshinewzy"
-version = "4.4.4"
+version = "4.4.5"
 
 repositories {
     
@@ -20,6 +20,7 @@ repositories {
 
 dependencies {
     compileOnly(kotlin("stdlib"))
+    compileOnly("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.21")
 
     compileOnly(fileTree(mapOf("dir" to "cores", "include" to listOf("*.jar"))))
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
@@ -37,7 +38,7 @@ tasks {
         archiveVersion.set(project.version.toString())
         archiveClassifier.set("")
 
-        relocate("kotlin", "kotlin1510")
+        relocate("kotlin", "kotlin1721")
     }
     
     compileKotlin {
