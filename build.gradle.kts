@@ -1,17 +1,16 @@
 plugins {
-    val kotlinVersion = "1.7.21"
+    val kotlinVersion = "1.8.22"
     kotlin("jvm") version kotlinVersion
 
     id("com.github.johnrengelman.shadow") version "5.2.0"
 }
 group = "io.github.sunshinewzy"
-version = "4.4.5"
+version = "4.4.6"
 
 repositories {
+    maven("https://maven.aliyun.com/repository/public/")
+    maven("http://sacredcraft.cn:8081/repository/releases") { isAllowInsecureProtocol = true }
     
-    maven {
-        url = uri("https://maven.aliyun.com/repository/public/")
-    }
     mavenLocal()
     mavenCentral()
 
@@ -20,7 +19,10 @@ repositories {
 
 dependencies {
     compileOnly(kotlin("stdlib"))
-    compileOnly("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.21")
+    compileOnly("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22")
+    
+    compileOnly("ink.ptms.core:v12001:12001:universal")
+    compileOnly("ink.ptms.core:v12001:12001:mapped")
 
     compileOnly(fileTree(mapOf("dir" to "cores", "include" to listOf("*.jar"))))
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
@@ -38,7 +40,7 @@ tasks {
         archiveVersion.set(project.version.toString())
         archiveClassifier.set("")
 
-        relocate("kotlin", "kotlin1721")
+        relocate("kotlin.", "kotlin1822s.")
     }
     
     compileKotlin {
